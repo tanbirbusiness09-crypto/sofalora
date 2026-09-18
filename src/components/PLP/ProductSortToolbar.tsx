@@ -1,0 +1,312 @@
+import React from 'react';
+import { SlidersHorizontal, LayoutGrid, List, X } from 'lucide-react';
+import { SortOption, FilterState, Category } from '../../types';
+import { useShop } from '../../context/LanguageContext';
+
+interface ProductSortToolbarProps {
+  totalCount: number;
+  sortOption: SortOption;
+  onSortChange: (newSort: SortOption) => void;
+  viewMode: 'grid' | 'list';
+  onViewModeChange: (mode: 'grid' | 'list') => void;
+  onOpenMobileFilters: () => void;
+  filters: FilterState;
+  onFilterChange: (newFilters: FilterState) => void;
+  onResetFilters: () => void;
+  categories: Category[];
+}
+
+export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
+  totalCount,
+  sortOption,
+  onSortChange,
+  viewMode,
+  onViewModeChange,
+  onOpenMobileFilters,
+  filters,
+  onFilterChange,
+  onResetFilters,
+  categories
+}) => {
+  const { language } = useShop();
+
+  const activeFiltersCount =
+    filters.categories.length +
+    filters.colors.length +
+    filters.fabrics.length +
+    filters.lightControls.length +
+    filters.rooms.length +
+    (filters.inStockOnly ? 1 : 0) +
+    (filters.onSaleOnly ? 1 : 0) +
+    (filters.priceRange[0] > 0 || filters.priceRange[1] < 1200 ? 1 : 0);
+
+  const removeCategoryFilter = (slug: string) => {
+    onFilterChange({
+      ...filters,
+      categories: filters.categories.filter((c) => c !== slug)
+    });
+  };
+
+  const removeColorFilter = (colorId: string) => {
+    onFilterChange({
+      ...filters,
+      colors: filters.colors.filter((c) => c !== colorId)
+    });
+  };
+
+  const removeFabricFilter = (fabricId: string) => {
+    onFilterChange({
+      ...filters,
+      fabrics: filters.fabrics.filter((f) => f !== fabricId)
+    });
+  };
+
+  const removeLightControlFilter = (lcId: string) => {
+    onFilterChange({
+      ...filters,
+      lightControls: filters.lightControls.filter((l: string) => l !== lcId)
+    });
+  };
+
+  const removeRoomFilter = (roomId: string) => {
+    onFilterChange({
+      ...filters,
+      rooms: filters.rooms.filter((r: string) => r !== roomId)
+    });
+  };
+
+  const getCategoryTitle = (slug: string) => {
+    const cat = categories.find((c) => c.slug === slug);
+    return cat ? cat.title[language] : slug;
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-[#ECE6DD] p-3 sm:p-4 mb-6 shadow-sm">
+      {/* Top Row: Count, Mobile Filter Trigger, Sort, View Mode */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        {/* Left: Total Count & Mobile Trigger */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onOpenMobileFilters}
+            className="lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#FAF6F0] border border-[#DCD4C7] text-xs font-semibold text-[#1C1A17] hover:bg-[#F3ECE0] transition-colors"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#A9803C]" />
+            <span>{language === 'ar' ? 'تصفية المنتجات' : 'Filters'}</span>
+            {activeFiltersCount > 0 && (
+              <span className="w-5 h-5 rounded-full bg-[#A9803C] text-white text-[11px] flex items-center justify-center">
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
+
+          <span className="text-xs sm:text-sm text-[#73685C]">
+            {language === 'ar' ? (
+              <>
+                عرض <strong className="text-[#1C1A17] font-semibold">{totalCount}</strong> منتجاً
+              </>
+            ) : (
+              <>
+                Showing <strong className="text-[#1C1A17] font-semibold">{totalCount}</strong> items
+              </>
+            )}
+          </span>
+        </div>
+
+        {/* Right: Sort and View Switcher */}
+        <div className="flex items-center gap-3">
+          {/* Sort Dropdown */}
+          <div className="flex items-center gap-2 text-xs">
+            <label htmlFor="sort-select" className="hidden sm:inline text-[#73685C]">
+              {language === 'ar' ? 'الترتيب حسب:' : 'Sort by:'}
+            </label>
+            <select
+              id="sort-select"
+              value={sortOption}
+              onChange={(e) => onSortChange(e.target.value as SortOption)}
+              className="bg-[#FAF7F2] border border-[#DCD4C7] text-[#1C1A17] text-xs rounded-lg px-2.5 py-2 font-medium focus:ring-[#A9803C] focus:border-[#A9803C] cursor-pointer outline-none"
+            >
+              <option value="featured">
+                {language === 'ar' ? 'المقترح والمميز' : 'Featured & Recommended'}
+              </option>
+              <option value="bestsellers">
+                {language === 'ar' ? 'الأكثر مبيعاً في الرياض' : 'Best Sellers'}
+              </option>
+              <option value="newest">
+                {language === 'ar' ? 'وصل حديثاً' : 'Newest Arrivals'}
+              </option>
+              <option value="price-asc">
+                {language === 'ar' ? 'السعر: من الأقل للأعلى' : 'Price: Low to High'}
+              </option>
+              <option value="price-desc">
+                {language === 'ar' ? 'السعر: من الأعلى للأقل' : 'Price: High to Low'}
+              </option>
+              <option value="rating">
+                {language === 'ar' ? 'الأعلى تقييماً' : 'Highest Customer Rating'}
+              </option>
+            </select>
+          </div>
+
+          {/* View Mode Buttons */}
+          <div className="hidden sm:flex items-center border border-[#DCD4C7] rounded-lg overflow-hidden bg-[#FAF7F2]">
+            <button
+              type="button"
+              onClick={() => onViewModeChange('grid')}
+              title={language === 'ar' ? 'عرض شبكي' : 'Grid View'}
+              className={`p-1.5 transition-colors ${
+                viewMode === 'grid'
+                  ? 'bg-[#1C1A17] text-white'
+                  : 'text-[#665D53] hover:text-black hover:bg-[#F0EAE0]'
+              }`}
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange('list')}
+              title={language === 'ar' ? 'عرض قائمة' : 'List View'}
+              className={`p-1.5 transition-colors ${
+                viewMode === 'list'
+                  ? 'bg-[#1C1A17] text-white'
+                  : 'text-[#665D53] hover:text-black hover:bg-[#F0EAE0]'
+              }`}
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Active Filter Chips Bar */}
+      {activeFiltersCount > 0 && (
+        <div className="mt-3 pt-3 border-t border-[#F2ECE3] flex items-center gap-1.5 flex-wrap">
+          <span className="text-xs text-[#8E8377] me-1">
+            {language === 'ar' ? 'التصفيات النشطة:' : 'Active Filters:'}
+          </span>
+
+          {/* Categories */}
+          {filters.categories.map((slug) => (
+            <span
+              key={slug}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8]"
+            >
+              <span>{getCategoryTitle(slug)}</span>
+              <button
+                type="button"
+                onClick={() => removeCategoryFilter(slug)}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+
+          {/* Colors */}
+          {filters.colors.map((colorId) => (
+            <span
+              key={colorId}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+            >
+              <span>{colorId}</span>
+              <button
+                type="button"
+                onClick={() => removeColorFilter(colorId)}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+
+          {/* Fabrics */}
+          {filters.fabrics.map((fab) => (
+            <span
+              key={fab}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+            >
+              <span>{fab}</span>
+              <button
+                type="button"
+                onClick={() => removeFabricFilter(fab)}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+
+          {/* Light Control */}
+          {filters.lightControls.map((lc: string) => (
+            <span
+              key={lc}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+            >
+              <span>{lc}</span>
+              <button
+                type="button"
+                onClick={() => removeLightControlFilter(lc)}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+
+          {/* Room suitability */}
+          {filters.rooms.map((rm: string) => (
+            <span
+              key={rm}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+            >
+              <span>{rm}</span>
+              <button
+                type="button"
+                onClick={() => removeRoomFilter(rm)}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+
+          {/* In stock */}
+          {filters.inStockOnly && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#EAF5EC] text-emerald-800 border border-emerald-200">
+              <span>{language === 'ar' ? 'متوفر بالمخزون' : 'In Stock'}</span>
+              <button
+                type="button"
+                onClick={() => onFilterChange({ ...filters, inStockOnly: false })}
+                className="hover:text-emerald-950"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+
+          {/* On sale */}
+          {filters.onSaleOnly && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#FBF0DB] text-[#8C6421] border border-[#EDD5A6]">
+              <span>{language === 'ar' ? 'العروض' : 'On Sale'}</span>
+              <button
+                type="button"
+                onClick={() => onFilterChange({ ...filters, onSaleOnly: false })}
+                className="hover:text-black"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+
+          {/* Clear All Button */}
+          <button
+            type="button"
+            onClick={onResetFilters}
+            className="text-xs text-[#A9803C] hover:underline font-semibold ms-2"
+          >
+            {language === 'ar' ? 'مسح الكل' : 'Clear All'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
