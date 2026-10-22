@@ -181,7 +181,7 @@ export const Hero: React.FC = () => {
       nameKey: 'quickCatNew',
       image:
         'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=240&auto=format&fit=crop',
-      href: '#bestsellers',
+      href: '/new-arrivals',
       badgeKey: 'badgeNew',
     },
     {
@@ -189,7 +189,7 @@ export const Hero: React.FC = () => {
       nameKey: 'quickCatOffers',
       image:
         'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=240&auto=format&fit=crop',
-      href: '#offers',
+      href: '/offers',
       badgeKey: 'badge30Off',
     },
   ];
