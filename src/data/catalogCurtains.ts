@@ -297,7 +297,7 @@ export const CURTAIN_PRODUCTS: Product[] = [
     pattern: { en: 'Damask Floral Medallion', ar: 'نقوش دمشقية تقليدية' },
     lightControl: 'room-darkening',
     colors: [
-      { id: 'gold-cream', name: { en: 'Imperial Gold', ar: 'ذهبي إمبراطوري' }, hex: '#D4AF37' },
+      { id: 'gold-cream', name: { en: 'Imperial Gold', ar: 'ذهبي إمبراطوري' }, hex: '#D99A5A' },
       { id: 'silver-ivory', name: { en: 'Silver Pearl', ar: 'لؤلؤي فضي' }, hex: '#E6E4E0' }
     ],
     sizes: [

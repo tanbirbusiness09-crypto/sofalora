@@ -81,7 +81,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[#ECE6DD] p-3 sm:p-4 mb-6 shadow-sm">
+    <div className="bg-white rounded-xl border border-[#E9DDCE] p-3 sm:p-4 mb-6 shadow-sm">
       {/* Top Row: Count, Mobile Filter Trigger, Sort, View Mode */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         {/* Left: Total Count & Mobile Trigger */}
@@ -89,25 +89,25 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           <button
             type="button"
             onClick={onOpenMobileFilters}
-            className="lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#FAF6F0] border border-[#DCD4C7] text-xs font-semibold text-[#1C1A17] hover:bg-[#F3ECE0] transition-colors"
+            className="lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#FAF6F0] border border-[#DACDBE] text-xs font-semibold text-[#1B211D] hover:bg-[#F3ECE0] transition-colors"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#A9803C]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#8F3E24]" />
             <span>{language === 'ar' ? 'تصفية المنتجات' : 'Filters'}</span>
             {activeFiltersCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#A9803C] text-white text-[11px] flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-[#8F3E24] text-white text-[11px] flex items-center justify-center">
                 {activeFiltersCount}
               </span>
             )}
           </button>
 
-          <span className="text-xs sm:text-sm text-[#73685C]">
+          <span className="text-xs sm:text-sm text-[#6C7268]">
             {language === 'ar' ? (
               <>
-                عرض <strong className="text-[#1C1A17] font-semibold">{totalCount}</strong> منتجاً
+                عرض <strong className="text-[#1B211D] font-semibold">{totalCount}</strong> منتجاً
               </>
             ) : (
               <>
-                Showing <strong className="text-[#1C1A17] font-semibold">{totalCount}</strong> items
+                Showing <strong className="text-[#1B211D] font-semibold">{totalCount}</strong> items
               </>
             )}
           </span>
@@ -117,14 +117,14 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
         <div className="flex items-center gap-3">
           {/* Sort Dropdown */}
           <div className="flex items-center gap-2 text-xs">
-            <label htmlFor="sort-select" className="hidden sm:inline text-[#73685C]">
+            <label htmlFor="sort-select" className="hidden sm:inline text-[#6C7268]">
               {language === 'ar' ? 'الترتيب حسب:' : 'Sort by:'}
             </label>
             <select
               id="sort-select"
               value={sortOption}
               onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="bg-[#FAF7F2] border border-[#DCD4C7] text-[#1C1A17] text-xs rounded-lg px-2.5 py-2 font-medium focus:ring-[#A9803C] focus:border-[#A9803C] cursor-pointer outline-none"
+              className="bg-[#FCF9F4] border border-[#DACDBE] text-[#1B211D] text-xs rounded-lg px-2.5 py-2 font-medium focus:ring-[#8F3E24] focus:border-[#8F3E24] cursor-pointer outline-none"
             >
               <option value="featured">
                 {language === 'ar' ? 'المقترح والمميز' : 'Featured & Recommended'}
@@ -148,14 +148,14 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           </div>
 
           {/* View Mode Buttons */}
-          <div className="hidden sm:flex items-center border border-[#DCD4C7] rounded-lg overflow-hidden bg-[#FAF7F2]">
+          <div className="hidden sm:flex items-center border border-[#DACDBE] rounded-lg overflow-hidden bg-[#FCF9F4]">
             <button
               type="button"
               onClick={() => onViewModeChange('grid')}
               title={language === 'ar' ? 'عرض شبكي' : 'Grid View'}
               className={`p-1.5 transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-[#1C1A17] text-white'
+                  ? 'bg-[#1B211D] text-white'
                   : 'text-[#665D53] hover:text-black hover:bg-[#F0EAE0]'
               }`}
             >
@@ -167,7 +167,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
               title={language === 'ar' ? 'عرض قائمة' : 'List View'}
               className={`p-1.5 transition-colors ${
                 viewMode === 'list'
-                  ? 'bg-[#1C1A17] text-white'
+                  ? 'bg-[#1B211D] text-white'
                   : 'text-[#665D53] hover:text-black hover:bg-[#F0EAE0]'
               }`}
             >
@@ -179,8 +179,8 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
 
       {/* Active Filter Chips Bar */}
       {activeFiltersCount > 0 && (
-        <div className="mt-3 pt-3 border-t border-[#F2ECE3] flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs text-[#8E8377] me-1">
+        <div className="mt-3 pt-3 border-t border-[#F1E9DF] flex items-center gap-1.5 flex-wrap">
+          <span className="text-xs text-[#877C71] me-1">
             {language === 'ar' ? 'التصفيات النشطة:' : 'Active Filters:'}
           </span>
 
@@ -188,7 +188,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           {filters.categories.map((slug) => (
             <span
               key={slug}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8]"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#454D47] border border-[#E0D7C8]"
             >
               <span>{getCategoryTitle(slug)}</span>
               <button
@@ -205,7 +205,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           {filters.colors.map((colorId) => (
             <span
               key={colorId}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#454D47] border border-[#E0D7C8] capitalize"
             >
               <span>{colorId}</span>
               <button
@@ -222,7 +222,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           {filters.fabrics.map((fab) => (
             <span
               key={fab}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#454D47] border border-[#E0D7C8] capitalize"
             >
               <span>{fab}</span>
               <button
@@ -239,7 +239,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           {filters.lightControls.map((lc: string) => (
             <span
               key={lc}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#454D47] border border-[#E0D7C8] capitalize"
             >
               <span>{lc}</span>
               <button
@@ -256,7 +256,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           {filters.rooms.map((rm: string) => (
             <span
               key={rm}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#4A4237] border border-[#E0D7C8] capitalize"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-[#F4EDE2] text-[#454D47] border border-[#E0D7C8] capitalize"
             >
               <span>{rm}</span>
               <button
@@ -301,7 +301,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           <button
             type="button"
             onClick={onResetFilters}
-            className="text-xs text-[#A9803C] hover:underline font-semibold ms-2"
+            className="text-xs text-[#8F3E24] hover:underline font-semibold ms-2"
           >
             {language === 'ar' ? 'مسح الكل' : 'Clear All'}
           </button>

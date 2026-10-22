@@ -17,7 +17,7 @@ const AVAILABLE_COLORS = [
   { id: 'white', name: { en: 'White & Off-White', ar: 'أبيض وسكري' }, hex: '#FFFFFF', border: true },
   { id: 'beige', name: { en: 'Beige & Sand', ar: 'بيج ورملي' }, hex: '#E2D5C3' },
   { id: 'taupe', name: { en: 'Warm Taupe', ar: 'توب رمادي' }, hex: '#8F8275' },
-  { id: 'gold', name: { en: 'Royal Gold', ar: 'ذهبي ملكي' }, hex: '#D4AF37' },
+  { id: 'gold', name: { en: 'Royal Gold', ar: 'ذهبي ملكي' }, hex: '#D99A5A' },
   { id: 'green', name: { en: 'Saudi Emerald', ar: 'أخضر زمردي' }, hex: '#1C3B2B' },
   { id: 'blue', name: { en: 'Midnight Blue', ar: 'أزرق كحلي' }, hex: '#1B263B' },
   { id: 'grey', name: { en: 'Silver & Charcoal', ar: 'فضي وفحمي' }, hex: '#555555' },
@@ -32,12 +32,14 @@ const LIGHT_CONTROLS = [
 ];
 
 const FABRICS = [
+  { id: 'boucl', label: { en: 'Italian Bouclé', ar: 'بوكليه إيطالي' } },
   { id: 'velvet', label: { en: 'Royal Velvet', ar: 'مخمل ملكي' } },
+  { id: 'leather', label: { en: 'Natural Leather', ar: 'جلد طبيعي' } },
   { id: 'linen', label: { en: 'Natural Flax Linen', ar: 'كتان نقي طبيعي' } },
+  { id: 'cotton', label: { en: 'Brushed Cotton', ar: 'قطن مفرش' } },
   { id: 'voile', label: { en: 'Italian Organza & Voile', ar: 'فوال وشيفون إيطالي' } },
   { id: 'jacquard', label: { en: 'Woven Jacquard', ar: 'جاكار مطرز' } },
-  { id: 'blackout-weave', label: { en: 'Triple Thermal Weave', ar: 'نسيج حراري ثلاثي' } },
-  { id: 'aluminum', label: { en: 'Aircraft Aluminum', ar: 'ألمنيوم مسحوب' } }
+  { id: 'blackout-weave', label: { en: 'Triple Thermal Weave', ar: 'نسيج حراري ثلاثي' } }
 ];
 
 const ROOMS = [
@@ -49,10 +51,11 @@ const ROOMS = [
 ];
 
 const PRICE_BRACKETS = [
-  { label: { en: 'Under 300 SAR', ar: 'أقل من ٣٠٠ ر.س' }, min: 0, max: 300 },
-  { label: { en: '300 – 500 SAR', ar: '٣٠٠ – ٥٠٠ ر.س' }, min: 300, max: 500 },
-  { label: { en: '500 – 750 SAR', ar: '٥٠٠ – ٧٥٠ ر.س' }, min: 500, max: 750 },
-  { label: { en: '750+ SAR', ar: 'أكثر من ٧٥٠ ر.س' }, min: 750, max: 2000 }
+  { label: { en: 'Under 750 SAR', ar: 'أقل من ٧٥٠ ر.س' }, min: 0, max: 750 },
+  { label: { en: '750 – 1,500 SAR', ar: '٧٥٠ – ١,٥٠٠ ر.س' }, min: 750, max: 1500 },
+  { label: { en: '1,500 – 3,000 SAR', ar: '١,٥٠٠ – ٣,٠٠٠ ر.س' }, min: 1500, max: 3000 },
+  { label: { en: '3,000 – 5,000 SAR', ar: '٣,٠٠٠ – ٥,٠٠٠ ر.س' }, min: 3000, max: 5000 },
+  { label: { en: '5,000+ SAR', ar: 'أكثر من ٥,٠٠٠ ر.س' }, min: 5000, max: 25000 }
 ];
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -88,7 +91,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
     (filters.rooms.length > 0 ? 1 : 0) +
     (filters.inStockOnly ? 1 : 0) +
     (filters.onSaleOnly ? 1 : 0) +
-    (filters.priceRange[0] > 0 || filters.priceRange[1] < 1200 ? 1 : 0);
+    (filters.priceRange[0] > 0 || filters.priceRange[1] < 25000 ? 1 : 0);
 
   // Category toggle
   const handleCategoryToggle = (slug: string) => {
@@ -137,13 +140,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   return (
     <div className={`flex flex-col h-full ${isMobileDrawer ? 'p-5' : ''}`}>
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#EBE5DB]">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E8DCCE]">
         <div className="flex items-center gap-2">
-          <span className="font-serif font-bold text-[#1C1A17] text-lg">
+          <span className="font-serif font-bold text-[#1B211D] text-lg">
             {language === 'ar' ? 'تصفية المنتجات' : 'Filters'}
           </span>
           {activeFiltersCount > 0 && (
-            <span className="px-2 py-0.5 rounded-full bg-[#A9803C] text-white text-xs font-semibold">
+            <span className="px-2 py-0.5 rounded-full bg-[#8F3E24] text-white text-xs font-semibold">
               {activeFiltersCount}
             </span>
           )}
@@ -153,7 +156,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={onResetFilters}
-            className="text-xs text-[#8E8377] hover:text-[#A9803C] flex items-center gap-1 transition-colors"
+            className="text-xs text-[#877C71] hover:text-[#8F3E24] flex items-center gap-1 transition-colors"
           >
             <RotateCcw className="w-3 h-3" />
             <span>{language === 'ar' ? 'إعادة ضبط' : 'Reset All'}</span>
@@ -164,7 +167,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={onCloseMobileDrawer}
-            className="p-1.5 text-[#554D43] hover:text-black rounded-lg"
+            className="p-1.5 text-[#4F5851] hover:text-black rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
@@ -172,31 +175,31 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       </div>
 
       {/* Filter Body */}
-      <div className="flex-1 overflow-y-auto py-4 space-y-6 divide-y divide-[#F0EBE3]">
+      <div className="flex-1 overflow-y-auto py-4 space-y-6 divide-y divide-[#EDE4D9]">
         {/* Quick Toggles: In Stock & On Sale */}
         <div className="pt-2 space-y-2.5">
-          <label className="flex items-center justify-between text-xs text-[#3A342D] cursor-pointer group">
-            <span className="group-hover:text-[#A9803C] transition-colors">
+          <label className="flex items-center justify-between text-xs text-[#37403A] cursor-pointer group">
+            <span className="group-hover:text-[#8F3E24] transition-colors">
               {language === 'ar' ? 'المتوفر في المخزون فقط' : 'In Stock Only'}
             </span>
             <input
               type="checkbox"
               checked={filters.inStockOnly}
               onChange={(e) => onFilterChange({ ...filters, inStockOnly: e.target.checked })}
-              className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+              className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
             />
           </label>
 
-          <label className="flex items-center justify-between text-xs text-[#3A342D] cursor-pointer group">
-            <span className="flex items-center gap-1.5 group-hover:text-[#A9803C] transition-colors">
-              <Sparkles className="w-3 h-3 text-[#A9803C]" />
+          <label className="flex items-center justify-between text-xs text-[#37403A] cursor-pointer group">
+            <span className="flex items-center gap-1.5 group-hover:text-[#8F3E24] transition-colors">
+              <Sparkles className="w-3 h-3 text-[#8F3E24]" />
               {language === 'ar' ? 'العروض والتخفيضات فقط' : 'On Sale Items Only'}
             </span>
             <input
               type="checkbox"
               checked={filters.onSaleOnly}
               onChange={(e) => onFilterChange({ ...filters, onSaleOnly: e.target.checked })}
-              className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+              className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
             />
           </label>
         </div>
@@ -206,7 +209,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('categories')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'الأقسام الرئيسية' : 'Categories'}</span>
             {openSections.categories ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -219,14 +222,14 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 return (
                   <label
                     key={cat.id}
-                    className="flex items-center justify-between text-xs text-[#524B42] hover:text-[#1C1A17] cursor-pointer py-1"
+                    className="flex items-center justify-between text-xs text-[#524B42] hover:text-[#1B211D] cursor-pointer py-1"
                   >
                     <div className="flex items-center gap-2">
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => handleCategoryToggle(cat.slug)}
-                        className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+                        className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
                       />
                       <span>{cat.title[language]}</span>
                     </div>
@@ -243,7 +246,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('price')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'نطاق السعر (ر.س)' : 'Price Range (SAR)'}</span>
             {openSections.price ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -260,8 +263,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     onClick={() => handlePriceBracketClick(b.min, b.max)}
                     className={`px-2.5 py-1.5 text-[11px] rounded-lg border transition-all truncate ${
                       filters.priceRange[0] === b.min && filters.priceRange[1] === b.max
-                        ? 'bg-[#1C1A17] text-white border-[#1C1A17] font-semibold'
-                        : 'border-[#E2DAD0] text-[#554D43] hover:border-[#A9803C]'
+                        ? 'bg-[#1B211D] text-white border-[#1B211D] font-semibold'
+                        : 'border-[#E2DAD0] text-[#4F5851] hover:border-[#8F3E24]'
                     }`}
                   >
                     {b.label[language]}
@@ -270,15 +273,15 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
               </div>
 
               {/* Slider / Range Labels */}
-              <div className="flex items-center justify-between text-xs text-[#7A7165] pt-1">
+              <div className="flex items-center justify-between text-xs text-[#747D74] pt-1">
                 <span>{filters.priceRange[0]} SAR</span>
                 <span>{filters.priceRange[1]} SAR</span>
               </div>
               <input
                 type="range"
                 min={0}
-                max={1000}
-                step={25}
+                max={25000}
+                step={250}
                 value={filters.priceRange[1]}
                 onChange={(e) =>
                   onFilterChange({
@@ -286,7 +289,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     priceRange: [filters.priceRange[0], Number(e.target.value)]
                   })
                 }
-                className="w-full h-1.5 bg-[#E2DAD0] rounded-lg appearance-none cursor-pointer accent-[#A9803C] mt-2"
+                className="w-full h-1.5 bg-[#E2DAD0] rounded-lg appearance-none cursor-pointer accent-[#8F3E24] mt-2"
               />
             </div>
           )}
@@ -297,7 +300,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('lightControl')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'درجة حجب الضوء' : 'Light Control'}</span>
             {openSections.lightControl ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -310,13 +313,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 return (
                   <label
                     key={lc.id}
-                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1C1A17] cursor-pointer py-1"
+                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1B211D] cursor-pointer py-1"
                   >
                     <input
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleLightControlToggle(lc.id)}
-                      className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
                     />
                     <span>{lc.label[language]}</span>
                   </label>
@@ -331,7 +334,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('colors')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'اللون المفضل' : 'Color Palette'}</span>
             {openSections.colors ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -349,8 +352,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     title={col.name[language]}
                     className={`flex flex-col items-center gap-1 p-2 rounded-lg border transition-all ${
                       isSelected
-                        ? 'border-[#A9803C] bg-[#FAF6F0] shadow-sm'
-                        : 'border-[#EAE3D8] hover:border-[#C4B8A6]'
+                        ? 'border-[#8F3E24] bg-[#FAF6F0] shadow-sm'
+                        : 'border-[#E7DACB] hover:border-[#C4B8A6]'
                     }`}
                   >
                     <div
@@ -378,7 +381,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('fabrics')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'نوع القماش والخامة' : 'Fabric Type'}</span>
             {openSections.fabrics ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -391,13 +394,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 return (
                   <label
                     key={fab.id}
-                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1C1A17] cursor-pointer py-1"
+                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1B211D] cursor-pointer py-1"
                   >
                     <input
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleFabricToggle(fab.id)}
-                      className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
                     />
                     <span>{fab.label[language]}</span>
                   </label>
@@ -412,7 +415,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={() => toggleSection('rooms')}
-            className="w-full flex items-center justify-between text-sm font-bold text-[#1C1A17] mb-3"
+            className="w-full flex items-center justify-between text-sm font-bold text-[#1B211D] mb-3"
           >
             <span>{language === 'ar' ? 'الغرفة المناسبة' : 'Room Suitability'}</span>
             {openSections.rooms ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -425,13 +428,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 return (
                   <label
                     key={rm.id}
-                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1C1A17] cursor-pointer py-1"
+                    className="flex items-center gap-2 text-xs text-[#524B42] hover:text-[#1B211D] cursor-pointer py-1"
                   >
                     <input
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleRoomToggle(rm.id)}
-                      className="w-4 h-4 rounded text-[#A9803C] focus:ring-[#A9803C] accent-[#A9803C] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#8F3E24] focus:ring-[#8F3E24] accent-[#8F3E24] cursor-pointer"
                     />
                     <span>{rm.label[language]}</span>
                   </label>
@@ -444,11 +447,11 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
       {/* Sticky Mobile Apply Button */}
       {isMobileDrawer && (
-        <div className="pt-4 mt-auto border-t border-[#EBE5DB]">
+        <div className="pt-4 mt-auto border-t border-[#E8DCCE]">
           <button
             type="button"
             onClick={onCloseMobileDrawer}
-            className="w-full py-3.5 bg-[#1C1A17] hover:bg-[#A9803C] text-white font-semibold text-sm rounded-xl transition-colors shadow-md"
+            className="w-full py-3.5 bg-[#1B211D] hover:bg-[#8F3E24] text-white font-semibold text-sm rounded-xl transition-colors shadow-md"
           >
             {language === 'ar'
               ? `عرض النتائج (${totalResultsCount})`

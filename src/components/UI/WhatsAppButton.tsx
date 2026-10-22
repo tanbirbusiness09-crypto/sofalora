@@ -9,18 +9,18 @@ export const WhatsAppButton: React.FC = () => {
   const phoneNumber = '+966500000000';
   const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
     language === 'ar'
-      ? 'السلام عليكم، أود حجز موعد استشارة منزلية لمعاينة أقمشة الستائر وتفصيلها.'
-      : 'Hello Mohammad Curtains, I would like to inquire about bespoke curtain tailoring and in-home consultation.'
+      ? 'السلام عليكم، أود حجز استشارة منزلية لمعاينة أقمشة الكنب والستائر.'
+      : 'Hello Sofalora, I would like to book an in-home consultation for sofas and curtains.'
   )}`;
 
   return (
     <div className="fixed bottom-20 sm:bottom-6 end-5 sm:end-6 z-40 flex items-center gap-2">
       {/* Concierge Tooltip */}
       {showTooltip && (
-        <div className="hidden md:flex items-center gap-2 bg-[#1C1A17] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-[#A9803C]/30 animate-in fade-in slide-in-from-end-2 duration-300">
+        <div className="hidden md:flex items-center gap-2 bg-[#1B211D] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-[#8F3E24]/30 animate-in fade-in slide-in-from-end-2 duration-300">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
           <span className="font-medium text-stone-200">
-            {language === 'ar' ? 'استشارة ستائر فورية عبر واتساب' : 'Curtain Concierge on WhatsApp'}
+            {language === 'ar' ? 'مستشار سوفالورا عبر واتساب' : 'Sofalora Concierge on WhatsApp'}
           </span>
           <button
             type="button"

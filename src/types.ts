@@ -146,7 +146,7 @@ export interface DeliveryMethodOption {
 export type PaymentMethodType = 'card' | 'apple_pay' | 'cod';
 
 export interface Order {
-  id: string; // e.g. MC-20260918-1042
+  id: string; // e.g. SL-20260918-1042
   createdAt: string; // ISO date string
   estimatedDeliveryDate: string;
   status: OrderStatus;

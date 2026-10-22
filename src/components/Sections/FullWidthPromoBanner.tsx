@@ -41,7 +41,7 @@ export const FullWidthPromoBanner: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#C49E5D]/25 backdrop-blur-xs border border-[#C49E5D]/40 text-[#EAD8B8] text-[10px] sm:text-xs font-semibold tracking-widest uppercase"
+              className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#B85C3A]/25 backdrop-blur-xs border border-[#B85C3A]/40 text-[#F1D5B2] text-[10px] sm:text-xs font-semibold tracking-widest uppercase"
             >
               <span>{PROMOTIONAL_BANNER.badge[language]}</span>
             </motion.div>
@@ -78,13 +78,13 @@ export const FullWidthPromoBanner: React.FC = () => {
             >
               <button
                 onClick={() => scrollToSection('window-decor')}
-                className="px-6 py-3 rounded-full bg-white hover:bg-[#F2ECE3] text-[#1C1A17] text-xs sm:text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
+                className="px-6 py-3 rounded-full bg-white hover:bg-[#F1E9DF] text-[#1B211D] text-xs sm:text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
               >
                 <span>{PROMOTIONAL_BANNER.cta[language]}</span>
                 {isRTL ? (
-                  <ArrowLeft className="w-4 h-4 text-[#A9803C] transition-transform duration-300 group-hover:-translate-x-1" />
+                  <ArrowLeft className="w-4 h-4 text-[#8F3E24] transition-transform duration-300 group-hover:-translate-x-1" />
                 ) : (
-                  <ArrowRight className="w-4 h-4 text-[#A9803C] transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 text-[#8F3E24] transition-transform duration-300 group-hover:translate-x-1" />
                 )}
               </button>
 
@@ -99,15 +99,15 @@ export const FullWidthPromoBanner: React.FC = () => {
             {/* Micro Feature Highlights Strip */}
             <div className="mt-8 sm:mt-10 pt-6 border-t border-white/15 grid grid-cols-3 gap-3 sm:gap-6 text-white/90">
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <Ruler className="w-4 h-4 text-[#C49E5D] shrink-0" />
+                <Ruler className="w-4 h-4 text-[#B85C3A] shrink-0" />
                 <span className="line-clamp-1">{language === 'ar' ? 'قياس ليزري مجاني' : 'Laser Measurement'}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <Truck className="w-4 h-4 text-[#C49E5D] shrink-0" />
+                <Truck className="w-4 h-4 text-[#B85C3A] shrink-0" />
                 <span className="line-clamp-1">{language === 'ar' ? 'توصيل داخل الرياض' : 'Free Delivery in Riyadh'}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <ShieldCheck className="w-4 h-4 text-[#C49E5D] shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#B85C3A] shrink-0" />
                 <span className="line-clamp-1">{language === 'ar' ? 'ضمان ١٠ سنوات' : '10-Year Guarantee'}</span>
               </div>
             </div>

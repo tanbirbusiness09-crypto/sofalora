@@ -71,7 +71,7 @@ export const HomePage: React.FC = () => {
         <CustomCurtainService />
       </ScrollReveal>
 
-      {/* 10. Why Choose Mohammad Curtains (6 Guarantees & Pillars) */}
+      {/* 10. Why Choose Sofalora (6 Guarantees & Pillars) */}
       <ScrollReveal direction="bottom" duration={600} distance={20}>
         <WhyMohammadCurtains />
       </ScrollReveal>

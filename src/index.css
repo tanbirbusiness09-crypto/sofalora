@@ -1,20 +1,34 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+
+  --color-sofalora-cream: #FBF8F3;
+  --color-sofalora-sand: #F4EDE4;
+  --color-sofalora-line: #E8DCCD;
+  --color-sofalora-clay: #B85C3A;
+  --color-sofalora-clay-deep: #8F3E24;
+  --color-sofalora-amber: #E6A56C;
+  --color-sofalora-forest: #173B32;
+  --color-sofalora-ink: #1B211D;
+}
+
 @layer base {
   :root {
-    --font-en-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-en-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-ar-sans: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
-    --color-sand-50: #FAF8F5;
-    --color-sand-100: #F4EFEA;
-    --color-sand-200: #EBE3D8;
-    --color-sand-300: #D8CEBF;
-    --color-gold-400: #D8BD88;
-    --color-gold-500: #C49E5D;
-    --color-gold-600: #A9803C;
-    --color-charcoal-900: #191715;
-    --color-charcoal-800: #262320;
-    --color-charcoal-700: #3D3934;
+    --font-en-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-en-serif: 'Fraunces', Georgia, serif;
+    --font-ar-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    --color-sand-50: #FBF8F3;
+    --color-sand-100: #F4EDE4;
+    --color-sand-200: #E8DCCD;
+    --color-sand-300: #D8C8B6;
+    --color-gold-400: #E6B183;
+    --color-gold-500: #B85C3A;
+    --color-gold-600: #8F3E24;
+    --color-charcoal-900: #161B18;
+    --color-charcoal-800: #232A25;
+    --color-charcoal-700: #39413B;
   }
 
   html {
@@ -33,12 +47,120 @@
   /* Serif display class for luxury editorial headings */
   .font-serif-luxury {
     font-family: var(--font-en-serif);
+    font-optical-sizing: auto;
   }
 
-  html[dir="rtl"] .font-serif-luxury {
+  html[dir="rtl"] .font-serif-luxury,
+  html[dir="rtl"] .font-serif {
     font-family: var(--font-ar-sans);
     font-weight: 700;
   }
+
+  body {
+    background-color: #FBF8F3;
+    color: #1B211D;
+  }
+
+  ::selection {
+    background: rgba(184, 92, 58, 0.22);
+    color: #1B211D;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Sofalora design language
+------------------------------------------------------------------ */
+.brand-gradient {
+  background-image: linear-gradient(120deg, #8F3E24 0%, #B85C3A 45%, #E6A56C 100%);
+}
+
+.brand-gradient-dark {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(184, 92, 58, 0.35) 0%, transparent 42%),
+    radial-gradient(circle at 86% 82%, rgba(230, 165, 108, 0.18) 0%, transparent 48%),
+    linear-gradient(135deg, #101713 0%, #173B32 58%, #232A25 100%);
+}
+
+.brand-gradient-soft {
+  background-image: linear-gradient(135deg, #FBF8F3 0%, #F4EDE4 48%, #EDDDCA 100%);
+}
+
+.text-gradient-brand {
+  background-image: linear-gradient(100deg, #8F3E24 0%, #B85C3A 48%, #D98B4F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-image: linear-gradient(120deg, #8F3E24 0%, #B85C3A 52%, #D98B4F 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 26px -12px rgba(143, 62, 36, 0.7);
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.btn-brand:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px -14px rgba(143, 62, 36, 0.8);
+}
+
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+.btn-brand-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(143, 62, 36, 0.35);
+  color: #8F3E24;
+  font-weight: 700;
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+
+.btn-brand-outline:hover {
+  background-color: rgba(184, 92, 58, 0.08);
+  border-color: rgba(143, 62, 36, 0.6);
+}
+
+.eyebrow-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8F3E24;
+}
+
+.card-lift {
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 320ms ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -28px rgba(27, 33, 29, 0.35);
+}
+
+.soft-shadow {
+  box-shadow: 0 18px 40px -30px rgba(27, 33, 29, 0.45);
+}
+
+.glass-brand {
+  background: rgba(251, 248, 243, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 /* Custom scrollbar */
@@ -47,14 +169,14 @@
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4EFEA;
+  background: #F4EDE4;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4C9B8;
+  background: #D3C3B1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #BFA98F;
+  background: #B85C3A;
 }
 
 /* Hide scrollbar for category bars and carousels */
@@ -75,4 +197,3 @@
     scroll-behavior: auto !important;
   }
 }
-

@@ -14,7 +14,7 @@ const INITIAL_FILTERS: FilterState = {
   categories: [],
   subcategories: [],
   collections: [],
-  priceRange: [0, 1200],
+  priceRange: [0, 25000],
   colors: [],
   fabrics: [],
   patterns: [],
@@ -139,13 +139,13 @@ export const ShopPage: React.FC = () => {
   const Arrow = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pb-16">
+    <div className="bg-[#FCF9F4] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
           items={[
             {
-              label: { en: 'All Curtains & Blinds', ar: 'كافة الستائر والمظلات' }
+              label: { en: 'All Sofas & Curtains', ar: 'كافة الكنب والستائر' }
             }
           ]}
         />
@@ -153,14 +153,14 @@ export const ShopPage: React.FC = () => {
         {/* Hero Banner */}
         <CategoryHero
           customTitle={{
-            en: 'The Complete Mohammad Curtains Collection',
-            ar: 'المجموعة الكاملة لستائر محمد'
+            en: 'The Complete Sofalora Collection',
+            ar: 'المجموعة الكاملة لسوفالورا'
           }}
           customSubtitle={{
-            en: 'Discover handcrafted blackout drapes, flowing sheers, modern motorized roller blinds, and architectural hardware designed for Saudi villas and royal majlis spaces.',
-            ar: 'اكتشف أرقى أقمشة الستائر المعتمة، الشيفونات الانسيابية، المظلات الرول الذكية والسكك المخفية المصممة خصيصاً للفلل والمجالس السعودية الفاخرة.'
+            en: 'Discover sculpted sofas, majlis seating, modular sectionals, and tailored blackout and sheer curtains designed for Saudi villas and contemporary homes.',
+            ar: 'اكتشف الكنب المنحوت وجلسات المجالس والكنب المقسم والستائر المعتمة والشفافة المفصلة خصيصاً للفلل والمنازل السعودية العصرية.'
           }}
-          customImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop"
+          customImage="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1600&auto=format&fit=crop"
           itemCount={PRODUCTS.length}
         />
 
@@ -181,8 +181,8 @@ export const ShopPage: React.FC = () => {
                   }}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
                     isSelected
-                      ? 'bg-[#1C1A17] text-white border-[#1C1A17] shadow-sm'
-                      : 'bg-white text-[#4A433A] border-[#E5DEC7] hover:border-[#A9803C]'
+                      ? 'bg-[#1B211D] text-white border-[#1B211D] shadow-sm'
+                      : 'bg-white text-[#4A433A] border-[#E5DEC7] hover:border-[#8F3E24]'
                   }`}
                 >
                   <span
@@ -200,7 +200,7 @@ export const ShopPage: React.FC = () => {
         {/* Main 2-Column PLP Layout: Filters Sidebar + Product Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Desktop Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#ECE6DD] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}
@@ -234,7 +234,7 @@ export const ShopPage: React.FC = () => {
             />
 
             {/* Riyadh Consultation Banner */}
-            <div className="mt-12 bg-gradient-to-r from-[#1C1A17] to-[#2E2822] rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
+            <div className="mt-12 bg-gradient-to-r from-[#1B211D] to-[#2E2822] rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
               <div className="space-y-2 text-center sm:text-start">
                 <span className="text-xs uppercase tracking-widest text-[#C59B4D] font-semibold">
                   {language === 'ar' ? 'خدمة مخصصة لمدينة الرياض' : 'Riyadh Bespoke Service'}
@@ -246,7 +246,7 @@ export const ShopPage: React.FC = () => {
                 </h3>
                 <p className="text-xs sm:text-sm text-[#D1C7BA] max-w-xl">
                   {language === 'ar'
-                    ? 'يزوركم خبير ستائر محمد مع عينات الأقمشة الطبيعية والمخمل والشيفونات مجاناً داخل مدينة الرياض.'
+                    ? 'يزوركم خبير سوفالورا مع عينات الأقمشة الطبيعية والمخمل والشيفونات مجاناً داخل مدينة الرياض.'
                     : 'Our certified master draper visits your location with physical textile catalogs and precision laser measurements at zero cost.'}
                 </p>
               </div>
@@ -254,7 +254,7 @@ export const ShopPage: React.FC = () => {
               <div className="flex items-center gap-3 shrink-0">
                 <a
                   href="tel:+966500000000"
-                  className="px-5 py-3 rounded-xl bg-[#A9803C] hover:bg-[#B88E47] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
+                  className="px-5 py-3 rounded-xl bg-[#8F3E24] hover:bg-[#B88E47] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>{language === 'ar' ? 'احجز زيارة مجانية' : 'Book Free Visit'}</span>

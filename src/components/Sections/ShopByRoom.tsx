@@ -8,26 +8,26 @@ export const ShopByRoom: React.FC = () => {
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <section id="shop-by-room" className="py-16 sm:py-24 bg-[#FAF8F5]">
+    <section id="shop-by-room" className="py-16 sm:py-24 bg-[#FBF8F3]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-12 gap-4">
           <div>
-            <span className="text-xs font-bold text-[#8C6B32] uppercase tracking-widest block mb-2">
+            <span className="text-xs font-bold text-[#7A351F] uppercase tracking-widest block mb-2">
               {language === 'ar' ? 'حلول مخصصة لكل فراغ معماري' : 'Tailored For Every Living Space'}
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#191715] font-serif-luxury tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
               {t('roomTitle')}
             </h2>
-            <p className="text-sm sm:text-base text-[#6E645A] mt-2">
+            <p className="text-sm sm:text-base text-[#687168] mt-2">
               {t('roomSubtitle')}
             </p>
           </div>
 
           <a
             href="#custom-service"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#8C6B32] hover:text-[#5E441B] transition-colors group"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#7A351F] hover:text-[#5E441B] transition-colors group"
           >
             <span>{t('customEyebrow')}</span>
             <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
@@ -40,7 +40,7 @@ export const ShopByRoom: React.FC = () => {
             <a
               key={room.id}
               href="#bestsellers"
-              className="group relative rounded-3xl overflow-hidden bg-white border border-[#E7DFD5] shadow-2xs hover:shadow-xl transition-all duration-500 flex flex-col aspect-4/3 sm:aspect-16/11"
+              className="group relative rounded-3xl overflow-hidden bg-white border border-[#E4D6C7] shadow-2xs hover:shadow-xl transition-all duration-500 flex flex-col aspect-4/3 sm:aspect-16/11"
             >
               {/* Background Room Photo */}
               <img
@@ -56,7 +56,7 @@ export const ShopByRoom: React.FC = () => {
               {/* Top Tag: Recommended Treatment */}
               <div className="absolute top-4 start-4 end-4 flex items-center justify-between">
                 <span className="inline-flex items-center gap-1 bg-black/50 backdrop-blur-md border border-white/20 text-white/90 text-[11px] font-medium px-3 py-1 rounded-full">
-                  <Sparkles className="w-3 h-3 text-[#C49E5D]" />
+                  <Sparkles className="w-3 h-3 text-[#B85C3A]" />
                   <span>{room.recommendedType[language]}</span>
                 </span>
               </div>
@@ -64,7 +64,7 @@ export const ShopByRoom: React.FC = () => {
               {/* Bottom Room Meta */}
               <div className="absolute bottom-0 inset-x-0 p-5 text-white flex items-end justify-between gap-3">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold font-serif-luxury tracking-tight leading-snug text-white group-hover:text-[#D8BD88] transition-colors">
+                  <h3 className="text-lg sm:text-xl font-bold font-serif-luxury tracking-tight leading-snug text-white group-hover:text-[#E6B183] transition-colors">
                     {room.title[language]}
                   </h3>
                   <p className="text-xs text-white/75 mt-1 line-clamp-1">
@@ -72,7 +72,7 @@ export const ShopByRoom: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="w-9 h-9 rounded-full bg-white/20 group-hover:bg-[#C49E5D] text-white flex items-center justify-center transition-all duration-300 shrink-0">
+                <div className="w-9 h-9 rounded-full bg-white/20 group-hover:bg-[#B85C3A] text-white flex items-center justify-center transition-all duration-300 shrink-0">
                   <ArrowIcon className="w-4 h-4" />
                 </div>
               </div>

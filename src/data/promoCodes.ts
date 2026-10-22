@@ -5,24 +5,25 @@ export const PROMO_CODES: PromoCode[] = [
     code: 'WELCOME10',
     discountPercent: 10,
     description: {
-      en: '10% Welcome Discount on your first luxury curtain order',
-      ar: 'خصم ترحيبي ١٠٪ على أول طلب ستائر فاخرة'
+      en: '10% welcome discount on your first sofa or curtain order',
+      ar: 'خصم ترحيبي ١٠٪ على أول طلب كنب أو ستائر'
     }
   },
   {
-    code: 'CURTAIN15',
-    discountPercent: 15,
+    code: 'SOFALORA20',
+    discountPercent: 20,
     description: {
-      en: '15% Seasonal Curtains Promotion for Riyadh residences',
-      ar: 'خصم موسمي ١٥٪ لستائر المنازل والفلل بالرياض'
-    }
+      en: '20% seasonal sofas & curtains promotion for Riyadh homes',
+      ar: 'خصم موسمي ٢٠٪ على الكنب والستائر لمنازل الرياض'
+    },
+    minOrder: 1500
   },
   {
     code: 'HOME20',
     discountPercent: 20,
     description: {
-      en: '20% Home Luxury Makeover discount for orders over SAR 1,000',
-      ar: 'خصم ٢٠٪ لتجديد ستائر المنزل الفاخر للطلبات فوق ١٠٠٠ ر.س'
+      en: '20% home makeover discount for orders over SAR 1,000',
+      ar: 'خصم ٢٠٪ لتجديد المنزل للطلبات فوق ١٠٠٠ ر.س'
     },
     minOrder: 1000
   },
@@ -57,7 +58,7 @@ export const VALID_DELIVERY_METHODS: DeliveryMethodOption[] = [
   {
     id: 'pickup',
     name: { en: 'Showroom Pickup (King Fahd Rd)', ar: 'استلام من المعرض الرئيسي (طريق الملك فهد)' },
-    description: { en: 'Ready in 24 hours at Mohammad Curtains Flagship', ar: 'جاهز للاستلام خلال ٢٤ ساعة من معرضنا بالرياض' },
+    description: { en: 'Ready in 24 hours at Sofalora Flagship', ar: 'جاهز للاستلام خلال ٢٤ ساعة من معرضنا بالرياض' },
     price: 0,
     freeThreshold: 0,
     estimatedTime: { en: 'Same Day', ar: 'نفس اليوم' }

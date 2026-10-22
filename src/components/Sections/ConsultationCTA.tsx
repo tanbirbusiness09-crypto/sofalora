@@ -6,18 +6,18 @@ export const ConsultationCTA: React.FC = () => {
   const { language, t, openConsultation } = useShop();
 
   return (
-    <section id="consultation" className="py-14 sm:py-20 bg-[#FAF8F5]">
+    <section id="consultation" className="py-14 sm:py-20 bg-[#FBF8F3]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="relative rounded-3xl bg-gradient-to-b from-[#26221E] to-[#191715] text-white p-8 sm:p-12 lg:p-16 text-center border border-[#3E3830] shadow-2xl overflow-hidden">
+        <div className="relative rounded-3xl bg-gradient-to-b from-[#252C27] to-[#161B18] text-white p-8 sm:p-12 lg:p-16 text-center border border-[#3E3830] shadow-2xl overflow-hidden">
           
           {/* Ambient Gold Glows */}
-          <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] bg-[#C49E5D]/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] bg-[#B85C3A]/10 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl mx-auto space-y-5">
             
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#352F28] border border-[#4A4238] text-[#D8BD88] text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-[#C49E5D]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#352F28] border border-[#4A4238] text-[#E6B183] text-xs font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-[#B85C3A]" />
               <span>{t('consultationEyebrow')}</span>
             </div>
 
@@ -34,9 +34,9 @@ export const ConsultationCTA: React.FC = () => {
               {/* Primary: Book Consultation */}
               <button
                 onClick={openConsultation}
-                className="inline-flex items-center gap-2 bg-[#C49E5D] hover:bg-[#D8BD88] text-[#191715] px-7 py-3.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-[#B85C3A] hover:bg-[#E6B183] text-[#161B18] px-7 py-3.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <Calendar className="w-4 h-4 text-[#191715]" />
+                <Calendar className="w-4 h-4 text-[#161B18]" />
                 <span>{t('bookConsultation')}</span>
               </button>
 
@@ -56,7 +56,7 @@ export const ConsultationCTA: React.FC = () => {
                 href="tel:+966114829900"
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/15 px-6 py-3.5 rounded-full text-sm font-semibold transition-all duration-300"
               >
-                <Phone className="w-4 h-4 text-[#C49E5D]" />
+                <Phone className="w-4 h-4 text-[#B85C3A]" />
                 <span>{t('talkToExpert')}</span>
               </a>
 

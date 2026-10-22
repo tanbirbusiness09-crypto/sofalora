@@ -104,12 +104,12 @@ export interface ShopContextType {
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
 
-const STORAGE_KEY_LANG = 'mohammad_curtains_lang';
-const STORAGE_KEY_CART = 'mohammad_curtains_cart';
-const STORAGE_KEY_WISHLIST = 'mohammad_curtains_wishlist';
-const STORAGE_KEY_ORDERS = 'mohammad_curtains_orders';
-const STORAGE_KEY_RECENT = 'mohammad_curtains_recent';
-const STORAGE_KEY_PROMO = 'mohammad_curtains_promo';
+const STORAGE_KEY_LANG = 'sofalora_lang';
+const STORAGE_KEY_CART = 'sofalora_cart';
+const STORAGE_KEY_WISHLIST = 'sofalora_wishlist';
+const STORAGE_KEY_ORDERS = 'sofalora_orders';
+const STORAGE_KEY_RECENT = 'sofalora_recent';
+const STORAGE_KEY_PROMO = 'sofalora_promo';
 
 export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Initialize language from localStorage or default to 'en'
@@ -468,7 +468,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const now = new Date();
     const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const newId = `MC-${dateStr}-${randomSuffix}`;
+    const newId = `SL-${dateStr}-${randomSuffix}`;
     const estDate = new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString();
 
     const orderDeliveryMethod = typeof orderInput.deliveryMethod === 'object'

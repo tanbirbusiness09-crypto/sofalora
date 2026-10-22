@@ -35,7 +35,7 @@ export const MORE_PRODUCTS: Product[] = [
     lightControl: 'sheer',
     colors: [
       { id: 'ivory-sheer', name: { en: 'Warm Ivory', ar: 'عاجي دافئ' }, hex: '#F5EFE6' },
-      { id: 'pearl-sheer', name: { en: 'Pearl White', ar: 'أبيض لؤلؤي' }, hex: '#FAF8F5' }
+      { id: 'pearl-sheer', name: { en: 'Pearl White', ar: 'أبيض لؤلؤي' }, hex: '#FBF8F3' }
     ],
     sizes: [
       { id: 's1', label: { en: 'Standard Window', ar: 'نافذة قياسية' }, dimensions: '150cm × 260cm', priceModifier: 0 },

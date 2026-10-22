@@ -13,7 +13,7 @@ const INITIAL_FILTERS: FilterState = {
   categories: [],
   subcategories: [],
   collections: [],
-  priceRange: [0, 1200],
+  priceRange: [0, 25000],
   colors: [],
   fabrics: [],
   patterns: [],
@@ -24,14 +24,14 @@ const INITIAL_FILTERS: FilterState = {
 };
 
 const SUGGESTED_SEARCHES = [
-  { en: 'Blackout', ar: 'بلاك أوت' },
-  { en: 'Velvet', ar: 'مخمل' },
-  { en: 'Wave Curtain', ar: 'ستائر ويف' },
-  { en: 'Italian Sheer', ar: 'شيفون إيطالي' },
-  { en: 'Motorized', ar: 'محرك ذكي' },
-  { en: 'Linen', ar: 'كتان' },
+  { en: 'Sofa', ar: 'كنب' },
+  { en: 'Sectional', ar: 'كنب مقسم' },
   { en: 'Majlis', ar: 'مجلس' },
-  { en: 'Track', ar: 'مجرى مخفي' }
+  { en: 'Bouclé', ar: 'بوكليه' },
+  { en: 'Armchair', ar: 'كرسي فاخر' },
+  { en: 'Blackout', ar: 'ستائر معتمة' },
+  { en: 'Sheer', ar: 'ستائر شفافة' },
+  { en: 'Linen', ar: 'كتان' }
 ];
 
 export const SearchResultsPage: React.FC = () => {
@@ -191,7 +191,7 @@ export const SearchResultsPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pb-16">
+    <div className="bg-[#FCF9F4] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
@@ -203,12 +203,12 @@ export const SearchResultsPage: React.FC = () => {
         />
 
         {/* Search Header Banner */}
-        <div className="bg-white rounded-2xl border border-[#ECE6DD] p-6 sm:p-8 mb-8 shadow-sm">
+        <div className="bg-white rounded-2xl border border-[#E9DDCE] p-6 sm:p-8 mb-8 shadow-sm">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1C1A17] mb-2">
-              {language === 'ar' ? 'البحث في كتالوج ستائر محمد' : 'Search Mohammad Curtains'}
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B211D] mb-2">
+              {language === 'ar' ? 'البحث في كتالوج سوفالورا' : 'Search Sofalora'}
             </h1>
-            <p className="text-xs sm:text-sm text-[#73685C] mb-5">
+            <p className="text-xs sm:text-sm text-[#6C7268] mb-5">
               {language === 'ar'
                 ? 'ابحث بالاسم أو الخامة (مخمل، كتان، شيفون) أو نوع العزل أو السكك الذكية'
                 : 'Search by drapery name, fabric type, light filtration, or smart motorized systems.'}
@@ -222,24 +222,24 @@ export const SearchResultsPage: React.FC = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={
                   language === 'ar'
-                    ? 'مثال: ستائر بلاك أوت، مخمل ملكي، مجرى ويف، ستارة رول...'
-                    : 'e.g. Royal blackout, velvet, wave track, roller blinds...'
+                    ? 'مثال: كنبة مقسمة، مجلس، كرسي بوكليه، ستائر معتمة...'
+                    : 'e.g. sectional sofa, majlis, bouclé chair, blackout curtains...'
                 }
-                className="w-full py-3.5 ps-11 pe-24 bg-[#FAF7F2] border border-[#DCD4C7] rounded-xl text-sm text-[#1C1A17] placeholder-[#9E9385] focus:outline-none focus:border-[#A9803C] focus:bg-white shadow-inner transition-all"
+                className="w-full py-3.5 ps-11 pe-24 bg-[#FCF9F4] border border-[#DACDBE] rounded-xl text-sm text-[#1B211D] placeholder-[#9E9385] focus:outline-none focus:border-[#8F3E24] focus:bg-white shadow-inner transition-all"
               />
-              <Search className="w-5 h-5 text-[#8E8377] absolute start-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-5 h-5 text-[#877C71] absolute start-3.5 top-1/2 -translate-y-1/2" />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute end-20 top-1/2 -translate-y-1/2 text-[#8E8377] hover:text-black p-1"
+                  className="absolute end-20 top-1/2 -translate-y-1/2 text-[#877C71] hover:text-black p-1"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
               <button
                 type="submit"
-                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#1C1A17] hover:bg-[#A9803C] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
+                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#1B211D] hover:bg-[#8F3E24] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
               >
                 {language === 'ar' ? 'بحث' : 'Search'}
               </button>
@@ -247,7 +247,7 @@ export const SearchResultsPage: React.FC = () => {
 
             {/* Popular Suggested Search Tags */}
             <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-[#827568]">
-              <span className="me-1 font-medium text-[#4A4237]">
+              <span className="me-1 font-medium text-[#454D47]">
                 {language === 'ar' ? 'كلمات شائعة:' : 'Popular:'}
               </span>
               {SUGGESTED_SEARCHES.map((item, idx) => (
@@ -255,7 +255,7 @@ export const SearchResultsPage: React.FC = () => {
                   key={idx}
                   type="button"
                   onClick={() => handleSuggestedClick(item[language])}
-                  className="px-2.5 py-1 rounded-full bg-[#FAF6F0] hover:bg-[#A9803C] hover:text-white text-[#554D43] transition-colors border border-[#ECE4D8]"
+                  className="px-2.5 py-1 rounded-full bg-[#FAF6F0] hover:bg-[#8F3E24] hover:text-white text-[#4F5851] transition-colors border border-[#ECE4D8]"
                 >
                   {item[language]}
                 </button>
@@ -266,17 +266,17 @@ export const SearchResultsPage: React.FC = () => {
 
         {/* Query Result Summary */}
         {activeQuery && (
-          <div className="mb-6 flex items-center justify-between flex-wrap gap-2 text-sm text-[#554D43]">
+          <div className="mb-6 flex items-center justify-between flex-wrap gap-2 text-sm text-[#4F5851]">
             <div>
               {language === 'ar' ? (
                 <>
-                  نتائج البحث عن: <strong className="text-[#1C1A17]">"{activeQuery}"</strong> (
-                  <span className="text-[#A9803C] font-semibold">{filteredProducts.length}</span> نتيجة)
+                  نتائج البحث عن: <strong className="text-[#1B211D]">"{activeQuery}"</strong> (
+                  <span className="text-[#8F3E24] font-semibold">{filteredProducts.length}</span> نتيجة)
                 </>
               ) : (
                 <>
-                  Search results for: <strong className="text-[#1C1A17]">"{activeQuery}"</strong> (
-                  <span className="text-[#A9803C] font-semibold">{filteredProducts.length}</span> items)
+                  Search results for: <strong className="text-[#1B211D]">"{activeQuery}"</strong> (
+                  <span className="text-[#8F3E24] font-semibold">{filteredProducts.length}</span> items)
                 </>
               )}
             </div>
@@ -288,7 +288,7 @@ export const SearchResultsPage: React.FC = () => {
                 setActiveQuery('');
                 navigate('/search', { scroll: false });
               }}
-              className="text-xs text-[#A9803C] hover:underline flex items-center gap-1 font-medium"
+              className="text-xs text-[#8F3E24] hover:underline flex items-center gap-1 font-medium"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'ar' ? 'عرض كافة المنتجات' : 'View all products'}</span>
@@ -299,7 +299,7 @@ export const SearchResultsPage: React.FC = () => {
         {/* 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#ECE6DD] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}

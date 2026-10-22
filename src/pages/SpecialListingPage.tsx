@@ -46,28 +46,28 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
         return {
           title: { en: 'New Arrivals Collection', ar: 'وصل حديثاً — تشكيلة الموسم الجديد' },
           subtitle: {
-            en: 'Discover our latest contemporary textures, minimalist wave profiles, and cutting-edge motorized blind architectures.',
-            ar: 'استكشف أحدث تصميمات الأقمشة الفاخرة، أنظمة الويف الانسيابية، ومظلات التحكم الذكي التي وصلت حديثاً لمعارضنا.'
+            en: 'Discover our latest sculpted sofas, modular seating, and freshly tailored curtain fabrics.',
+            ar: 'استكشف أحدث تصاميم الكنب المنحوت والجلسات المقسمة وأقمشة الستائر الجديدة في معارضنا.'
           },
-          image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1600&auto=format&fit=crop',
           breadcrumb: { en: 'New Arrivals', ar: 'وصل حديثاً' }
         };
       case 'best-sellers':
         return {
           title: { en: 'Best Sellers in Riyadh', ar: 'الأكثر مبيعاً وتفضيلاً في الرياض' },
           subtitle: {
-            en: 'The preferred curtain and blind choices chosen by luxury homeowners, interior designers, and prestigious Riyadh villas.',
-            ar: 'الخيارات الأكثر طلباً واعتماداً في الفلل والقصور والمجالس السعودية، لجودتها الاستثنائية وعزلها الفائق.'
+            en: 'The sofa and curtain pieces most requested by luxury homeowners, interior designers, and prestigious Riyadh villas.',
+            ar: 'الكنب والستائر الأكثر طلباً واعتماداً في الفلل والقصور والمجالس السعودية.'
           },
-          image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1600&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
           breadcrumb: { en: 'Best Sellers', ar: 'الأكثر مبيعاً' }
         };
       case 'offers':
         return {
           title: { en: 'Special Offers & Seasonal Sales', ar: 'عروض حصرية وتخفيضات موسمية' },
           subtitle: {
-            en: 'Enjoy up to 25% off selected blackout drapes, ready-made panels, and smart motorized retrofits for a limited period.',
-            ar: 'تمتع بخصومات حصرية تصل إلى ٢٥٪ على نخبة مختارة من الستائر المعتمة، الستائر الجاهزة، ومحركات الستائر الذكية لفترة محدودة.'
+            en: 'Enjoy up to 20% off selected sofas, majlis seating, and tailored curtains for a limited period.',
+            ar: 'تمتع بخصومات حصرية تصل إلى ٢٠٪ على نخبة مختارة من الكنب والمجالس والستائر المفصلة لفترة محدودة.'
           },
           image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop',
           breadcrumb: { en: 'Special Offers', ar: 'العروض الحصرية' }
@@ -216,7 +216,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
   };
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pb-16">
+    <div className="bg-[#FCF9F4] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
@@ -242,7 +242,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
         {/* 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#ECE6DD] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}

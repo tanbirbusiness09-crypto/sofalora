@@ -12,7 +12,7 @@ export const ToastContainer: React.FC = () => {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="pointer-events-auto bg-[#1C1A17] text-[#FAF8F5] p-3.5 rounded-2xl shadow-2xl border border-[#3E3830] flex items-center justify-between gap-3 animate-in slide-in-from-bottom-4 duration-300"
+          className="pointer-events-auto bg-[#1B211D] text-[#FBF8F3] p-3.5 rounded-2xl shadow-2xl border border-[#3E3830] flex items-center justify-between gap-3 animate-in slide-in-from-bottom-4 duration-300"
         >
           <div className="flex items-center gap-2.5 min-w-0">
             {toast.type === 'success' && (

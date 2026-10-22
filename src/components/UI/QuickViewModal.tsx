@@ -83,7 +83,7 @@ export const QuickViewModal: React.FC = () => {
 
       {/* Modal Container */}
       <div
-        className="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-[#E7DFD5] overflow-hidden z-10 animate-in zoom-in-95 duration-200"
+        className="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-[#E4D6C7] overflow-hidden z-10 animate-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
         aria-label={quickViewProduct.name[language]}
@@ -91,7 +91,7 @@ export const QuickViewModal: React.FC = () => {
         {/* Close Button */}
         <button
           onClick={closeQuickView}
-          className="absolute top-4 end-4 z-20 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/90 text-[#3C3630] hover:bg-[#F4EFEA] flex items-center justify-center shadow-xs transition-colors active:scale-90"
+          className="absolute top-4 end-4 z-20 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full bg-white/90 text-[#3C3630] hover:bg-[#F4EDE4] flex items-center justify-center shadow-xs transition-colors active:scale-90"
           aria-label={t('closeModal')}
         >
           <X className="w-5 h-5" />
@@ -100,14 +100,14 @@ export const QuickViewModal: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
           
           {/* Left/Start: Product Image */}
-          <div className="md:col-span-5 relative bg-[#EAE3D8] aspect-square md:aspect-auto">
+          <div className="md:col-span-5 relative bg-[#E7DACB] aspect-square md:aspect-auto">
             <img
               src={quickViewProduct.image}
               alt={quickViewProduct.name[language]}
               className="w-full h-full object-cover"
             />
             {quickViewProduct.badge && (
-              <span className="absolute top-4 start-4 bg-[#1C1A17] text-[#EAD8B8] text-xs font-bold px-3 py-1 rounded-full shadow-xs">
+              <span className="absolute top-4 start-4 bg-[#1B211D] text-[#F1D5B2] text-xs font-bold px-3 py-1 rounded-full shadow-xs">
                 {quickViewProduct.badge[language]}
               </span>
             )}
@@ -118,23 +118,23 @@ export const QuickViewModal: React.FC = () => {
             
             <div>
               {/* Category & Rating */}
-              <div className="flex items-center justify-between text-xs text-[#8C7A6B] mb-1.5">
+              <div className="flex items-center justify-between text-xs text-[#85796D] mb-1.5">
                 <span className="font-semibold uppercase tracking-wider">{quickViewProduct.category[language]}</span>
-                <div className="flex items-center gap-1 text-[#C49E5D] font-bold">
+                <div className="flex items-center gap-1 text-[#B85C3A] font-bold">
                   <Star className="w-3.5 h-3.5 fill-current" />
                   <span>{quickViewProduct.rating}</span>
-                  <span className="text-[#A39688]">({quickViewProduct.reviews} {t('reviewsCount')})</span>
+                  <span className="text-[#A0968A]">({quickViewProduct.reviews} {t('reviewsCount')})</span>
                 </div>
               </div>
 
               {/* Title */}
-              <h2 className="text-xl sm:text-2xl font-bold text-[#1C1A17] font-serif-luxury leading-snug">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#1B211D] font-serif-luxury leading-snug">
                 {quickViewProduct.name[language]}
               </h2>
 
               {/* Pricing */}
               <div className="mt-2 flex items-baseline gap-3">
-                <span className="text-xl sm:text-2xl font-black text-[#1C1A17] font-serif">
+                <span className="text-xl sm:text-2xl font-black text-[#1B211D] font-serif">
                   {formatPrice(currentUnitPrice)}
                 </span>
                 {quickViewProduct.oldPrice && (
@@ -154,8 +154,8 @@ export const QuickViewModal: React.FC = () => {
 
               {/* Color Swatches */}
               <div className="mt-5">
-                <label className="block text-xs font-bold text-[#2A2621] uppercase tracking-wider mb-2">
-                  {t('colorLabel')}: <span className="text-[#8C6B32] font-normal">{selectedColor?.name[language]}</span>
+                <label className="block text-xs font-bold text-[#272E29] uppercase tracking-wider mb-2">
+                  {t('colorLabel')}: <span className="text-[#7A351F] font-normal">{selectedColor?.name[language]}</span>
                 </label>
                 <div className="flex items-center gap-2">
                   {quickViewProduct.colors.map((color) => (
@@ -165,8 +165,8 @@ export const QuickViewModal: React.FC = () => {
                       onClick={() => setSelectedColor(color)}
                       className={`relative min-w-[36px] min-h-[36px] w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center ${
                         selectedColor?.id === color.id
-                          ? 'border-[#C49E5D] scale-110 shadow-xs ring-2 ring-[#C49E5D]/30'
-                          : 'border-transparent hover:border-[#D5C9B8]'
+                          ? 'border-[#B85C3A] scale-110 shadow-xs ring-2 ring-[#B85C3A]/30'
+                          : 'border-transparent hover:border-[#D3C3B1]'
                       }`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name[language]}
@@ -182,7 +182,7 @@ export const QuickViewModal: React.FC = () => {
 
               {/* Size Selector */}
               <div className="mt-4">
-                <label className="block text-xs font-bold text-[#2A2621] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-[#272E29] uppercase tracking-wider mb-2">
                   {t('sizeLabel')}:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -193,12 +193,12 @@ export const QuickViewModal: React.FC = () => {
                       onClick={() => setSelectedSize(size)}
                       className={`min-h-[44px] p-2.5 rounded-xl border text-xs font-semibold text-start transition-all ${
                         selectedSize?.id === size.id
-                          ? 'border-[#C49E5D] bg-[#FAF8F5] text-[#1C1A17] ring-1 ring-[#C49E5D]'
-                          : 'border-[#E0D6C8] hover:border-[#C49E5D] text-[#554D44]'
+                          ? 'border-[#B85C3A] bg-[#FBF8F3] text-[#1B211D] ring-1 ring-[#B85C3A]'
+                          : 'border-[#DFD2C2] hover:border-[#B85C3A] text-[#4F5852]'
                       }`}
                     >
                       <div className="truncate">{size.label[language]}</div>
-                      <div className="text-[10px] text-[#8C7A6B] mt-0.5 font-mono">{size.dimensions}</div>
+                      <div className="text-[10px] text-[#85796D] mt-0.5 font-mono">{size.dimensions}</div>
                     </button>
                   ))}
                 </div>
@@ -206,26 +206,26 @@ export const QuickViewModal: React.FC = () => {
 
               {/* Quantity Selector */}
               <div className="mt-4 flex items-center justify-between">
-                <label className="text-xs font-bold text-[#2A2621] uppercase tracking-wider">
+                <label className="text-xs font-bold text-[#272E29] uppercase tracking-wider">
                   {t('quantity')}:
                 </label>
-                <div className="flex items-center border border-[#D5C9B8] rounded-full p-1 bg-[#FAF8F5]">
+                <div className="flex items-center border border-[#D3C3B1] rounded-full p-1 bg-[#FBF8F3]">
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     aria-label="Decrease quantity"
-                    className="min-w-[32px] min-h-[32px] w-8 h-8 rounded-full hover:bg-white flex items-center justify-center text-[#554D44] transition-colors active:scale-95"
+                    className="min-w-[32px] min-h-[32px] w-8 h-8 rounded-full hover:bg-white flex items-center justify-center text-[#4F5852] transition-colors active:scale-95"
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="w-10 text-center text-xs font-bold text-[#1C1A17]">
+                  <span className="w-10 text-center text-xs font-bold text-[#1B211D]">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => q + 1)}
                     aria-label="Increase quantity"
-                    className="min-w-[32px] min-h-[32px] w-8 h-8 rounded-full hover:bg-white flex items-center justify-center text-[#554D44] transition-colors active:scale-95"
+                    className="min-w-[32px] min-h-[32px] w-8 h-8 rounded-full hover:bg-white flex items-center justify-center text-[#4F5852] transition-colors active:scale-95"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -235,7 +235,7 @@ export const QuickViewModal: React.FC = () => {
             </div>
 
             {/* Action Buttons & Badges */}
-            <div className="pt-4 border-t border-[#EBE3D8] space-y-3">
+            <div className="pt-4 border-t border-[#E8DCCD] space-y-3">
               <div className="flex items-center gap-3">
                 <button
                   type="button"
@@ -246,7 +246,7 @@ export const QuickViewModal: React.FC = () => {
                       ? 'bg-emerald-700 text-white'
                       : buttonState === 'adding'
                       ? 'bg-[#38332E] text-white opacity-80'
-                      : 'bg-[#1C1A17] hover:bg-[#A9803C] text-white'
+                      : 'bg-[#1B211D] hover:bg-[#8F3E24] text-white'
                   }`}
                 >
                   {buttonState === 'added' ? (
@@ -261,7 +261,7 @@ export const QuickViewModal: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <ShoppingBag className="w-4 h-4 text-[#D8BD88]" />
+                      <ShoppingBag className="w-4 h-4 text-[#E6B183]" />
                       <span>{t('addToCart')} • {formatPrice(totalPrice)}</span>
                     </>
                   )}
@@ -274,7 +274,7 @@ export const QuickViewModal: React.FC = () => {
                   className={`min-w-[48px] min-h-[48px] w-12 h-12 rounded-full border flex items-center justify-center transition-colors active:scale-95 ${
                     isWishlisted
                       ? 'border-rose-300 bg-rose-50 text-rose-600'
-                      : 'border-[#D5C9B8] text-[#554D44] hover:border-[#C49E5D] hover:text-[#C49E5D]'
+                      : 'border-[#D3C3B1] text-[#4F5852] hover:border-[#B85C3A] hover:text-[#B85C3A]'
                   }`}
                 >
                   <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
@@ -285,20 +285,20 @@ export const QuickViewModal: React.FC = () => {
               <button
                 type="button"
                 onClick={handleViewFullProduct}
-                className="w-full text-center text-xs font-bold text-[#A9803C] hover:text-[#8C6527] hover:underline flex items-center justify-center gap-1.5 py-1"
+                className="w-full text-center text-xs font-bold text-[#8F3E24] hover:text-[#7A331D] hover:underline flex items-center justify-center gap-1.5 py-1"
               >
                 <span>{language === 'ar' ? 'عرض تفاصيل ومقاسات المنتج بالكامل' : 'View Full Product Details & Options'}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
 
               {/* Service Badges */}
-              <div className="grid grid-cols-2 gap-2 pt-1 text-[11px] text-[#7A6F64]">
+              <div className="grid grid-cols-2 gap-2 pt-1 text-[11px] text-[#747B72]">
                 <div className="flex items-center gap-1.5">
-                  <Truck className="w-3.5 h-3.5 text-[#C49E5D] shrink-0" />
+                  <Truck className="w-3.5 h-3.5 text-[#B85C3A] shrink-0" />
                   <span>{t('freeHomeMeasure')}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C49E5D] shrink-0" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#B85C3A] shrink-0" />
                   <span>{t('warrantyIncluded')}</span>
                 </div>
               </div>

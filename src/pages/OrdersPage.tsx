@@ -51,7 +51,7 @@ export const OrdersPage: React.FC = () => {
       default:
         return {
           label: language === 'ar' ? 'مؤكد' : 'Confirmed',
-          bg: 'bg-[#FAF6F0] text-[#A9803C] border-[#DFCDBB]',
+          bg: 'bg-[#FAF6F0] text-[#8F3E24] border-[#DFCDBB]',
           icon: Package
         };
     }
@@ -64,27 +64,27 @@ export const OrdersPage: React.FC = () => {
   }, [orders, statusFilter]);
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen py-8 sm:py-12">
+    <div className="bg-[#FCF9F4] min-h-screen py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <span className="text-xs uppercase tracking-widest text-[#A9803C] font-semibold">
+            <span className="text-xs uppercase tracking-widest text-[#8F3E24] font-semibold">
               {language === 'ar' ? 'سجل المشتريات' : 'Purchase History'}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1C1A17] mt-1">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B211D] mt-1">
               {language === 'ar' ? 'طلباتي واستشارات التركيب' : 'My Orders & Installation History'}
             </h1>
-            <p className="text-xs sm:text-sm text-[#7A7165] mt-1">
+            <p className="text-xs sm:text-sm text-[#747D74] mt-1">
               {language === 'ar'
-                ? 'تابع حالة تفصيل ستائرك ومواعيد زيارة فنيي التركيب في الرياض'
-                : 'Track your custom tailoring status and scheduled Riyadh fitting visits'}
+                ? 'تابع حالة طلبات الكنب والستائر ومواعيد التركيب في الرياض'
+                : 'Track your sofa and curtain orders and scheduled Riyadh delivery visits'}
             </p>
           </div>
 
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 bg-[#1C1A17] hover:bg-[#A9803C] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-xs self-start sm:self-auto"
+            className="inline-flex items-center gap-2 bg-[#1B211D] hover:bg-[#8F3E24] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-xs self-start sm:self-auto"
           >
             <span>{language === 'ar' ? 'طلب تفصيل جديد' : 'New Order'}</span>
             <ArrowIcon className="w-3.5 h-3.5" />
@@ -98,8 +98,8 @@ export const OrdersPage: React.FC = () => {
             onClick={() => setStatusFilter('all')}
             className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
               statusFilter === 'all'
-                ? 'bg-[#1C1A17] text-white shadow-xs'
-                : 'bg-white text-[#635A4F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
+                ? 'bg-[#1B211D] text-white shadow-xs'
+                : 'bg-white text-[#5D665F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
             }`}
           >
             {language === 'ar' ? 'كافة الطلبات' : 'All Orders'} ({orders.length})
@@ -110,8 +110,8 @@ export const OrdersPage: React.FC = () => {
             onClick={() => setStatusFilter('active')}
             className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
               statusFilter === 'active'
-                ? 'bg-[#1C1A17] text-white shadow-xs'
-                : 'bg-white text-[#635A4F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
+                ? 'bg-[#1B211D] text-white shadow-xs'
+                : 'bg-white text-[#5D665F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
             }`}
           >
             {language === 'ar' ? 'طلبات قيد التفصيل والتركيب' : 'Active / In Atelier'} (
@@ -123,8 +123,8 @@ export const OrdersPage: React.FC = () => {
             onClick={() => setStatusFilter('delivered')}
             className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
               statusFilter === 'delivered'
-                ? 'bg-[#1C1A17] text-white shadow-xs'
-                : 'bg-white text-[#635A4F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
+                ? 'bg-[#1B211D] text-white shadow-xs'
+                : 'bg-white text-[#5D665F] hover:bg-[#EFE7DC] border border-[#E8DEC\-D]'
             }`}
           >
             {language === 'ar' ? 'تم تسليمها وتركيبها' : 'Delivered & Installed'} (
@@ -135,20 +135,20 @@ export const OrdersPage: React.FC = () => {
         {/* Orders List */}
         {filteredOrders.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center border border-[#E8DEC\-D] max-w-lg mx-auto shadow-xs">
-            <div className="w-16 h-16 rounded-full bg-[#FAF7F2] text-[#A9803C] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#FCF9F4] text-[#8F3E24] flex items-center justify-center mx-auto mb-4">
               <Package className="w-8 h-8" />
             </div>
-            <h3 className="text-lg font-bold text-[#1C1A17] mb-2">
+            <h3 className="text-lg font-bold text-[#1B211D] mb-2">
               {language === 'ar' ? 'لا توجد طلبات في هذا القسم' : 'No Orders Found'}
             </h3>
-            <p className="text-xs text-[#7A7165] mb-6">
+            <p className="text-xs text-[#747D74] mb-6">
               {language === 'ar'
                 ? 'لم يتم تسجيل أي طلبات تطابق هذا التصفية حالياً.'
                 : 'There are currently no orders in this category.'}
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-[#1C1A17] text-white px-6 py-2.5 rounded-full text-xs font-bold"
+              className="inline-flex items-center gap-2 bg-[#1B211D] text-white px-6 py-2.5 rounded-full text-xs font-bold"
             >
               <span>{language === 'ar' ? 'تصفح المتجر' : 'Browse Catalog'}</span>
               <ArrowIcon className="w-3.5 h-3.5" />
@@ -163,12 +163,12 @@ export const OrdersPage: React.FC = () => {
               return (
                 <div
                   key={order.id}
-                  className="bg-white rounded-2xl border border-[#E8DEC\-D] p-5 sm:p-6 shadow-xs hover:border-[#D5C9B8] transition-all"
+                  className="bg-white rounded-2xl border border-[#E8DEC\-D] p-5 sm:p-6 shadow-xs hover:border-[#D3C3B1] transition-all"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#F2ECE3]">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#F1E9DF]">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2.5">
-                        <span className="text-sm font-bold text-[#1C1A17] font-mono">
+                        <span className="text-sm font-bold text-[#1B211D] font-mono">
                           #{order.id}
                         </span>
                         <span
@@ -178,9 +178,9 @@ export const OrdersPage: React.FC = () => {
                           <span>{statusInfo.label}</span>
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-[#8C7A6B]">
+                      <div className="flex items-center gap-3 text-xs text-[#85796D]">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-[#A9803C]" />
+                          <Calendar className="w-3 h-3 text-[#8F3E24]" />
                           {new Date(order.createdAt).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US')}
                         </span>
                         <span>•</span>
@@ -189,10 +189,10 @@ export const OrdersPage: React.FC = () => {
                     </div>
 
                     <div className="text-start sm:text-end">
-                      <div className="text-xs text-[#8C7A6B]">
+                      <div className="text-xs text-[#85796D]">
                         {language === 'ar' ? 'المجموع النهائي:' : 'Order Total:'}
                       </div>
-                      <div className="text-base sm:text-lg font-bold font-serif text-[#1C1A17]">
+                      <div className="text-base sm:text-lg font-bold font-serif text-[#1B211D]">
                         {formatPrice(order.grandTotal ?? order.total)}
                       </div>
                     </div>
@@ -204,7 +204,7 @@ export const OrdersPage: React.FC = () => {
                       {order.items.map((item) => (
                         <div
                           key={item.id}
-                          className="relative w-14 h-16 rounded-xl overflow-hidden bg-[#FAF7F2] border border-[#E8DEC\-D] shrink-0 group"
+                          className="relative w-14 h-16 rounded-xl overflow-hidden bg-[#FCF9F4] border border-[#E8DEC\-D] shrink-0 group"
                           title={item.product.name[language]}
                         >
                           <img
@@ -217,8 +217,8 @@ export const OrdersPage: React.FC = () => {
                           </span>
                         </div>
                       ))}
-                      <div className="text-xs text-[#635A4F] ps-2">
-                        <strong>{order.items.length}</strong> {language === 'ar' ? 'أصناف مختارة' : 'curtains'}
+                      <div className="text-xs text-[#5D665F] ps-2">
+                        <strong>{order.items.length}</strong> {language === 'ar' ? 'قطع' : 'pieces'}
                       </div>
                     </div>
 
@@ -227,7 +227,7 @@ export const OrdersPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => navigate(`/orders/${order.id}`)}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#FAF7F2] hover:bg-[#1C1A17] hover:text-white text-[#1C1A17] px-4 py-2.5 rounded-xl text-xs font-bold border border-[#D5C9B8] transition-all"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#FCF9F4] hover:bg-[#1B211D] hover:text-white text-[#1B211D] px-4 py-2.5 rounded-xl text-xs font-bold border border-[#D3C3B1] transition-all"
                       >
                         <span>{language === 'ar' ? 'تفاصيل الطلب والتركيب' : 'View Order Details'}</span>
                         <ChevronIcon className="w-3.5 h-3.5" />

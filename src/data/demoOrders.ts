@@ -3,7 +3,7 @@ import { PRODUCTS } from './products';
 
 export const DEMO_ORDERS: Order[] = [
   {
-    id: 'MC-20260910-1045',
+    id: 'SL-20260910-1045',
     createdAt: '2026-09-10T11:20:00Z',
     estimatedDeliveryDate: '2026-09-14T18:00:00Z',
     status: 'delivered',
@@ -24,7 +24,7 @@ export const DEMO_ORDERS: Order[] = [
     deliveryMethod: {
       id: 'standard',
       name: { en: 'Standard White-Glove Delivery & Installation', ar: 'توصيل وتركيب شامل بمعايير الفخامة' },
-      description: { en: 'Installed by certified Mohammad Curtains technicians', ar: 'تركيب دقيق بواسطة فنيي ستائر محمد المعتمدين' },
+      description: { en: 'Installed by certified Sofalora technicians', ar: 'تركيب دقيق بواسطة فنيي سوفالورا المعتمدين' },
       price: 0,
       estimatedTime: { en: '3-4 Business Days', ar: '٣-٤ أيام عمل' }
     },
@@ -49,7 +49,7 @@ export const DEMO_ORDERS: Order[] = [
     notes: 'Laser measurement completed in Riyadh atelier.'
   },
   {
-    id: 'MC-20260914-1088',
+    id: 'SL-20260914-1088',
     createdAt: '2026-09-14T14:35:00Z',
     estimatedDeliveryDate: '2026-09-18T16:00:00Z',
     status: 'out_for_delivery',
@@ -94,7 +94,7 @@ export const DEMO_ORDERS: Order[] = [
     notes: 'Out for delivery with technician Fahad.'
   },
   {
-    id: 'MC-20260916-1121',
+    id: 'SL-20260916-1121',
     createdAt: '2026-09-16T09:15:00Z',
     estimatedDeliveryDate: '2026-09-21T12:00:00Z',
     status: 'preparing',
@@ -115,7 +115,7 @@ export const DEMO_ORDERS: Order[] = [
     deliveryMethod: {
       id: 'standard',
       name: { en: 'Standard White-Glove Delivery & Installation', ar: 'توصيل وتركيب شامل بمعايير الفخامة' },
-      description: { en: 'Installed by certified Mohammad Curtains technicians', ar: 'تركيب دقيق بواسطة فنيي ستائر محمد المعتمدين' },
+      description: { en: 'Installed by certified Sofalora technicians', ar: 'تركيب دقيق بواسطة فنيي سوفالورا المعتمدين' },
       price: 0,
       estimatedTime: { en: '3-4 Business Days', ar: '٣-٤ أيام عمل' }
     },
@@ -142,7 +142,7 @@ export const DEMO_ORDERS: Order[] = [
     ],
     subtotal: (PRODUCTS[2] || PRODUCTS[0])?.price + (PRODUCTS[4] || PRODUCTS[0])?.price,
     discount: 50,
-    promoCode: 'CURTAIN15',
+    promoCode: 'SOFALORA20',
     shippingFee: 0,
     vatAmount: Math.round(((PRODUCTS[2] || PRODUCTS[0])?.price + (PRODUCTS[4] || PRODUCTS[0])?.price - 50) * 0.15),
     total: Math.round(((PRODUCTS[2] || PRODUCTS[0])?.price + (PRODUCTS[4] || PRODUCTS[0])?.price - 50) * 1.15),

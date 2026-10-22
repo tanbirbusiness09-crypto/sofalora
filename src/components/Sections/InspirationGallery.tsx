@@ -9,18 +9,18 @@ export const InspirationGallery: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<InspirationItem | null>(null);
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FAF8F5]">
+    <section className="py-16 sm:py-24 bg-[#FBF8F3]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#8C6B32] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#7A351F] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'معرض المشاريع الواقعية بالرياض' : 'Riyadh Interior Lookbook'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191715] font-serif-luxury tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
             {t('inspirationTitle')}
           </h2>
-          <p className="text-sm sm:text-base text-[#6E645A] mt-2">
+          <p className="text-sm sm:text-base text-[#687168] mt-2">
             {t('inspirationSubtitle')}
           </p>
         </div>
@@ -31,7 +31,7 @@ export const InspirationGallery: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group relative rounded-3xl overflow-hidden aspect-4/3 sm:aspect-square bg-[#EAE3D8] cursor-pointer shadow-2xs hover:shadow-xl transition-all duration-500"
+              className="group relative rounded-3xl overflow-hidden aspect-4/3 sm:aspect-square bg-[#E7DACB] cursor-pointer shadow-2xs hover:shadow-xl transition-all duration-500"
             >
               {/* Image */}
               <img
@@ -56,12 +56,12 @@ export const InspirationGallery: React.FC = () => {
                 <h4 className="text-base sm:text-lg font-bold font-serif-luxury leading-tight">
                   {item.title[language]}
                 </h4>
-                <p className="text-xs text-[#EAD8B8] mt-1 font-medium">
+                <p className="text-xs text-[#F1D5B2] mt-1 font-medium">
                   {item.curtainModel[language]}
                 </p>
 
                 <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-white">
-                  <Eye className="w-3.5 h-3.5 text-[#C49E5D]" />
+                  <Eye className="w-3.5 h-3.5 text-[#B85C3A]" />
                   <span>{t('viewInspiration')}</span>
                 </div>
               </div>
@@ -75,7 +75,7 @@ export const InspirationGallery: React.FC = () => {
       {/* Lightbox / Inspiration Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="relative max-w-3xl w-full bg-[#1C1A17] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#3A352F]">
+          <div className="relative max-w-3xl w-full bg-[#1B211D] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#3A352F]">
             
             <button
               onClick={() => setSelectedItem(null)}
@@ -94,7 +94,7 @@ export const InspirationGallery: React.FC = () => {
             </div>
 
             <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-2 text-xs text-[#C49E5D] font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-xs text-[#B85C3A] font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{selectedItem.room[language]} • {selectedItem.style[language]}</span>
               </div>
@@ -105,11 +105,11 @@ export const InspirationGallery: React.FC = () => {
 
               <div className="pt-2 border-t border-[#38322B] flex flex-wrap items-center justify-between gap-4 text-xs text-[#C4B9AA]">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C49E5D]" />
+                  <MapPin className="w-4 h-4 text-[#B85C3A]" />
                   <span>{language === 'ar' ? 'مشروع سكني منجز في مدينة الرياض' : 'Completed Residential Project in Riyadh'}</span>
                 </div>
 
-                <div className="bg-[#2C2722] border border-[#443D36] px-3.5 py-1.5 rounded-xl font-bold text-[#EAD8B8]">
+                <div className="bg-[#2C2722] border border-[#443D36] px-3.5 py-1.5 rounded-xl font-bold text-[#F1D5B2]">
                   {selectedItem.curtainModel[language]}
                 </div>
               </div>

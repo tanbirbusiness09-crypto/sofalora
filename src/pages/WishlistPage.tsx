@@ -60,17 +60,17 @@ export const WishlistPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen py-8 sm:py-12">
+    <div className="bg-[#FCF9F4] min-h-screen py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <span className="text-xs uppercase tracking-widest text-[#A9803C] font-semibold">
+            <span className="text-xs uppercase tracking-widest text-[#8F3E24] font-semibold">
               {language === 'ar' ? 'المجموعات المحفوظة' : 'Curated Favorites'}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1C1A17] flex items-center gap-3 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B211D] flex items-center gap-3 mt-1">
               <span>{language === 'ar' ? 'قائمة الأمنيات والمفضلة' : 'My Wishlist'}</span>
-              <span className="text-sm font-sans font-semibold bg-[#EFE7DC] text-[#7A6F64] px-3 py-0.5 rounded-full">
+              <span className="text-sm font-sans font-semibold bg-[#EFE7DC] text-[#747B72] px-3 py-0.5 rounded-full">
                 {wishlist.length} {language === 'ar' ? 'منتجات' : 'items'}
               </span>
             </h1>
@@ -81,9 +81,9 @@ export const WishlistPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleShareWishlist}
-                className="inline-flex items-center gap-1.5 bg-white text-[#1C1A17] hover:bg-[#FAF7F2] px-3.5 py-2 rounded-xl text-xs font-bold border border-[#D5C9B8] transition-all"
+                className="inline-flex items-center gap-1.5 bg-white text-[#1B211D] hover:bg-[#FCF9F4] px-3.5 py-2 rounded-xl text-xs font-bold border border-[#D3C3B1] transition-all"
               >
-                <Share2 className="w-3.5 h-3.5 text-[#A9803C]" />
+                <Share2 className="w-3.5 h-3.5 text-[#8F3E24]" />
                 <span>
                   {copiedShare
                     ? language === 'ar'
@@ -102,7 +102,7 @@ export const WishlistPage: React.FC = () => {
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
                   addedAll
                     ? 'bg-emerald-700 text-white'
-                    : 'bg-[#1C1A17] hover:bg-[#A9803C] text-white'
+                    : 'bg-[#1B211D] hover:bg-[#8F3E24] text-white'
                 }`}
               >
                 {addedAll ? (
@@ -112,7 +112,7 @@ export const WishlistPage: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-3.5 h-3.5 text-[#D8BD88]" />
+                    <ShoppingBag className="w-3.5 h-3.5 text-[#E6B183]" />
                     <span>{language === 'ar' ? 'إضافة الكل إلى السلة' : 'Add All to Bag'}</span>
                   </>
                 )}
@@ -124,22 +124,22 @@ export const WishlistPage: React.FC = () => {
         {/* Empty State */}
         {wishlistedProducts.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center border border-[#E8DEC\-D] max-w-lg mx-auto shadow-xs">
-            <div className="w-16 h-16 rounded-full bg-[#FAF7F2] text-[#A9803C] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#FCF9F4] text-[#8F3E24] flex items-center justify-center mx-auto mb-4">
               <Heart className="w-8 h-8" />
             </div>
-            <h2 className="text-xl font-bold font-serif text-[#1C1A17] mb-2">
+            <h2 className="text-xl font-bold font-serif text-[#1B211D] mb-2">
               {language === 'ar' ? 'قائمة أمنياتك فارغة' : 'Your Wishlist is Empty'}
             </h2>
-            <p className="text-xs text-[#7A7165] mb-6 leading-relaxed">
+            <p className="text-xs text-[#747D74] mb-6 leading-relaxed">
               {language === 'ar'
-                ? 'احفظ الستائر الملكية والأقمشة الفاخرة المفضلة لديك هنا للرجوع إليها أو تفصيلها لاحقاً.'
-                : 'Save your favorite royal drapery and fabrics here for later comparison or consultation.'}
+                ? 'احفظ الكنب والستائر المفضلة لديك هنا للرجوع إليها أو تنسيقها لاحقاً.'
+                : 'Save your favorite sofas and curtains here for later comparison or consultation.'}
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-[#1C1A17] hover:bg-[#A9803C] text-white px-6 py-3 rounded-full text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-2 bg-[#1B211D] hover:bg-[#8F3E24] text-white px-6 py-3 rounded-full text-xs font-bold transition-all shadow-sm"
             >
-              <span>{language === 'ar' ? 'استكشف تشكيلات الستائر' : 'Explore Collections'}</span>
+              <span>{language === 'ar' ? 'استكشف الكنب والستائر' : 'Explore Sofas & Curtains'}</span>
               <ArrowIcon className="w-4 h-4" />
             </Link>
           </div>

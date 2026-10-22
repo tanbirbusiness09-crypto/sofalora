@@ -9,19 +9,19 @@ export const CuratedCollectionSection: React.FC = () => {
   const isRTL = direction === 'rtl';
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-[#F4EFEA]/60 border-y border-[#EAE2D5] overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 bg-[#F4EDE4]/60 border-y border-[#EAE2D5] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading with Subtle Eyebrow */}
         <div className="text-center mb-10 sm:mb-14">
           <div className="flex items-center justify-center gap-3 sm:gap-6 mb-2">
-            <span className="h-px w-10 sm:w-20 bg-[#D4C8B8]/80" aria-hidden="true" />
+            <span className="h-px w-10 sm:w-20 bg-[#D2C2B0]/80" aria-hidden="true" />
             <span className="text-xs sm:text-sm font-semibold tracking-widest text-[#986E32] uppercase">
               {CURATED_COLLECTION.eyebrow[language]}
             </span>
-            <span className="h-px w-10 sm:w-20 bg-[#D4C8B8]/80" aria-hidden="true" />
+            <span className="h-px w-10 sm:w-20 bg-[#D2C2B0]/80" aria-hidden="true" />
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#1C1A17] font-normal tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#1B211D] font-normal tracking-tight">
             {CURATED_COLLECTION.title[language]}
           </h2>
           <p className="mt-2 text-xs sm:text-sm md:text-base text-[#6F6457] max-w-xl mx-auto font-light">
@@ -38,7 +38,7 @@ export const CuratedCollectionSection: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 relative group rounded-2xl overflow-hidden aspect-4/3 sm:aspect-16/10 shadow-sm bg-[#EAE2D6]"
+            className="lg:col-span-7 relative group rounded-2xl overflow-hidden aspect-4/3 sm:aspect-16/10 shadow-sm bg-[#E6D8C8]"
           >
             <img
               src={CURATED_COLLECTION.heroImage}
@@ -56,7 +56,7 @@ export const CuratedCollectionSection: React.FC = () => {
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{language === 'ar' ? 'أقمشة مستدامة ١٠٠٪' : '100% Sustainable Looms'}</span>
                 </div>
-                <p className="text-xs sm:text-sm text-[#1C1A17] font-medium">
+                <p className="text-xs sm:text-sm text-[#1B211D] font-medium">
                   {language === 'ar'
                     ? 'كتان وألياف بلجيكية محاكة بمقاييس الفلل السعودية'
                     : 'Belgian raw flax tailored for radiant desert light'}
@@ -65,7 +65,7 @@ export const CuratedCollectionSection: React.FC = () => {
 
               <button
                 onClick={openConsultation}
-                className="shrink-0 px-4 py-2 rounded-lg bg-[#1C1A17] hover:bg-[#A9803C] text-[#EAD8B8] hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
+                className="shrink-0 px-4 py-2 rounded-lg bg-[#1B211D] hover:bg-[#8F3E24] text-[#F1D5B2] hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
               >
                 <span>{CURATED_COLLECTION.cta[language]}</span>
                 {isRTL ? <ArrowLeft className="w-3 h-3" /> : <ArrowRight className="w-3 h-3" />}
@@ -88,7 +88,7 @@ export const CuratedCollectionSection: React.FC = () => {
                 className="group cursor-pointer p-3 sm:p-4 rounded-xl bg-white border border-[#EBE3D7] hover:border-[#D2C2AD] hover:shadow-md transition-all duration-300 flex items-center gap-4"
               >
                 {/* Square Image Thumbnail */}
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden shrink-0 bg-[#EAE2D6]">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden shrink-0 bg-[#E6D8C8]">
                   <img
                     src={item.image}
                     alt={item.title[language]}
@@ -102,14 +102,14 @@ export const CuratedCollectionSection: React.FC = () => {
                   <span className="text-[10px] sm:text-xs font-semibold text-[#986E32] tracking-wider uppercase">
                     {item.tag[language]}
                   </span>
-                  <h4 className="text-xs sm:text-sm font-semibold text-[#1C1A17] group-hover:text-[#A9803C] transition-colors truncate mt-0.5">
+                  <h4 className="text-xs sm:text-sm font-semibold text-[#1B211D] group-hover:text-[#8F3E24] transition-colors truncate mt-0.5">
                     {item.title[language]}
                   </h4>
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#F2EDE5]">
-                    <span className="text-xs font-bold text-[#1C1A17]">
+                    <span className="text-xs font-bold text-[#1B211D]">
                       {item.price}
                     </span>
-                    <span className="text-xs text-[#8C7A6B] group-hover:text-[#A9803C] font-medium flex items-center gap-1 transition-colors">
+                    <span className="text-xs text-[#85796D] group-hover:text-[#8F3E24] font-medium flex items-center gap-1 transition-colors">
                       <span>{language === 'ar' ? 'عرض النمط' : 'View Style'}</span>
                       {isRTL ? (
                         <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />

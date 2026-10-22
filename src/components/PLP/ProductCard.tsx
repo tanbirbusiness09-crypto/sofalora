@@ -69,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Product Image Stage */}
-        <div className="relative sm:w-64 md:w-72 lg:w-80 h-64 sm:h-auto shrink-0 bg-[#F4EFEA] overflow-hidden">
+        <div className="relative sm:w-64 md:w-72 lg:w-80 h-64 sm:h-auto shrink-0 bg-[#F4EDE4] overflow-hidden">
           <Link href={productUrl} className="block w-full h-full relative">
             <img
               src={product.image}
@@ -94,12 +94,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Badges */}
           <div className="absolute top-3 start-3 flex flex-col gap-1.5 pointer-events-none z-10">
             {product.badge && (
-              <span className="px-2.5 py-1 bg-[#1C1A17]/90 backdrop-blur-xs text-white text-[11px] font-medium tracking-wider uppercase rounded-full shadow-sm">
+              <span className="px-2.5 py-1 bg-[#1B211D]/90 backdrop-blur-xs text-white text-[11px] font-medium tracking-wider uppercase rounded-full shadow-sm">
                 {product.badge[language]}
               </span>
             )}
             {product.discount && (
-              <span className="px-2.5 py-1 bg-[#A9803C] text-white text-[11px] font-semibold rounded-full shadow-sm">
+              <span className="px-2.5 py-1 bg-[#8F3E24] text-white text-[11px] font-semibold rounded-full shadow-sm">
                 {language === 'ar' ? `خصم ${product.discount}٪` : `${product.discount}% OFF`}
               </span>
             )}
@@ -128,23 +128,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2 mb-1.5">
-              <span className="text-xs uppercase tracking-wider text-[#A9803C] font-semibold">
+              <span className="text-xs uppercase tracking-wider text-[#8F3E24] font-semibold">
                 {product.category[language]}
                 {product.subcategory && (
-                  <span className="text-[#8E8377] font-normal"> • {product.subcategory[language]}</span>
+                  <span className="text-[#877C71] font-normal"> • {product.subcategory[language]}</span>
                 )}
               </span>
 
               {/* Rating */}
               <div className="flex items-center gap-1 text-xs text-[#635A50]">
-                <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                <Star className="w-3.5 h-3.5 fill-[#D99A5A] text-[#D99A5A]" />
                 <span className="font-medium text-[#201D1A]">{product.rating.toFixed(1)}</span>
-                <span className="text-[#8E8377]">({product.reviews})</span>
+                <span className="text-[#877C71]">({product.reviews})</span>
               </div>
             </div>
 
             <Link href={productUrl}>
-              <h3 className="text-lg font-serif font-bold text-[#1C1A17] hover:text-[#A9803C] transition-colors mb-2 line-clamp-1">
+              <h3 className="text-lg font-serif font-bold text-[#1B211D] hover:text-[#8F3E24] transition-colors mb-2 line-clamp-1">
                 {product.name[language]}
               </h3>
             </Link>
@@ -156,7 +156,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {/* Colors Swatches */}
             {product.colors && product.colors.length > 0 && (
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs text-[#7A7165]">
+                <span className="text-xs text-[#747D74]">
                   {language === 'ar' ? 'الألوان المتاحة:' : 'Colors:'}
                 </span>
                 <div className="flex items-center gap-1.5">
@@ -169,7 +169,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                       aria-label={color.name[language]}
                       className={`min-w-[24px] min-h-[24px] w-6 h-6 rounded-full border transition-all ${
                         selectedColorIndex === cIdx
-                          ? 'ring-2 ring-[#A9803C] ring-offset-1 border-white scale-110'
+                          ? 'ring-2 ring-[#8F3E24] ring-offset-1 border-white scale-110'
                           : 'border-black/20 hover:scale-105'
                       }`}
                       style={{ backgroundColor: color.hex }}
@@ -181,11 +181,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Price & Action Row */}
-          <div className="pt-4 border-t border-[#F0EBE3] flex items-center justify-between gap-4 flex-wrap">
+          <div className="pt-4 border-t border-[#EDE4D9] flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold font-serif text-[#1C1A17]">
+              <span className="text-xl font-bold font-serif text-[#1B211D]">
                 {product.price}{' '}
-                <span className="text-xs font-sans font-normal text-[#7A7165]">
+                <span className="text-xs font-sans font-normal text-[#747D74]">
                   {language === 'ar' ? 'ر.س' : 'SAR'}
                 </span>
               </span>
@@ -202,9 +202,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 type="button"
                 onClick={handleQuickViewClick}
                 aria-label="Quick View product"
-                className="min-h-[44px] px-4 py-2 text-xs font-semibold border border-[#D8CFBF] text-[#4A4339] rounded-xl hover:border-[#1C1A17] hover:text-[#1C1A17] transition-colors flex items-center gap-1.5 active:scale-95"
+                className="min-h-[44px] px-4 py-2 text-xs font-semibold border border-[#D8CFBF] text-[#4A4339] rounded-xl hover:border-[#1B211D] hover:text-[#1B211D] transition-colors flex items-center gap-1.5 active:scale-95"
               >
-                <Eye className="w-4 h-4 text-[#A9803C]" />
+                <Eye className="w-4 h-4 text-[#8F3E24]" />
                 <span>{language === 'ar' ? 'معاينة سريعة' : 'Quick View'}</span>
               </button>
 
@@ -218,7 +218,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     ? 'bg-emerald-700 text-white'
                     : buttonState === 'adding'
                     ? 'bg-[#3D3833] text-white opacity-80'
-                    : 'bg-[#1C1A17] text-white hover:bg-[#A9803C]'
+                    : 'bg-[#1B211D] text-white hover:bg-[#8F3E24]'
                 }`}
               >
                 {buttonState === 'added' ? (
@@ -233,7 +233,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-4 h-4 text-[#D8BD88]" />
+                    <ShoppingBag className="w-4 h-4 text-[#E6B183]" />
                     <span>{language === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</span>
                   </>
                 )}
@@ -253,7 +253,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Stage with Crossfade */}
-      <div className="relative aspect-[3/4] bg-[#F4EFEA] overflow-hidden">
+      <div className="relative aspect-[3/4] bg-[#F4EDE4] overflow-hidden">
         <Link href={productUrl} className="block w-full h-full relative">
           <img
             src={product.image}
@@ -278,12 +278,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Top Badges */}
         <div className="absolute top-2.5 start-2.5 flex flex-col gap-1 pointer-events-none z-10">
           {product.badge && (
-            <span className="px-2 py-0.5 bg-[#1C1A17]/85 backdrop-blur-xs text-white text-[10px] font-medium tracking-wide uppercase rounded-full shadow-xs">
+            <span className="px-2 py-0.5 bg-[#1B211D]/85 backdrop-blur-xs text-white text-[10px] font-medium tracking-wide uppercase rounded-full shadow-xs">
               {product.badge[language]}
             </span>
           )}
           {product.discount && (
-            <span className="px-2 py-0.5 bg-[#A9803C] text-white text-[10px] font-semibold rounded-full shadow-xs">
+            <span className="px-2 py-0.5 bg-[#8F3E24] text-white text-[10px] font-semibold rounded-full shadow-xs">
               {language === 'ar' ? `-${product.discount}٪` : `-${product.discount}%`}
             </span>
           )}
@@ -313,9 +313,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             type="button"
             onClick={handleQuickViewClick}
             aria-label="Quick View product"
-            className="w-full min-h-[40px] py-2 bg-white/95 backdrop-blur-xs hover:bg-white text-[#1C1A17] text-xs font-bold rounded-xl shadow-md hover:text-[#A9803C] transition-colors flex items-center justify-center gap-1.5 active:scale-95"
+            className="w-full min-h-[40px] py-2 bg-white/95 backdrop-blur-xs hover:bg-white text-[#1B211D] text-xs font-bold rounded-xl shadow-md hover:text-[#8F3E24] transition-colors flex items-center justify-center gap-1.5 active:scale-95"
           >
-            <Eye className="w-3.5 h-3.5 text-[#A9803C]" />
+            <Eye className="w-3.5 h-3.5 text-[#8F3E24]" />
             <span>{language === 'ar' ? 'معاينة سريعة' : 'Quick View'}</span>
           </button>
         </div>
@@ -325,19 +325,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
         <div>
           {/* Category & Rating */}
-          <div className="flex items-center justify-between text-[11px] text-[#8E8377] mb-1">
+          <div className="flex items-center justify-between text-[11px] text-[#877C71] mb-1">
             <span className="uppercase tracking-wider truncate max-w-[65%] font-medium">
               {product.category[language]}
             </span>
             <div className="flex items-center gap-0.5 text-[#201D1A]">
-              <Star className="w-3 h-3 fill-[#D4AF37] text-[#D4AF37]" />
+              <Star className="w-3 h-3 fill-[#D99A5A] text-[#D99A5A]" />
               <span className="font-medium text-[11px]">{product.rating.toFixed(1)}</span>
             </div>
           </div>
 
           {/* Product Title */}
           <Link href={productUrl}>
-            <h3 className="text-sm sm:text-base font-serif font-bold text-[#1C1A17] hover:text-[#A9803C] transition-colors mb-1.5 line-clamp-1">
+            <h3 className="text-sm sm:text-base font-serif font-bold text-[#1B211D] hover:text-[#8F3E24] transition-colors mb-1.5 line-clamp-1">
               {product.name[language]}
             </h3>
           </Link>
@@ -368,12 +368,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Price and Add to Cart Button */}
-        <div className="pt-2.5 border-t border-[#F0EBE3] flex items-center justify-between gap-2">
+        <div className="pt-2.5 border-t border-[#EDE4D9] flex items-center justify-between gap-2">
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base sm:text-lg font-bold font-serif text-[#1C1A17]">
+              <span className="text-base sm:text-lg font-bold font-serif text-[#1B211D]">
                 {product.price}
-                <span className="text-[10px] font-sans font-normal text-[#7A7165] ms-1">
+                <span className="text-[10px] font-sans font-normal text-[#747D74] ms-1">
                   {language === 'ar' ? 'ر.س' : 'SAR'}
                 </span>
               </span>
@@ -395,7 +395,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 ? 'bg-emerald-700 text-white'
                 : buttonState === 'adding'
                 ? 'bg-[#3D3833] text-white opacity-80'
-                : 'bg-[#1C1A17] text-white hover:bg-[#A9803C]'
+                : 'bg-[#1B211D] text-white hover:bg-[#8F3E24]'
             }`}
           >
             {buttonState === 'added' ? (
@@ -403,7 +403,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             ) : buttonState === 'adding' ? (
               <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <ShoppingBag className="w-4 h-4 text-[#D8BD88]" />
+              <ShoppingBag className="w-4 h-4 text-[#E6B183]" />
             )}
           </button>
         </div>

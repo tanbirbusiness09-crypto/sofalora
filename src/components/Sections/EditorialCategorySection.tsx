@@ -74,11 +74,11 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="flex items-center justify-center gap-3 sm:gap-6 mb-6 sm:mb-8"
       >
-        <span className="h-px w-10 sm:w-20 md:w-28 bg-[#D4C8B8]/80" aria-hidden="true" />
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-[#1C1A17] tracking-wide font-normal">
+        <span className="h-px w-10 sm:w-20 md:w-28 bg-[#D2C2B0]/80" aria-hidden="true" />
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-[#1B211D] tracking-wide font-normal">
           {section.title[language]}
         </h2>
-        <span className="h-px w-10 sm:w-20 md:w-28 bg-[#D4C8B8]/80" aria-hidden="true" />
+        <span className="h-px w-10 sm:w-20 md:w-28 bg-[#D2C2B0]/80" aria-hidden="true" />
       </motion.div>
 
       {/* 2. Main Large Lifestyle Image with Text Overlay */}
@@ -87,7 +87,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="group relative w-full aspect-16/9 sm:aspect-21/9 md:aspect-21/8 rounded-2xl overflow-hidden shadow-sm bg-[#EAE2D6]"
+        className="group relative w-full aspect-16/9 sm:aspect-21/9 md:aspect-21/8 rounded-2xl overflow-hidden shadow-sm bg-[#E6D8C8]"
       >
         <img
           src={section.lifestyleImage}
@@ -102,7 +102,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
         {/* Top Atelier Badge (Optional) */}
         {section.lifestyleBadge && (
           <div className="absolute top-4 start-4 sm:top-6 sm:start-6 z-10">
-            <span className="bg-white/85 backdrop-blur-md text-[#2A2621] text-[10px] sm:text-xs tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-white/40 shadow-xs">
+            <span className="bg-white/85 backdrop-blur-md text-[#272E29] text-[10px] sm:text-xs tracking-widest uppercase font-semibold px-3 py-1 rounded-full border border-white/40 shadow-xs">
               {section.lifestyleBadge[language]}
             </span>
           </div>
@@ -120,7 +120,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
             <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-white font-normal drop-shadow-md mb-2 sm:mb-3">
               {section.lifestyleHeading[language]}
             </h3>
-            <p className="text-xs sm:text-sm md:text-base text-[#EAD8B8] font-light max-w-xl mx-auto drop-shadow-sm mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-none">
+            <p className="text-xs sm:text-sm md:text-base text-[#F1D5B2] font-light max-w-xl mx-auto drop-shadow-sm mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-none">
               {section.lifestyleSubtitle[language]}
             </p>
             <button
@@ -131,13 +131,13 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
                   openConsultation();
                 }
               }}
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/95 hover:bg-white text-[#1C1A17] text-xs sm:text-sm font-semibold tracking-wide shadow-lg hover:shadow-xl transition-all duration-300 group/btn"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/95 hover:bg-white text-[#1B211D] text-xs sm:text-sm font-semibold tracking-wide shadow-lg hover:shadow-xl transition-all duration-300 group/btn"
             >
               <span>{section.lifestyleCta[language]}</span>
               {isRTL ? (
-                <ArrowLeft className="w-4 h-4 text-[#A9803C] transition-transform duration-300 group-hover/btn:-translate-x-1" />
+                <ArrowLeft className="w-4 h-4 text-[#8F3E24] transition-transform duration-300 group-hover/btn:-translate-x-1" />
               ) : (
-                <ArrowRight className="w-4 h-4 text-[#A9803C] transition-transform duration-300 group-hover/btn:translate-x-1" />
+                <ArrowRight className="w-4 h-4 text-[#8F3E24] transition-transform duration-300 group-hover/btn:translate-x-1" />
               )}
             </button>
           </motion.div>
@@ -158,7 +158,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
               className="group cursor-pointer flex flex-col"
             >
               {/* Image Container with Gentle Zoom on Hover */}
-              <div className="relative aspect-4/3 w-full rounded-xl overflow-hidden bg-[#EAE3D8] border border-[#EBE3D7]/70 shadow-2xs">
+              <div className="relative aspect-4/3 w-full rounded-xl overflow-hidden bg-[#E7DACB] border border-[#EBE3D7]/70 shadow-2xs">
                 <img
                   src={subcat.image}
                   alt={subcat.name[language]}
@@ -170,19 +170,19 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
 
                 {/* Micro Tag / Pill */}
                 {subcat.tag && (
-                  <span className="absolute bottom-2 start-2 bg-white/90 backdrop-blur-xs text-[#2A2621] text-[10px] font-medium px-2 py-0.5 rounded-md shadow-2xs">
+                  <span className="absolute bottom-2 start-2 bg-white/90 backdrop-blur-xs text-[#272E29] text-[10px] font-medium px-2 py-0.5 rounded-md shadow-2xs">
                     {subcat.tag[language]}
                   </span>
                 )}
               </div>
 
               {/* Sub-Category Title with Hover Reaction */}
-              <div className="mt-2.5 flex items-center justify-between text-[#1C1A17] px-0.5">
-                <span className="text-xs sm:text-sm font-medium tracking-tight group-hover:text-[#A9803C] transition-colors duration-300 line-clamp-1">
+              <div className="mt-2.5 flex items-center justify-between text-[#1B211D] px-0.5">
+                <span className="text-xs sm:text-sm font-medium tracking-tight group-hover:text-[#8F3E24] transition-colors duration-300 line-clamp-1">
                   {subcat.name[language]}
                 </span>
                 {/* Subtle animated arrow */}
-                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 text-[#C49E5D]">
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 text-[#B85C3A]">
                   {isRTL ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                 </span>
               </div>
@@ -192,16 +192,16 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
       </div>
 
       {/* 4. Top Picks Header Row: Top Picks | View All  +  Navigation Arrows */}
-      <div className="mt-10 sm:mt-12 flex items-center justify-between gap-4 pb-3 border-b border-[#EDE5DA]">
+      <div className="mt-10 sm:mt-12 flex items-center justify-between gap-4 pb-3 border-b border-[#EADFD2]">
         {/* Left Side (Right Side in RTL): Top Picks | View All */}
         <div className="flex items-center gap-3">
-          <span className="text-sm sm:text-base md:text-lg font-bold text-[#1C1A17] tracking-tight">
+          <span className="text-sm sm:text-base md:text-lg font-bold text-[#1B211D] tracking-tight">
             {t('topPicks')}
           </span>
-          <span className="text-[#C8BDB0]">|</span>
+          <span className="text-[#C6B7A6]">|</span>
           <button
             onClick={() => onExploreCategory && onExploreCategory(section.id)}
-            className="text-xs sm:text-sm text-[#8C7A6B] hover:text-[#A9803C] font-medium transition-colors inline-flex items-center gap-1 group"
+            className="text-xs sm:text-sm text-[#85796D] hover:text-[#8F3E24] font-medium transition-colors inline-flex items-center gap-1 group"
           >
             <span>{t('viewAll')}</span>
             {isRTL ? (
@@ -217,10 +217,10 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
           <button
             onClick={() => handleScroll('prev')}
             disabled={!canScrollPrev}
-            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#D5C9B8] flex items-center justify-center transition-all ${
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#D3C3B1] flex items-center justify-center transition-all ${
               canScrollPrev
-                ? 'text-[#1C1A17] hover:bg-[#1C1A17] hover:text-[#EAD8B8] hover:border-[#1C1A17] shadow-2xs'
-                : 'text-[#D0C5B7] border-[#E8E0D5] cursor-not-allowed opacity-50'
+                ? 'text-[#1B211D] hover:bg-[#1B211D] hover:text-[#F1D5B2] hover:border-[#1B211D] shadow-2xs'
+                : 'text-[#CFBFAD] border-[#E5D7C7] cursor-not-allowed opacity-50'
             }`}
             aria-label="Previous products"
           >
@@ -229,10 +229,10 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
           <button
             onClick={() => handleScroll('next')}
             disabled={!canScrollNext}
-            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#D5C9B8] flex items-center justify-center transition-all ${
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#D3C3B1] flex items-center justify-center transition-all ${
               canScrollNext
-                ? 'text-[#1C1A17] hover:bg-[#1C1A17] hover:text-[#EAD8B8] hover:border-[#1C1A17] shadow-2xs'
-                : 'text-[#D0C5B7] border-[#E8E0D5] cursor-not-allowed opacity-50'
+                ? 'text-[#1B211D] hover:bg-[#1B211D] hover:text-[#F1D5B2] hover:border-[#1B211D] shadow-2xs'
+                : 'text-[#CFBFAD] border-[#E5D7C7] cursor-not-allowed opacity-50'
             }`}
             aria-label="Next products"
           >

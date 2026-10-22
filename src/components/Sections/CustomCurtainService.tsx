@@ -34,18 +34,18 @@ export const CustomCurtainService: React.FC = () => {
   ];
 
   return (
-    <section id="custom-service" className="py-16 sm:py-24 bg-[#FAF8F5] relative">
+    <section id="custom-service" className="py-16 sm:py-24 bg-[#FBF8F3] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#8C6B32] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#7A351F] uppercase tracking-widest block mb-2">
             {t('customEyebrow')}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#191715] font-serif-luxury tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
             {t('customTitle')}
           </h2>
-          <p className="text-sm sm:text-base text-[#6E645A] mt-3 leading-relaxed">
+          <p className="text-sm sm:text-base text-[#687168] mt-3 leading-relaxed">
             {t('customDescription')}
           </p>
         </div>
@@ -58,29 +58,29 @@ export const CustomCurtainService: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="relative bg-white rounded-2xl p-6 sm:p-7 border border-[#E7DFD5] shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                className="relative bg-white rounded-2xl p-6 sm:p-7 border border-[#E4D6C7] shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
               >
                 {/* Step Number & Icon */}
                 <div>
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-[#FAF8F5] group-hover:bg-[#C49E5D] group-hover:text-white text-[#A9803C] border border-[#EAE3D8] flex items-center justify-center transition-colors duration-300">
+                    <div className="w-12 h-12 rounded-2xl bg-[#FBF8F3] group-hover:bg-[#B85C3A] group-hover:text-white text-[#8F3E24] border border-[#E7DACB] flex items-center justify-center transition-colors duration-300">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className="text-2xl font-black text-[#E8DFD3] font-mono group-hover:text-[#C49E5D]/40 transition-colors">
+                    <span className="text-2xl font-black text-[#E5D8C9] font-mono group-hover:text-[#B85C3A]/40 transition-colors">
                       {step.num}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#1C1A17] mb-2 group-hover:text-[#A9803C] transition-colors">
+                  <h3 className="text-base font-bold text-[#1B211D] mb-2 group-hover:text-[#8F3E24] transition-colors">
                     {step.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#7A6F64] leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#747B72] leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-[#F7F3EE] text-[11px] font-semibold text-[#8C7A6B]">
+                <div className="mt-6 pt-3 border-t border-[#F5EEE5] text-[11px] font-semibold text-[#85796D]">
                   {language === 'ar' ? 'خدمة متكاملة في الرياض' : 'Riyadh Concierge Included'}
                 </div>
               </div>
@@ -92,14 +92,14 @@ export const CustomCurtainService: React.FC = () => {
         <div className="mt-12 text-center">
           <button
             onClick={openConsultation}
-            className="inline-flex items-center gap-2.5 bg-[#1C1A17] hover:bg-[#2C2824] text-[#FAF8F5] px-8 py-4 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 group"
+            className="inline-flex items-center gap-2.5 bg-[#1B211D] hover:bg-[#29302B] text-[#FBF8F3] px-8 py-4 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 group"
           >
-            <Scissors className="w-4 h-4 text-[#C49E5D]" />
+            <Scissors className="w-4 h-4 text-[#B85C3A]" />
             <span>{t('requestCustomCTA')}</span>
-            <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform text-[#C49E5D]" />
+            <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform text-[#B85C3A]" />
           </button>
           
-          <p className="text-xs text-[#8C7A6B] mt-3">
+          <p className="text-xs text-[#85796D] mt-3">
             {language === 'ar'
               ? 'زيارة منزلية مجانية مع إحضار كامل كتالوجات الأقمشة وعينات السكك'
               : 'Free in-home measurement with full fabric swatches and track samples in Riyadh'}

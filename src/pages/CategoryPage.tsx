@@ -12,46 +12,54 @@ import { Calendar, Phone } from 'lucide-react';
 
 // Category-specific subcategories for interactive hero pills
 const CATEGORY_SUBCATEGORIES: Record<string, { slug: string; name: { en: string; ar: string } }[]> = {
+  'sofas': [
+    { slug: 'three-seater', name: { en: 'Three-Seater', ar: 'ثلاثة مقاعد' } },
+    { slug: 'two-seater', name: { en: 'Two-Seater', ar: 'مقعدان' } },
+    { slug: 'l-shape', name: { en: 'L-Shape', ar: 'تصميم L' } },
+    { slug: 'modular', name: { en: 'Modular', ar: 'وحدات مرنة' } },
+    { slug: 'arabic-majlis', name: { en: 'Majlis', ar: 'مجلس' } },
+    { slug: 'accent-chair', name: { en: 'Accent Chairs', ar: 'كراسي مميزة' } },
+    { slug: 'pull-out', name: { en: 'Sofa Beds', ar: 'كنب سرير' } }
+  ],
+  'sectional-sofas': [
+    { slug: 'l-shape', name: { en: 'L-Shape', ar: 'تصميم L' } },
+    { slug: 'u-shape', name: { en: 'U-Shape', ar: 'تصميم U' } },
+    { slug: 'modular', name: { en: 'Modular', ar: 'وحدات مرنة' } }
+  ],
+  'majlis-sofas': [
+    { slug: 'arabic-majlis', name: { en: 'Arabic Majlis', ar: 'مجلس عربي' } },
+    { slug: 'floor-majlis', name: { en: 'Floor Seating', ar: 'جلسات أرضية' } }
+  ],
+  'accent-chairs': [
+    { slug: 'accent-chair', name: { en: 'Accent Chair', ar: 'كرسي مميز' } },
+    { slug: 'lounge-chair', name: { en: 'Lounge Chair', ar: 'كرسي استرخاء' } },
+    { slug: 'recliner', name: { en: 'Recliner', ar: 'كرسي مريح' } }
+  ],
+  'sofa-beds': [
+    { slug: 'pull-out', name: { en: 'Pull-Out', ar: 'قابل للسحب' } },
+    { slug: 'storage-sofa', name: { en: 'Storage Sofa', ar: 'كنبة بتخزين' } }
+  ],
   'blackout-curtains': [
     { slug: 'triple-weave', name: { en: 'Triple Weave', ar: 'نسيج ثلاثي' } },
-    { slug: 'thermal', name: { en: 'Thermal Velvet', ar: 'مخمل حراري' } },
-    { slug: 's-wave-blackout', name: { en: 'S-Wave Track', ar: 'ويف انسيابي' } },
-    { slug: 'hotel-blackout', name: { en: 'Hotel Grade', ar: 'فندقي فاخر' } }
+    { slug: 'thermal-blackout', name: { en: 'Thermal Velvet', ar: 'مخمل حراري' } },
+    { slug: 'linen-blackout', name: { en: 'Linen Blackout', ar: 'كتان معتم' } }
   ],
   'curtains': [
-    { slug: 'velvet-drapes', name: { en: 'Heritage Velvet', ar: 'مخمل ملكي' } },
-    { slug: 'linen-drapes', name: { en: 'Belgian Linen', ar: 'كتان بلجيكي' } },
+    { slug: 'velvet', name: { en: 'Heritage Velvet', ar: 'مخمل ملكي' } },
+    { slug: 'linen', name: { en: 'Belgian Linen', ar: 'كتان بلجيكي' } },
     { slug: 'jacquard', name: { en: 'Royal Jacquard', ar: 'جاكار مطرز' } }
   ],
   'sheer-curtains': [
-    { slug: 'organza-sheer', name: { en: 'Italian Organza', ar: 'أورجانزا إيطالي' } },
-    { slug: 'linen-sheer', name: { en: 'Linen Texture', ar: 'شيفون كتاني' } }
-  ],
-  'roller-blinds': [
-    { slug: 'sunscreen', name: { en: 'UV Sunscreen', ar: 'حماية من الشمس' } },
-    { slug: 'motorized', name: { en: 'Smart Motorized', ar: 'ذكية بمحرك' } },
-    { slug: 'waterproof', name: { en: 'Waterproof Aluminum', ar: 'مقاومة للرطوبة' } }
-  ],
-  'roman-blinds': [
-    { slug: 'classic-folds', name: { en: 'Classic Folds', ar: 'طيات كلاسيكية' } },
-    { slug: 'kids-cordless', name: { en: 'Cordless Safety', ar: 'آمنة للأطفال' } }
-  ],
-  'zebra-blinds': [
-    { slug: 'dual-phase', name: { en: 'Day & Night Dual', ar: 'نهارية وليلية' } }
+    { slug: 'organza', name: { en: 'Italian Organza', ar: 'أورجانزا إيطالي' } },
+    { slug: 'linen-sheer', name: { en: 'Linen Texture', ar: 'شيفون كتاني' } },
+    { slug: 'lace', name: { en: 'Lace Detail', ar: 'تفاصيل دانتيل' } }
   ],
   'custom-curtains': [
-    { slug: 'wave-track', name: { en: 'Bespoke S-Wave', ar: 'انسيابية ويف' } },
-    { slug: 'heritage', name: { en: 'Najdi Heritage', ar: 'تراث نجدي' } }
+    { slug: 's-wave', name: { en: 'Bespoke S-Wave', ar: 'انسيابية ويف' } },
+    { slug: 'couture', name: { en: 'Couture Tailoring', ar: 'خياطة كوتور' } }
   ],
   'ready-made-curtains': [
-    { slug: 'ready-pleat', name: { en: 'Pinch Pleat Panels', ar: 'طيات فرنسية جاهزة' } }
-  ],
-  'accessories': [
-    { slug: 'tracks', name: { en: 'Ceiling Tracks', ar: 'سكك أسقف' } },
-    { slug: 'rods', name: { en: 'Brass Rods', ar: 'قضبان نحاسية' } },
-    { slug: 'motors', name: { en: 'Smart Motors', ar: 'محركات ذكية' } },
-    { slug: 'tiebacks', name: { en: 'Tiebacks', ar: 'أربطة ستائر' } },
-    { slug: 'rings', name: { en: 'Silent Rings', ar: 'حلقات صامتة' } }
+    { slug: 'eyelet', name: { en: 'Eyelet Panels', ar: 'ستائر حلقات جاهزة' } }
   ]
 };
 
@@ -59,7 +67,7 @@ const INITIAL_FILTERS: FilterState = {
   categories: [],
   subcategories: [],
   collections: [],
-  priceRange: [0, 1200],
+  priceRange: [0, 25000],
   colors: [],
   fabrics: [],
   patterns: [],
@@ -78,7 +86,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
   const { route } = useRouter();
 
   // Determine current category slug from props or router
-  const categorySlug = propSlug || route.params.slug || 'curtains';
+  const categorySlug = propSlug || route.params.slug || 'sofas';
 
   // Find category meta
   const currentCategory: Category = useMemo(() => {
@@ -86,10 +94,10 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
       CATEGORIES.find((c) => c.slug === categorySlug) || {
         id: categorySlug,
         slug: categorySlug,
-        title: { en: 'Collection', ar: 'المجموعة' },
-        subtitle: { en: 'Explore premium tailored window drapes', ar: 'تصفح تشكيلة الستائر الفاخرة' },
+        title: { en: 'Sofas & Curtains', ar: 'الكنب والستائر' },
+        subtitle: { en: 'Explore tailored seating and window couture', ar: 'تصفح الكنب والستائر المفصلة' },
         itemCount: 20,
-        image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop'
       }
     );
   }, [categorySlug]);
@@ -109,12 +117,21 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
     let result = PRODUCTS.filter((p) => {
       // If product categorySlug equals this category
       if (p.categorySlug === categorySlug) return true;
+      // Aggregation pages: all sofas
+      if (categorySlug === 'sofas') {
+        return ['sofas', 'sectional-sofas', 'majlis-sofas', 'accent-chairs', 'sofa-beds'].includes(p.categorySlug);
+      }
       // Or if this category is 'curtains', also include other curtain sub-types
       if (categorySlug === 'curtains') {
         return ['curtains', 'blackout-curtains', 'sheer-curtains', 'custom-curtains', 'ready-made-curtains'].includes(p.categorySlug);
       }
       return false;
     });
+
+    // 1b. Sidebar category filter
+    if (filters.categories.length > 0) {
+      result = result.filter((p) => filters.categories.includes(p.categorySlug));
+    }
 
     // 2. Subcategory filter from hero tabs
     if (activeSubcategory && activeSubcategory !== 'all') {
@@ -158,7 +175,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
     // 6. Light Control filter
     if (filters.lightControls.length > 0) {
       result = result.filter((p) => {
-        if (!p.lightControl) return false;
+        if (!p.lightControl) return true;
         return filters.lightControls.includes(p.lightControl);
       });
     }
@@ -221,7 +238,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
   };
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pb-16">
+    <div className="bg-[#FCF9F4] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb navigation */}
         <Breadcrumbs
@@ -248,7 +265,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
         {/* Main 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Desktop Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#ECE6DD] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}
@@ -282,17 +299,17 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
             />
 
             {/* Installation & Guarantee Banner */}
-            <div className="mt-12 bg-white rounded-2xl border border-[#EBE5DB] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="mt-12 bg-white rounded-2xl border border-[#E8DCCE] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div className="space-y-1 text-center sm:text-start">
-                <span className="text-xs uppercase font-semibold text-[#A9803C] tracking-wider">
+                <span className="text-xs uppercase font-semibold text-[#8F3E24] tracking-wider">
                   {language === 'ar' ? 'تفصيل وتركيب دقيق' : 'Custom Sizing & Precision Fitting'}
                 </span>
-                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#1C1A17]">
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#1B211D]">
                   {language === 'ar'
                     ? `هل ترغب في تفصيل هذه التشكيلة بمقاسات فيلتك الخاصة؟`
                     : `Want custom dimensions for these ${currentCategory.title.en}?`}
                 </h3>
-                <p className="text-xs text-[#73685C] max-w-lg">
+                <p className="text-xs text-[#6C7268] max-w-lg">
                   {language === 'ar'
                     ? 'فريقنا المتخصص في الرياض يقوم برفع المقاسات وتصميم المجرى المخفي وتفصيل الأقمشة بأعلى معايير الدقة.'
                     : 'Our team delivers on-site laser measurements, motorized track installation, and bespoke finishing across all Riyadh districts.'}
@@ -301,7 +318,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
 
               <a
                 href="tel:+966500000000"
-                className="px-5 py-3 rounded-xl bg-[#1C1A17] hover:bg-[#A9803C] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
+                className="px-5 py-3 rounded-xl bg-[#1B211D] hover:bg-[#8F3E24] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
               >
                 <Calendar className="w-4 h-4" />
                 <span>{language === 'ar' ? 'طلب زيارة فني مقاسات' : 'Book Measurement Visit'}</span>

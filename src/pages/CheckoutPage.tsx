@@ -94,14 +94,14 @@ export const CheckoutPage: React.FC = () => {
           </h2>
           <p className="text-xs text-neutral-500 mb-6 leading-relaxed">
             {language === 'ar'
-              ? 'يرجى اختيار الستائر والمقاسات المفضلة أولاً قبل إتمام الطلب.'
-              : 'Please select your preferred curtain styles before proceeding to checkout.'}
+              ? 'يرجى اختيار قطع الكنب أو الستائر والمقاسات المفضلة أولاً.'
+              : 'Please add your preferred sofas or curtains before proceeding to checkout.'}
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center gap-2 bg-[#A9803C] hover:bg-[#8C6527] text-white px-6 py-3 rounded-lg text-xs font-bold transition-all shadow-xs"
+            className="inline-flex items-center justify-center gap-2 bg-[#8F3E24] hover:bg-[#7A331D] text-white px-6 py-3 rounded-lg text-xs font-bold transition-all shadow-xs"
           >
-            <span>{language === 'ar' ? 'استعراض تشكيلات الستائر' : 'Browse Curtain Catalog'}</span>
+            <span>{language === 'ar' ? 'استعراض الكنب والستائر' : 'Browse Sofas & Curtains'}</span>
             <ArrowIcon className="w-4 h-4" />
           </Link>
         </div>
@@ -170,7 +170,7 @@ export const CheckoutPage: React.FC = () => {
         customer: {
           firstName: receiverName.split(' ')[0] || 'Customer',
           lastName: receiverName.split(' ').slice(1).join(' ') || 'Riyadh',
-          email: 'customer@riyadh-curtains.com',
+          email: 'customer@sofalora.com',
           phone: receiverPhone
         },
         deliveryAddress: {
@@ -203,21 +203,21 @@ export const CheckoutPage: React.FC = () => {
     <div className="bg-[#F7F7F7] min-h-screen pb-16 font-sans">
       
       {/* 1. Atelier Luxury Secure Checkout Header Bar */}
-      <div className="bg-[#FAF8F5] border-b border-[#EBE3D8] sticky top-0 z-30 shadow-xs backdrop-blur-md bg-opacity-95">
+      <div className="bg-[#FBF8F3] border-b border-[#E8DCCD] sticky top-0 z-30 shadow-xs backdrop-blur-md bg-opacity-95">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           
           {/* Left: Return to Cart */}
           <Link
             href="/cart"
-            className="text-xs font-bold text-[#1C1A17] hover:text-[#A9803C] flex items-center gap-1.5 transition-colors"
+            className="text-xs font-bold text-[#1B211D] hover:text-[#8F3E24] flex items-center gap-1.5 transition-colors"
           >
-            <ArrowIcon className="w-4 h-4 text-[#A9803C]" />
+            <ArrowIcon className="w-4 h-4 text-[#8F3E24]" />
             <span>{language === 'ar' ? 'العودة إلى السلة' : 'Return to Cart'}</span>
           </Link>
 
           {/* Center: Secure Checkout Lock */}
-          <div className="flex items-center gap-2 text-[#1C1A17] font-bold text-xs sm:text-sm tracking-wide">
-            <div className="w-6 h-6 rounded-full bg-[#F4EFEA] border border-[#E0D6C8] flex items-center justify-center text-[#A9803C]">
+          <div className="flex items-center gap-2 text-[#1B211D] font-bold text-xs sm:text-sm tracking-wide">
+            <div className="w-6 h-6 rounded-full bg-[#F4EDE4] border border-[#DFD2C2] flex items-center justify-center text-[#8F3E24]">
               <Lock className="w-3.5 h-3.5" />
             </div>
             <span>{language === 'ar' ? 'بوابة الدفع الآمن والمشفر' : 'Secure & Encrypted Checkout'}</span>
@@ -227,15 +227,15 @@ export const CheckoutPage: React.FC = () => {
           <div className="flex items-center gap-3 sm:gap-4">
             <button
               onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')}
-              className="text-[11px] font-bold text-[#1C1A17] border border-[#D8CEBF] rounded-md px-2.5 py-1 hover:bg-[#EBE3D8]/50 transition-colors"
+              className="text-[11px] font-bold text-[#1B211D] border border-[#D8C8B6] rounded-md px-2.5 py-1 hover:bg-[#E8DCCD]/50 transition-colors"
             >
               {language === 'ar' ? 'English' : 'العربية'}
             </button>
             <Link href="/" className="flex flex-col group text-end">
-              <span className="text-sm sm:text-base font-bold tracking-tight text-[#1C1A17] font-serif-luxury transition-colors group-hover:text-[#A9803C]">
-                {language === 'ar' ? 'ستائر محمد' : 'MOHAMMAD CURTAINS'}
+              <span className="text-sm sm:text-base font-bold tracking-tight text-[#1B211D] font-serif-luxury transition-colors group-hover:text-[#8F3E24]">
+                {language === 'ar' ? 'سوفالورا' : 'SOFALORA'}
               </span>
-              <span className="text-[9px] uppercase tracking-[0.18em] text-[#8C7A6B] font-medium -mt-0.5 hidden sm:inline">
+              <span className="text-[9px] uppercase tracking-[0.18em] text-[#85796D] font-medium -mt-0.5 hidden sm:inline">
                 {language === 'ar' ? 'الرياض • الأتيليه الفاخر' : 'RIYADH • BESPOKE ATELIER'}
               </span>
             </Link>
@@ -278,7 +278,7 @@ export const CheckoutPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditingAddress(!isEditingAddress)}
-                  className="text-xs font-bold text-[#A9803C] hover:text-[#8C6527] hover:underline shrink-0"
+                  className="text-xs font-bold text-[#8F3E24] hover:text-[#7A331D] hover:underline shrink-0"
                 >
                   {language === 'ar' ? 'تعديل العنوان' : 'Edit Address'}
                 </button>
@@ -334,7 +334,7 @@ export const CheckoutPage: React.FC = () => {
                         setAddressLine(`${distObj?.name[language] || 'Riyadh'}, ${tempStreet} - Riyadh, Saudi Arabia`);
                         setIsEditingAddress(false);
                       }}
-                      className="px-4 py-1.5 bg-[#A9803C] hover:bg-[#8C6527] text-white rounded-lg text-xs font-bold transition-colors"
+                      className="px-4 py-1.5 bg-[#8F3E24] hover:bg-[#7A331D] text-white rounded-lg text-xs font-bold transition-colors"
                     >
                       {language === 'ar' ? 'حفظ العنوان' : 'Save Address'}
                     </button>
@@ -361,7 +361,7 @@ export const CheckoutPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setIsEditingReceiver(!isEditingReceiver)}
-                      className="text-[#A9803C] hover:text-[#8C6527] font-bold text-[11px] hover:underline"
+                      className="text-[#8F3E24] hover:text-[#7A331D] font-bold text-[11px] hover:underline"
                     >
                       {language === 'ar' ? 'تغيير المستلم' : 'Change receiver'}
                     </button>
@@ -423,7 +423,7 @@ export const CheckoutPage: React.FC = () => {
                       type="checkbox"
                       checked={leaveAtDoor}
                       onChange={(e) => setLeaveAtDoor(e.target.checked)}
-                      className="w-4 h-4 rounded text-[#A9803C] border-neutral-300 focus:ring-[#A9803C]"
+                      className="w-4 h-4 rounded text-[#8F3E24] border-neutral-300 focus:ring-[#8F3E24]"
                     />
                   </label>
                 </div>
@@ -486,7 +486,7 @@ export const CheckoutPage: React.FC = () => {
                   {language === 'ar' ? 'الاستلام بحلول ' : 'Get it by '}
                   <strong className="text-neutral-900">Sun, Sep 20</strong>
                 </div>
-                <span className="bg-[#A9803C] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
+                <span className="bg-[#8F3E24] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
                   {language === 'ar' ? 'توصيل وتركيب سريع' : 'EXPRESS ATELIER'}
                 </span>
               </div>
@@ -530,7 +530,7 @@ export const CheckoutPage: React.FC = () => {
               {/* Quara Credit Promo */}
               <div className="p-2.5 bg-neutral-900 text-white rounded-lg flex items-center justify-between text-xs cursor-pointer">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-[#A9803C] flex items-center justify-center font-bold text-[10px]">
+                  <span className="w-5 h-5 rounded-full bg-[#8F3E24] flex items-center justify-center font-bold text-[10px]">
                     Q
                   </span>
                   <span className="font-semibold">
@@ -561,7 +561,7 @@ export const CheckoutPage: React.FC = () => {
                 {/* Method 1: Debit/Credit Card with Saved Card & CVV (Image 2) */}
                 <div className={`p-4 rounded-xl border transition-all ${
                   selectedPayment === 'saved_card' || selectedPayment === 'new_card'
-                    ? 'border-[#A9803C] bg-[#FAF8F5] ring-1 ring-[#A9803C]/30'
+                    ? 'border-[#8F3E24] bg-[#FBF8F3] ring-1 ring-[#8F3E24]/30'
                     : 'border-neutral-200 hover:border-neutral-300'
                 }`}>
                   <div className="flex items-center justify-between">
@@ -571,7 +571,7 @@ export const CheckoutPage: React.FC = () => {
                         name="checkout_payment"
                         checked={selectedPayment === 'saved_card' || selectedPayment === 'new_card'}
                         onChange={() => setSelectedPayment('saved_card')}
-                        className="w-4 h-4 text-[#A9803C] focus:ring-[#A9803C]"
+                        className="w-4 h-4 text-[#8F3E24] focus:ring-[#8F3E24]"
                       />
                       <div className="flex items-center gap-2 text-xs font-bold text-neutral-900">
                         <CreditCard className="w-4 h-4 text-neutral-700" />
@@ -582,7 +582,7 @@ export const CheckoutPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setSelectedPayment(selectedPayment === 'new_card' ? 'saved_card' : 'new_card')}
-                      className="text-xs font-bold text-[#A9803C] hover:text-[#8C6527] hover:underline"
+                      className="text-xs font-bold text-[#8F3E24] hover:text-[#7A331D] hover:underline"
                     >
                       {selectedPayment === 'new_card' ? (language === 'ar' ? 'البطاقة المحفوظة' : 'Saved Card') : (language === 'ar' ? 'إضافة / تغيير' : 'Add/Change')}
                     </button>
@@ -608,7 +608,7 @@ export const CheckoutPage: React.FC = () => {
                           placeholder="CVV"
                           value={savedCardCvv}
                           onChange={(e) => setSavedCardCvv(e.target.value.replace(/\D/g, ''))}
-                          className="w-20 bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-center font-mono focus:outline-none focus:ring-1 focus:ring-[#A9803C] focus:border-[#A9803C]"
+                          className="w-20 bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-center font-mono focus:outline-none focus:ring-1 focus:ring-[#8F3E24] focus:border-[#8F3E24]"
                         />
                       </div>
                     </div>
@@ -622,7 +622,7 @@ export const CheckoutPage: React.FC = () => {
                         placeholder="Card Number (XXXX XXXX XXXX XXXX)"
                         value={newCardNumber}
                         onChange={(e) => setNewCardNumber(e.target.value)}
-                        className="w-full bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#A9803C] focus:border-[#A9803C]"
+                        className="w-full bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#8F3E24] focus:border-[#8F3E24]"
                       />
                       <div className="grid grid-cols-2 gap-2">
                         <input
@@ -630,7 +630,7 @@ export const CheckoutPage: React.FC = () => {
                           placeholder="MM/YY"
                           value={newCardExpiry}
                           onChange={(e) => setNewCardExpiry(e.target.value)}
-                          className="bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#A9803C] focus:border-[#A9803C]"
+                          className="bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#8F3E24] focus:border-[#8F3E24]"
                         />
                         <input
                           type="password"
@@ -638,7 +638,7 @@ export const CheckoutPage: React.FC = () => {
                           maxLength={4}
                           value={newCardCvv}
                           onChange={(e) => setNewCardCvv(e.target.value)}
-                          className="bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#A9803C] focus:border-[#A9803C]"
+                          className="bg-white border border-neutral-300 rounded px-3 py-1.5 font-mono focus:outline-none focus:ring-1 focus:ring-[#8F3E24] focus:border-[#8F3E24]"
                         />
                       </div>
                     </div>
@@ -648,7 +648,7 @@ export const CheckoutPage: React.FC = () => {
                 {/* Method 2: Tabby (Image 2) */}
                 <label className={`p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
                   selectedPayment === 'tabby'
-                    ? 'border-[#A9803C] bg-[#FAF8F5] ring-1 ring-[#A9803C]/30'
+                    ? 'border-[#8F3E24] bg-[#FBF8F3] ring-1 ring-[#8F3E24]/30'
                     : 'border-neutral-200 hover:border-neutral-300'
                 }`}>
                   <div className="flex items-center gap-3">
@@ -657,7 +657,7 @@ export const CheckoutPage: React.FC = () => {
                       name="checkout_payment"
                       checked={selectedPayment === 'tabby'}
                       onChange={() => setSelectedPayment('tabby')}
-                      className="w-4 h-4 text-[#A9803C] focus:ring-[#A9803C]"
+                      className="w-4 h-4 text-[#8F3E24] focus:ring-[#8F3E24]"
                     />
                     <span className="font-mono font-bold text-neutral-900 bg-neutral-200 px-2 py-0.5 rounded text-xs">
                       tabby
@@ -677,7 +677,7 @@ export const CheckoutPage: React.FC = () => {
                 {/* Method 3: Tamara (Image 2) */}
                 <label className={`p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
                   selectedPayment === 'tamara'
-                    ? 'border-[#A9803C] bg-[#FAF8F5] ring-1 ring-[#A9803C]/30'
+                    ? 'border-[#8F3E24] bg-[#FBF8F3] ring-1 ring-[#8F3E24]/30'
                     : 'border-neutral-200 hover:border-neutral-300'
                 }`}>
                   <div className="flex items-center gap-3">
@@ -686,7 +686,7 @@ export const CheckoutPage: React.FC = () => {
                       name="checkout_payment"
                       checked={selectedPayment === 'tamara'}
                       onChange={() => setSelectedPayment('tamara')}
-                      className="w-4 h-4 text-[#A9803C] focus:ring-[#A9803C]"
+                      className="w-4 h-4 text-[#8F3E24] focus:ring-[#8F3E24]"
                     />
                     <span className="font-mono font-bold text-neutral-900 bg-amber-200 px-2 py-0.5 rounded text-xs">
                       tamara
@@ -706,7 +706,7 @@ export const CheckoutPage: React.FC = () => {
                 {/* Method 4: Cash On Delivery / Wireless POS (Image 2) */}
                 <label className={`p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
                   selectedPayment === 'cod'
-                    ? 'border-[#A9803C] bg-[#FAF8F5] ring-1 ring-[#A9803C]/30'
+                    ? 'border-[#8F3E24] bg-[#FBF8F3] ring-1 ring-[#8F3E24]/30'
                     : 'border-neutral-200 hover:border-neutral-300'
                 }`}>
                   <div className="flex items-center gap-3">
@@ -715,7 +715,7 @@ export const CheckoutPage: React.FC = () => {
                       name="checkout_payment"
                       checked={selectedPayment === 'cod'}
                       onChange={() => setSelectedPayment('cod')}
-                      className="w-4 h-4 text-[#A9803C] focus:ring-[#A9803C]"
+                      className="w-4 h-4 text-[#8F3E24] focus:ring-[#8F3E24]"
                     />
                     <div className="w-7 h-7 rounded bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
                       💵
@@ -759,7 +759,7 @@ export const CheckoutPage: React.FC = () => {
                     onClick={() => setDonationAmount(donationAmount === val ? 0 : val)}
                     className={`px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${
                       donationAmount === val
-                        ? 'border-[#A9803C] bg-[#A9803C] text-white shadow-xs'
+                        ? 'border-[#8F3E24] bg-[#8F3E24] text-white shadow-xs'
                         : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800'
                     }`}
                   >
@@ -850,7 +850,7 @@ export const CheckoutPage: React.FC = () => {
                       ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
                       : !isCardReady && selectedPayment === 'saved_card'
                       ? 'bg-neutral-200 hover:bg-neutral-300 text-neutral-700 cursor-pointer'
-                      : 'bg-[#A9803C] hover:bg-[#8C6527] active:bg-[#73531F] text-white'
+                      : 'bg-[#8F3E24] hover:bg-[#7A331D] active:bg-[#73531F] text-white'
                   }`}
                 >
                   {isSubmitting ? (
@@ -869,11 +869,11 @@ export const CheckoutPage: React.FC = () => {
               {/* Security & Guarantees */}
               <div className="pt-3 border-t border-neutral-100 space-y-2 text-[11px] text-neutral-500">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#A9803C]" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#8F3E24]" />
                   <span>{language === 'ar' ? 'دفع إلكتروني آمن ومشفر بنسبة ١٠٠٪' : '100% Encrypted & Secure Checkout'}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Truck className="w-3.5 h-3.5 text-[#A9803C]" />
+                  <Truck className="w-3.5 h-3.5 text-[#8F3E24]" />
                   <span>{language === 'ar' ? 'فريق تركيب مجهز بأجهزة ليزر لضبط الاستواء' : 'Laser In-Home Precision Measurement'}</span>
                 </div>
               </div>
@@ -888,13 +888,13 @@ export const CheckoutPage: React.FC = () => {
       {showOrderSuccessModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-neutral-200 animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 rounded-full bg-[#FAF8F5] text-[#A9803C] border border-[#E0D6C8] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#FBF8F3] text-[#8F3E24] border border-[#DFD2C2] flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
             <div className="text-center space-y-2">
-              <span className="bg-[#A9803C] text-white px-3 py-1 rounded-full font-bold text-xs uppercase tracking-wider shadow-2xs">
-                {language === 'ar' ? 'معتمد من أتيليه ستائر محمد بالرياض' : 'MOHAMMAD CURTAINS ATELIER VERIFIED'}
+              <span className="bg-[#8F3E24] text-white px-3 py-1 rounded-full font-bold text-xs uppercase tracking-wider shadow-2xs">
+                {language === 'ar' ? 'معتمد من أتيليه سوفالورا بالرياض' : 'SOFALORA ATELIER VERIFIED'}
               </span>
               <h2 className="text-xl font-bold text-neutral-900 pt-1">
                 {language === 'ar' ? 'تم تأكيد طلبك بنجاح!' : 'Order Placed Successfully!'}
@@ -921,14 +921,14 @@ export const CheckoutPage: React.FC = () => {
               </div>
               <div className="flex justify-between pt-2 border-t border-neutral-200">
                 <span className="font-bold text-neutral-900">{language === 'ar' ? 'المبلغ الإجمالي' : 'Total Paid'}</span>
-                <span className="font-black text-sm text-[#A9803C]">{formatPrice(finalTotal)}</span>
+                <span className="font-black text-sm text-[#8F3E24]">{formatPrice(finalTotal)}</span>
               </div>
             </div>
 
             <div className="space-y-2">
               <Link
                 href="/shop"
-                className="w-full py-3 px-4 bg-[#A9803C] hover:bg-[#8C6527] text-white rounded-lg font-bold text-xs flex items-center justify-center transition-all shadow-xs"
+                className="w-full py-3 px-4 bg-[#8F3E24] hover:bg-[#7A331D] text-white rounded-lg font-bold text-xs flex items-center justify-center transition-all shadow-xs"
               >
                 {language === 'ar' ? 'العودة للمتجر الرئيسي' : 'Return to Shop'}
               </Link>

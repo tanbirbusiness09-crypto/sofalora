@@ -39,7 +39,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
   const count = itemCount !== undefined ? itemCount : category?.itemCount;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-[#1C1A17] text-white mb-8 shadow-md">
+    <div className="relative rounded-2xl overflow-hidden bg-[#1B211D] text-white mb-8 shadow-md">
       {/* Background Image with Dark Vignette */}
       <div className="absolute inset-0 z-0">
         <img
@@ -47,16 +47,16 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
           alt={title[language]}
           className="w-full h-full object-cover object-center opacity-35 scale-105 filter blur-[0.5px]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#141210] via-[#1C1A17]/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#121714] via-[#1B211D]/85 to-transparent" />
       </div>
 
       {/* Content Container */}
       <div className="relative z-10 p-6 sm:p-10 md:p-12 max-w-3xl">
         {/* Top Tag & Count */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#A9803C]/25 text-[#E6C98E] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#A9803C]/40">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8F3E24]/25 text-[#E6C98E] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#8F3E24]/40">
             <Sparkles className="w-3.5 h-3.5 text-[#E6C98E]" />
-            <span>Mohammad Curtains • Riyadh</span>
+            <span>Sofalora • Riyadh</span>
           </span>
           {count !== undefined && (
             <span className="text-xs text-[#C5BCB2]">
@@ -99,7 +99,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
               onClick={() => onSubcategorySelect && onSubcategorySelect('all')}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                 !activeSubcategory || activeSubcategory === 'all'
-                  ? 'bg-[#A9803C] text-white'
+                  ? 'bg-[#8F3E24] text-white'
                   : 'bg-white/10 text-white/80 hover:bg-white/20'
               }`}
             >
@@ -112,7 +112,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
                 onClick={() => onSubcategorySelect && onSubcategorySelect(sub.slug)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   activeSubcategory === sub.slug
-                    ? 'bg-[#A9803C] text-white'
+                    ? 'bg-[#8F3E24] text-white'
                     : 'bg-white/10 text-white/80 hover:bg-white/20'
                 }`}
               >
