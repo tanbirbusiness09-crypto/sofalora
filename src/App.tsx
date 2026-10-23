@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import { LanguageProvider } from './context/LanguageContext';
 import { RouterProvider, useRouter } from './context/RouterContext';
-import { UtilityBar } from './components/Header/UtilityBar';
 import { MainHeader } from './components/Header/MainHeader';
 import { Navigation } from './components/Header/Navigation';
 import { MobileDrawer } from './components/Header/MobileDrawer';
@@ -120,8 +119,7 @@ const MainLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAF8] text-[#101828] selection:bg-[#C8102E]/25 selection:text-[#101828] antialiased">
-      {/* 1. Header Area (Utility Bar, Main Header, Mega Menu, Mobile Drawer) */}
-      <UtilityBar />
+      {/* 1. Header Area (Main Header, Mega Menu, Mobile Drawer) */}
       <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md shadow-xs transition-shadow">
         <MainHeader onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
         <Navigation />

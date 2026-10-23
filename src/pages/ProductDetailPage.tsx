@@ -5,6 +5,7 @@ import { PRODUCTS } from '../data/products';
 import { Product } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { ProductCard } from '../components/PLP/ProductCard';
+import { WhatsAppIcon } from '../components/UI/WhatsAppIcon';
 import {
   Star,
   Heart,
@@ -784,7 +785,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                     rel="noopener noreferrer"
                     className="w-full py-3 px-4 rounded-lg font-bold text-sm tracking-wide bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all flex items-center justify-center gap-2 shadow-sm"
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <WhatsAppIcon className="w-5 h-5 fill-current" />
                     <span>{language === 'ar' ? 'اطلب عبر واتساب' : 'ORDER ON WHATSAPP'}</span>
                   </a>
                 </div>
@@ -950,9 +951,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
               href={whatsappUrlForProduct}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-xs active:scale-95 transition-colors flex items-center"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-xs active:scale-95 transition-colors flex items-center gap-1.5"
             >
-              {language === 'ar' ? 'واتساب' : 'WhatsApp'}
+              <WhatsAppIcon className="w-4 h-4 fill-current" />
+              <span>{language === 'ar' ? 'واتساب' : 'WhatsApp'}</span>
             </a>
           </div>
         </div>

@@ -284,6 +284,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             } ${heartAnim ? 'scale-125' : 'scale-100'}`}
           />
         </button>
+        {/* Floating Add-to-Cart Icon on Image */}
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          disabled={buttonState === 'adding'}
+          aria-label="Add to cart"
+          className={`absolute bottom-2.5 end-2.5 z-10 min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ring-1 ring-white/60 active:scale-90 ${
+            buttonState === 'added'
+              ? 'bg-emerald-700 text-white'
+              : buttonState === 'adding'
+              ? 'bg-[#344054] text-white opacity-80'
+              : 'brand-gradient text-white hover:brightness-110'
+          }`}
+        >
+          {buttonState === 'added' ? (
+            <Check className="w-5 h-5 animate-in zoom-in" />
+          ) : buttonState === 'adding' ? (
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <ShoppingBag className="w-5 h-5 text-[#E3C98F]" />
+          )}
+        </button>
       </div>
 
       {/* Product Information */}
@@ -296,13 +318,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </span>
             <div className="flex items-center gap-0.5 text-[#0F172A]">
               <Star className="w-3 h-3 fill-[#C6A15B] text-[#C6A15B]" />
-              <span className="font-medium text-[11px]">{product.rating.toFixed(1)}</span>
+              <span className="font-semibold text-[11px]">{product.rating.toFixed(1)}</span>
             </div>
           </div>
 
-          {/* Product Title */}
+          {/* Product Title — bigger, bold & premium */}
           <Link href={productUrl}>
-            <h3 className="text-sm sm:text-base font-serif font-bold text-[#101828] hover:text-[#0A2A5E] transition-colors mb-1.5 line-clamp-1">
+            <h3 className="text-[15px] sm:text-[17px] font-serif font-bold tracking-tight text-[#0B1B33] hover:text-[#0A2A5E] transition-colors mb-1.5 line-clamp-2 leading-snug">
               {product.name[language]}
             </h3>
           </Link>
@@ -332,45 +354,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
 
-        {/* Price and Add to Cart Button */}
+        {/* Price Row (add-to-cart icon now floats on the image) */}
         <div className="pt-2.5 border-t border-[#ECE8DF] flex items-center justify-between gap-2">
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base sm:text-lg font-bold font-serif text-[#101828]">
-                {product.price}
-                <span className="text-[10px] font-sans font-normal text-[#667085] ms-1">
-                  {language === 'ar' ? 'ر.س' : 'SAR'}
-                </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-base sm:text-lg font-bold font-serif text-[#101828]">
+              {product.price}
+              <span className="text-[10px] font-sans font-normal text-[#667085] ms-1">
+                {language === 'ar' ? 'ر.س' : 'SAR'}
               </span>
-              {product.oldPrice && (
-                <span className="text-xs text-[#8A847B] line-through">
-                  {product.oldPrice}
-                </span>
-              )}
-            </div>
+            </span>
+            {product.oldPrice && (
+              <span className="text-xs text-[#8A847B] line-through">
+                {product.oldPrice}
+              </span>
+            )}
           </div>
 
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={buttonState === 'adding'}
-            aria-label="Add to cart"
-            className={`min-w-[44px] min-h-[44px] w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-200 shadow-2xs active:scale-90 ${
-              buttonState === 'added'
-                ? 'bg-emerald-700 text-white'
-                : buttonState === 'adding'
-                ? 'bg-[#344054] text-white opacity-80'
-                : 'bg-[#0A2A5E] text-white hover:bg-[#061C3F]'
+          <span
+            className={`text-[11px] font-medium ${
+              buttonState === 'added' ? 'text-emerald-700' : 'text-[#667085]'
             }`}
           >
-            {buttonState === 'added' ? (
-              <Check className="w-4 h-4 animate-in zoom-in" />
-            ) : buttonState === 'adding' ? (
-              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              <ShoppingBag className="w-4 h-4 text-[#E3C98F]" />
-            )}
-          </button>
+            {buttonState === 'added'
+              ? language === 'ar'
+                ? 'تمت الإضافة ✓'
+                : 'Added ✓'
+              : (product.stock ?? 0) <= 0
+              ? language === 'ar'
+                ? 'غير متوفر'
+                : 'Unavailable'
+              : (product.stock ?? 0) < 20
+              ? language === 'ar'
+                ? 'كمية محدودة'
+                : 'Few left'
+              : language === 'ar'
+              ? 'متوفر'
+              : 'In stock'}
+          </span>
         </div>
       </div>
     </div>

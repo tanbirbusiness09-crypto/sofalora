@@ -1,7 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  /* ----------------------------------------------------------------
+     Design system type scale (noon KSA tokens)
+     Base 14px / 19.6px line height, weight 400
+  ---------------------------------------------------------------- */
+  --text-xs: 12.6px;
+  --text-xs--line-height: 15.8px;
+  --text-sm: 13px;
+  --text-sm--line-height: 18px;
+  --text-base: 14px;
+  --text-base--line-height: 19.6px;
+  --text-lg: 15px;
+  --text-lg--line-height: 21px;
+  --text-xl: 15.4px;
+  --text-xl--line-height: 21.6px;
+  --text-2xl: 16px;
+  --text-2xl--line-height: 22.4px;
+  --text-3xl: 21px;
+  --text-3xl--line-height: 27px;
+  --text-4xl: 24px;
+  --text-4xl--line-height: 30px;
+
+  --radius-xl: 12px;
+  --radius-2xl: 12px;
+
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Fraunces', ui-serif, Georgia, serif;
 
   --color-sofalora-cream: #FAFAF8;
@@ -20,11 +44,24 @@
   --color-sofalora-gold-soft: #E3C98F;
 }
 
+
 @layer base {
   :root {
-    --font-en-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-en-sans: 'Manrope', -apple-system, 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
     --font-en-serif: 'Fraunces', Georgia, serif;
     --font-ar-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Design system semantic tokens (noon KSA) */
+    --ds-text-primary: #404553;
+    --ds-text-secondary: #101628;
+    --ds-text-tertiary: #212121;
+    --ds-text-inverse: #7e859b;
+    --ds-surface-raised: #ffffff;
+    --ds-surface-muted: #f4e20c;
+    --ds-radius-xs: 12px;
+    --ds-duration-instant: 200ms;
+    --ds-duration-fast: 300ms;
+
     --color-sand-50: #FAFAF8;
     --color-sand-100: #F3F1EB;
     --color-sand-200: #E6E2D9;
@@ -64,7 +101,25 @@
 
   body {
     background-color: #FAFAF8;
-    color: #101828;
+    color: var(--ds-text-primary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19.6px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessibility: always-visible keyboard focus */
+  :focus-visible {
+    outline: 2px solid #0A2A5E;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* E-commerce surfaces: white raised cards with 12px system radius */
+  .ds-surface {
+    background-color: var(--ds-surface-raised);
+    border-radius: var(--ds-radius-xs);
   }
 
   ::selection {

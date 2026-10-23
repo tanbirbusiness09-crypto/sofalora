@@ -29,7 +29,7 @@ export const ShopByRoom: React.FC = () => {
             href="#custom-service"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#061C3F] hover:text-[#8A6A2F] transition-colors group"
           >
-            <span>{t('customEyebrow')}</span>
+            <span>{t('viewAll')}</span>
             <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
           </a>
         </div>

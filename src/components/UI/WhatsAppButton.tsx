@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
 import { useRouter } from '../../context/RouterContext';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 export const WhatsAppButton: React.FC = () => {
   const { language } = useShop();
@@ -44,7 +45,7 @@ export const WhatsAppButton: React.FC = () => {
         aria-label={language === 'ar' ? 'تواصل عبر واتساب' : 'Contact via WhatsApp'}
         className="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-[#25D366]/50"
       >
-        <MessageCircle className="w-6 h-6 fill-current transition-transform duration-300 group-hover:rotate-6" />
+        <WhatsAppIcon className="w-6 h-6 fill-current transition-transform duration-300 group-hover:rotate-6" />
       </a>
     </div>
   );
