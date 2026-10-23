@@ -23,6 +23,7 @@ import {
   X
 } from 'lucide-react';
 import { RIYADH_DISTRICTS } from '../data/riyadhDistricts';
+import { BrandLogo } from '../components/UI/BrandLogo';
 
 export const CheckoutPage: React.FC = () => {
   const {
@@ -231,13 +232,8 @@ export const CheckoutPage: React.FC = () => {
             >
               {language === 'ar' ? 'English' : 'العربية'}
             </button>
-            <Link href="/" className="flex flex-col group text-end">
-              <span className="text-sm sm:text-base font-bold tracking-tight text-[#1B211D] font-serif-luxury transition-colors group-hover:text-[#8F3E24]">
-                {language === 'ar' ? 'سوفالورا' : 'SOFALORA'}
-              </span>
-              <span className="text-[9px] uppercase tracking-[0.18em] text-[#85796D] font-medium -mt-0.5 hidden sm:inline">
-                {language === 'ar' ? 'الرياض • الأتيليه الفاخر' : 'RIYADH • BESPOKE ATELIER'}
-              </span>
+            <Link href="/" className="group flex items-center" aria-label="Sofalora">
+              <BrandLogo size="sm" hideTaglineOnMobile />
             </Link>
           </div>
 

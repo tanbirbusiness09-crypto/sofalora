@@ -92,6 +92,64 @@
   color: transparent;
 }
 
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-en-serif);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  letter-spacing: 0.025em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.brand-wordmark-accent {
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  margin-inline-start: 0.015em;
+  color: #B85C3A;
+  transition: color 300ms ease;
+}
+
+.brand-wordmark--light .brand-wordmark-accent {
+  color: #E6A56C;
+}
+
+html[dir="rtl"] .brand-wordmark {
+  font-family: var(--font-ar-sans);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[dir="rtl"] .brand-wordmark-accent {
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-inline-start: 0;
+}
+
+.brand-tagline {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+html[dir="rtl"] .brand-tagline {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
 .btn-brand {
   display: inline-flex;
   align-items: center;

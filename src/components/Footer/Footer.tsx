@@ -2,6 +2,7 @@ import React from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 import { MapPin, Phone, MessageSquare, Mail, Clock, Instagram, Youtube, Globe, Heart } from 'lucide-react';
+import { BrandLogo } from '../UI/BrandLogo';
 
 export const Footer: React.FC = () => {
   const { language, t } = useShop();
@@ -15,14 +16,9 @@ export const Footer: React.FC = () => {
           
           {/* Brand Info (Spans 2 columns) */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex flex-col">
-              <span className="text-2xl font-extrabold tracking-tight text-white font-serif-luxury">
-                {language === 'ar' ? 'سوفالورا' : 'SOFALORA'}
-              </span>
-              <span className="text-[11px] uppercase tracking-[0.2em] text-[#B85C3A] font-medium -mt-0.5">
-                {language === 'ar' ? 'الرياض • المملكة العربية السعودية' : 'RIYADH • KINGDOM OF SAUDI ARABIA'}
-              </span>
-            </div>
+            <Link href="/" className="group w-fit">
+              <BrandLogo size="lg" variant="light" />
+            </Link>
 
             <p className="text-xs sm:text-sm text-[#A0968A] leading-relaxed max-w-sm">
               {t('footerAbout')}

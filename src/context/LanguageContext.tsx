@@ -120,6 +120,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // fallback
     }
+    if (typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('ar')) {
+      return 'ar';
+    }
     return 'en';
   });
 

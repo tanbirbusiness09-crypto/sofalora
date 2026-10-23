@@ -13,6 +13,7 @@ import {
   Armchair
 } from 'lucide-react';
 import { Link } from '../../context/RouterContext';
+import { BrandLogo } from '../UI/BrandLogo';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -68,12 +69,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
         {/* Drawer Header */}
         <div className="p-4 border-b border-[#E8DCCD] flex items-center justify-between bg-white shrink-0">
           <Link href="/" onClick={onClose} className="group">
-            <h3 className="text-lg font-bold text-[#1B211D] font-serif-luxury group-hover:text-[#8F3E24] transition-colors">
-              {isAr ? 'سوفالورا' : 'SOFALORA'}
-            </h3>
-            <span className="text-[10px] text-[#85796D] uppercase tracking-wider block font-sans">
-              {isAr ? 'الرياض • أتيليه الكنب والستائر' : 'RIYADH • SOFA & CURTAIN ATELIER'}
-            </span>
+            <BrandLogo size="sm" />
           </Link>
           <button
             type="button"

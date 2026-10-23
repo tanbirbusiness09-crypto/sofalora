@@ -332,7 +332,11 @@ export const Hero: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
 
                     {/* Slide Content Overlay */}
-                    <div className="absolute inset-0 flex flex-col justify-between p-5 sm:p-7 md:p-9 lg:p-10 z-20">
+                    <div
+                      className={`absolute inset-0 flex flex-col justify-between p-5 sm:p-7 md:p-9 lg:p-10 z-20 ${
+                        isActive ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    >
                       
                       {/* Top Row: Promotional Eyebrow Badge & Discount Tag */}
                       <div className="flex items-center justify-between gap-3">

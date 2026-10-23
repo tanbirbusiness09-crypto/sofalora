@@ -3,6 +3,7 @@ import { useShop } from '../../context/LanguageContext';
 import { useRouter, Link } from '../../context/RouterContext';
 import { PRODUCTS } from '../../data/products';
 import { Search, Heart, ShoppingBag, User, X, Menu, ArrowRight, ArrowLeft, History, Sparkles, TrendingUp } from 'lucide-react';
+import { BrandLogo } from '../UI/BrandLogo';
 
 interface MainHeaderProps {
   onOpenMobileMenu: () => void;
@@ -22,6 +23,8 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
   const {
     language,
     direction,
+    setLanguage,
+    toggleLanguage,
     t,
     cartCount,
     cartTotal,
@@ -173,23 +176,17 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
         <div className="flex items-center justify-between gap-3 sm:gap-6 lg:gap-8">
           
           {/* Mobile Menu Toggle & Start Brand */}
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <button
               onClick={onOpenMobileMenu}
-              className="lg:hidden p-2 -ms-2 rounded-lg text-[#1B211D] hover:bg-[#E8DCCD]/60 transition-colors"
+              className="lg:hidden shrink-0 p-1.5 sm:p-2 -ms-2 rounded-lg text-[#1B211D] hover:bg-[#E8DCCD]/60 transition-colors"
               aria-label="Open Navigation Menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
-            {/* Brand Logo & Name */}
-            <Link href="/" className="flex flex-col group">
-              <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#1B211D] font-serif-luxury transition-colors group-hover:text-[#8F3E24]">
-                {language === 'ar' ? 'سوفالورا' : 'SOFALORA'}
-              </span>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#85796D] font-medium -mt-0.5">
-                {language === 'ar' ? 'الرياض • أتيليه الكنب والستائر' : 'RIYADH • SOFA & CURTAIN ATELIER'}
-              </span>
+            <Link href="/" className="group min-w-0 shrink-0">
+              <BrandLogo size="md" hideTaglineOnMobile />
             </Link>
           </div>
 
@@ -374,9 +371,52 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
             )}
           </div>
 
-          {/* Right/End: Account, Wishlist & Cart */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            
+          {/* Right/End: Language, Account, Wishlist & Cart */}
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+
+            {/* Language Switcher */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFD2C2] bg-[#F4EDE4]/90 text-[11px] font-bold text-[#1B211D] shadow-2xs transition-colors hover:border-[#B85C3A] hover:text-[#8F3E24]"
+              aria-label={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
+              title={language === 'en' ? 'العربية' : 'English'}
+            >
+              {language === 'en' ? 'AR' : 'EN'}
+            </button>
+            <div
+              className="hidden sm:flex items-center rounded-full border border-[#DFD2C2] bg-[#F4EDE4]/90 p-0.5 shadow-2xs"
+              role="group"
+              aria-label={language === 'ar' ? 'اختيار اللغة' : 'Select language'}
+            >
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`min-w-7 rounded-full px-2 py-1 text-[10px] font-bold uppercase transition-all ${
+                  language === 'en'
+                    ? 'bg-[#1B211D] text-white shadow-xs'
+                    : 'text-[#6F655B] hover:text-[#8F3E24]'
+                }`}
+                aria-pressed={language === 'en'}
+                title="English"
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('ar')}
+                className={`min-w-7 rounded-full px-2 py-1 text-[10px] font-bold transition-all ${
+                  language === 'ar'
+                    ? 'bg-[#1B211D] text-white shadow-xs'
+                    : 'text-[#6F655B] hover:text-[#8F3E24]'
+                }`}
+                aria-pressed={language === 'ar'}
+                title="العربية"
+              >
+                عربي
+              </button>
+            </div>
+
             {/* Account Link */}
             <Link
               href="/orders"
