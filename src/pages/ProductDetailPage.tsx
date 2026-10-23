@@ -33,7 +33,8 @@ import {
   Plus,
   Minus,
   ZoomIn,
-  X
+  X,
+  MessageCircle
 } from 'lucide-react';
 
 interface ProductDetailPageProps {
@@ -184,6 +185,21 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
     handleAddToCart();
     navigate('/checkout');
   };
+
+  const selectedOrderColor = product.colors?.[selectedColorIdx];
+  const selectedOrderSize = product.sizes?.[selectedSizeIdx];
+  const orderDetails = [
+    product.name[language],
+    formatPrice(currentPrice),
+    selectedOrderColor ? `${selectedOrderColor.name[language]}` : null,
+    selectedOrderSize ? `${selectedOrderSize.label[language]}` : null,
+    language === 'ar' ? `عدد: ${quantity}` : `Qty: ${quantity}`
+  ].filter(Boolean).join(' • ');
+  const whatsappUrlForProduct = `https://wa.me/966559821100?text=${encodeURIComponent(
+    language === 'ar'
+      ? `مرحباً Sofalora، أود طلب ${orderDetails}`
+      : `Hello Sofalora, I would like to order: ${orderDetails}`
+  )}`;
 
   const handleShare = () => {
     if (navigator.clipboard) {
@@ -760,6 +776,17 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                   >
                     <span>{language === 'ar' ? 'شراء الآن (دفع سريع)' : 'BUY NOW'}</span>
                   </button>
+
+                  {/* WhatsApp Order Button */}
+                  <a
+                    href={`${whatsappUrlForProduct}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 px-4 rounded-lg font-bold text-sm tracking-wide bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>{language === 'ar' ? 'اطلب عبر واتساب' : 'ORDER ON WHATSAPP'}</span>
+                  </a>
                 </div>
 
                 <div className="text-center">
@@ -919,6 +946,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
             >
               {language === 'ar' ? 'شراء' : 'Buy'}
             </button>
+            <a
+              href={whatsappUrlForProduct}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-xs active:scale-95 transition-colors flex items-center"
+            >
+              {language === 'ar' ? 'واتساب' : 'WhatsApp'}
+            </a>
           </div>
         </div>
       )}

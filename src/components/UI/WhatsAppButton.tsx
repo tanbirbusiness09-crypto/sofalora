@@ -6,7 +6,7 @@ export const WhatsAppButton: React.FC = () => {
   const { language } = useShop();
   const [showTooltip, setShowTooltip] = useState(true);
 
-  const phoneNumber = '+966500000000';
+  const phoneNumber = '+966559821100';
   const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
     language === 'ar'
       ? 'السلام عليكم، أود حجز استشارة منزلية لمعاينة أقمشة الكنب والستائر.'
