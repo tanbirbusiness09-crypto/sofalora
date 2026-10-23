@@ -270,7 +270,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="hero-ecommerce"
-      className="bg-[#F6F2EC] pt-3 sm:pt-4 lg:pt-6 pb-6 sm:pb-8 lg:pb-10 border-b border-[#E5D8C9]"
+      className="bg-[#F6F4EF] pt-3 sm:pt-4 lg:pt-6 pb-6 sm:pb-8 lg:pb-10 border-b border-[#E2DDD2]"
       aria-label="Promotional Showcase"
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -284,7 +284,7 @@ export const Hero: React.FC = () => {
           {/* MAIN PROMOTIONAL CAROUSEL (Desktop: 8 Cols, Mobile: Full)  */}
           {/* ---------------------------------------------------------- */}
           <div
-            className="lg:col-span-8 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-[#1A1816] group"
+            className="lg:col-span-8 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-[#081A36] group"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
@@ -340,13 +340,13 @@ export const Hero: React.FC = () => {
                       
                       {/* Top Row: Promotional Eyebrow Badge & Discount Tag */}
                       <div className="flex items-center justify-between gap-3">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-[#E6C687] text-xs sm:text-sm font-bold tracking-wider uppercase">
-                          <Sparkles className="w-3.5 h-3.5 text-[#E6C687]" />
+                        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-[#E3C98F] text-xs sm:text-sm font-bold tracking-wider uppercase">
+                          <Sparkles className="w-3.5 h-3.5 text-[#E3C98F]" />
                           <span>{t(slide.labelKey)}</span>
                         </div>
 
                         {slide.badgeKey && (
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B85C3A] text-[#1A1816] text-xs sm:text-sm font-extrabold shadow-sm tracking-wide">
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C8102E] text-[#081A36] text-xs sm:text-sm font-extrabold shadow-sm tracking-wide">
                             <Tag className="w-3.5 h-3.5" />
                             <span>{t(slide.badgeKey)}</span>
                           </div>
@@ -362,7 +362,7 @@ export const Hero: React.FC = () => {
                         </h2>
 
                         {/* Description */}
-                        <p className="text-[#E2D9CE] text-sm sm:text-base md:text-lg leading-relaxed line-clamp-2 sm:line-clamp-3 font-normal max-w-lg">
+                        <p className="text-[#E1DCD2] text-sm sm:text-base md:text-lg leading-relaxed line-clamp-2 sm:line-clamp-3 font-normal max-w-lg">
                           {t(slide.descKey)}
                         </p>
 
@@ -390,7 +390,7 @@ export const Hero: React.FC = () => {
                           {/* Secondary Text / Price Indicator */}
                           {slide.secondaryKey && (
                             <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-sm border border-white/15 text-white/90 text-xs sm:text-sm font-semibold">
-                              <CheckCircle2 className="w-4 h-4 text-[#B85C3A]" />
+                              <CheckCircle2 className="w-4 h-4 text-[#C8102E]" />
                               <span>{t(slide.secondaryKey)}</span>
                             </div>
                           )}
@@ -410,7 +410,7 @@ export const Hero: React.FC = () => {
                               onClick={() => goToSlide(i)}
                               className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                                 i === currentSlide
-                                  ? 'w-7 sm:w-8 bg-[#B85C3A]'
+                                  ? 'w-7 sm:w-8 bg-[#C8102E]'
                                   : 'w-2 sm:w-2.5 bg-white/40 hover:bg-white/70'
                               }`}
                               aria-label={`Go to slide ${i + 1}`}
@@ -448,7 +448,7 @@ export const Hero: React.FC = () => {
               {/* Live Progress Bar at Top of Carousel */}
               <div className="absolute top-0 inset-x-0 h-1 bg-white/15 z-30 pointer-events-none">
                 <div
-                  className="h-full bg-[#B85C3A] transition-all ease-linear"
+                  className="h-full bg-[#C8102E] transition-all ease-linear"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -464,7 +464,7 @@ export const Hero: React.FC = () => {
             {/* PROMO CARD 1: Blackout Collection Up to 30% Off */}
             <Link
               href="/category/sofas"
-              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E4DCD1] bg-[#1F1C19] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
+              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E2DDD3] bg-[#0B1F3A] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
               id="hero-promo-card-1"
             >
               {/* Background Image */}
@@ -486,7 +486,7 @@ export const Hero: React.FC = () => {
 
               {/* Badge */}
               <div className="absolute top-3.5 end-3.5 z-10">
-                <span className="inline-flex items-center gap-1 bg-[#B85C3A] text-[#161B18] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                <span className="inline-flex items-center gap-1 bg-[#C8102E] text-[#0A2A5E] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
                   <Percent className="w-3 h-3" />
                   <span>{t('heroPromo1Badge')}</span>
                 </span>
@@ -494,18 +494,18 @@ export const Hero: React.FC = () => {
 
               {/* Card Content */}
               <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-start z-10">
-                <span className="text-xs font-semibold text-[#E5C687] uppercase tracking-wider mb-1">
+                <span className="text-xs font-semibold text-[#E3C98F] uppercase tracking-wider mb-1">
                   {language === 'ar' ? 'تشكيلة مختارة' : 'Featured Collection'}
                 </span>
                 <h3 className="text-lg sm:text-xl font-bold text-white font-serif-luxury leading-snug">
                   {t('heroPromo1Title')}
                 </h3>
-                <p className="text-sm font-medium text-[#E0D7CD] mb-3">
+                <p className="text-sm font-medium text-[#DED9CF] mb-3">
                   {t('heroPromo1Subtitle')}
                 </p>
 
                 {/* Micro Action Button */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FBF8F3] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#B85C3A] group-hover:text-white group-hover:border-[#B85C3A]">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FAFAF8] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#C8102E] group-hover:text-white group-hover:border-[#C8102E]">
                   <span>{t('heroPromo1Cta')}</span>
                   <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                 </div>
@@ -515,7 +515,7 @@ export const Hero: React.FC = () => {
             {/* PROMO CARD 2: Curtain Atelier */}
             <Link
               href="/category/curtains"
-              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E4DCD1] bg-[#1F1C19] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
+              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E2DDD3] bg-[#0B1F3A] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
               id="hero-promo-card-2"
             >
               {/* Background Image */}
@@ -537,26 +537,26 @@ export const Hero: React.FC = () => {
 
               {/* Badge */}
               <div className="absolute top-3.5 end-3.5 z-10">
-                <span className="inline-flex items-center gap-1 bg-white/90 text-[#161B18] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
-                  <Flame className="w-3 h-3 text-[#B85C3A]" />
+                <span className="inline-flex items-center gap-1 bg-white/90 text-[#0A2A5E] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                  <Flame className="w-3 h-3 text-[#C8102E]" />
                   <span>{t('heroPromo2Badge')}</span>
                 </span>
               </div>
 
               {/* Card Content */}
               <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-start z-10">
-                <span className="text-xs font-semibold text-[#E5C687] uppercase tracking-wider mb-1">
+                <span className="text-xs font-semibold text-[#E3C98F] uppercase tracking-wider mb-1">
                   {language === 'ar' ? 'أتيليه الستائر' : 'Curtain Atelier'}
                 </span>
                 <h3 className="text-lg sm:text-xl font-bold text-white font-serif-luxury leading-snug">
                   {t('heroPromo2Title')}
                 </h3>
-                <p className="text-sm font-medium text-[#E0D7CD] mb-3">
+                <p className="text-sm font-medium text-[#DED9CF] mb-3">
                   {t('heroPromo2Subtitle')}
                 </p>
 
                 {/* Micro Action Button */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FBF8F3] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#B85C3A] group-hover:text-white group-hover:border-[#B85C3A]">
+                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FAFAF8] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#C8102E] group-hover:text-white group-hover:border-[#C8102E]">
                   <span>{t('heroPromo2Cta')}</span>
                   <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                 </div>
@@ -571,20 +571,20 @@ export const Hero: React.FC = () => {
         {/* QUICK CATEGORY NAVIGATION BAR (Directly Below Hero)          */}
         {/* ============================================================ */}
         <div
-          className="mt-4 sm:mt-5 lg:mt-6 bg-[#FBF8F3] border border-[#E5DDD2] rounded-2xl p-2.5 sm:p-3.5 shadow-xs"
+          className="mt-4 sm:mt-5 lg:mt-6 bg-[#FAFAF8] border border-[#E3DED4] rounded-2xl p-2.5 sm:p-3.5 shadow-xs"
           id="hero-quick-categories"
         >
           {/* Header Label / Micro Bar for Context */}
-          <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-[#EDE6DC]">
+          <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-[#EDE9E2]">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#B85C3A]" />
-              <span className="text-xs font-bold text-[#635A50] uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#C8102E]" />
+              <span className="text-xs font-bold text-[#475467] uppercase tracking-wider">
                 {language === 'ar' ? 'تصفح سريع للفئات' : 'Quick Category Browser'}
               </span>
             </div>
             <a
               href="#categories"
-              className="text-xs font-bold text-[#7A351F] hover:text-[#5E441B] flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-[#061C3F] hover:text-[#8A6A2F] flex items-center gap-1 transition-colors"
             >
               <span>{t('viewAll')}</span>
               <ArrowIcon className="w-3.5 h-3.5" />
@@ -597,10 +597,10 @@ export const Hero: React.FC = () => {
               const isCustom = cat.isCustomAction;
 
               const content = (
-                <div className="flex flex-col items-center gap-2 text-center group cursor-pointer shrink-0 w-[84px] sm:w-[94px] md:w-[102px] lg:flex-1 p-1.5 rounded-xl hover:bg-[#F0EAE1] transition-all duration-200 snap-start">
+                <div className="flex flex-col items-center gap-2 text-center group cursor-pointer shrink-0 w-[84px] sm:w-[94px] md:w-[102px] lg:flex-1 p-1.5 rounded-xl hover:bg-[#EFEBE3] transition-all duration-200 snap-start">
                   
                   {/* Category Thumbnail Container with Badge */}
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#D8CDBF] group-hover:border-[#B85C3A] group-hover:shadow-md transition-all duration-200 bg-[#E5D8C9]">
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#D6D0C4] group-hover:border-[#C8102E] group-hover:shadow-md transition-all duration-200 bg-[#E2DDD2]">
                     <img
                       src={cat.image}
                       alt={t(cat.nameKey)}
@@ -615,7 +615,7 @@ export const Hero: React.FC = () => {
                   </div>
 
                   {/* Category Name Label */}
-                  <span className="text-xs sm:text-[13px] font-semibold text-[#302B26] group-hover:text-[#7A351F] transition-colors leading-tight line-clamp-1">
+                  <span className="text-xs sm:text-[13px] font-semibold text-[#1F2937] group-hover:text-[#061C3F] transition-colors leading-tight line-clamp-1">
                     {t(cat.nameKey)}
                   </span>
                 </div>
@@ -649,29 +649,29 @@ export const Hero: React.FC = () => {
         {/* SAUDI VALUE PILLARS STRIP (Compact Ecommerce Confidence Bar) */}
         {/* ============================================================ */}
         <div className="mt-3 sm:mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 text-start">
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E7DFD4] text-[#4A423A]">
-            <Truck className="w-4 h-4 text-[#B85C3A] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+            <Truck className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'توصيل مجاني في الرياض' : 'Free Delivery in Riyadh'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E7DFD4] text-[#4A423A]">
-            <Ruler className="w-4 h-4 text-[#B85C3A] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+            <Ruler className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'رفع مقاسات ليزر دقيق' : 'Precision Laser Measurement'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E7DFD4] text-[#4A423A]">
-            <ShieldCheck className="w-4 h-4 text-[#B85C3A] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+            <ShieldCheck className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'ضمان ٥ سنوات على الهيكل والأقمشة' : '5-Year Frame & Fabric Guarantee'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E7DFD4] text-[#4A423A]">
-            <Sparkles className="w-4 h-4 text-[#B85C3A] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+            <Sparkles className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'تشطيب مخصص بتوقيع سوفالورا' : 'Signature Bespoke Finishing'}
             </span>

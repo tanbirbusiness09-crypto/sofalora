@@ -45,21 +45,21 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   return (
     <span className={`brand-logo ${className}`}>
       <svg
-        className={`${markClasses[size]} shrink-0 drop-shadow-[0_6px_14px_rgba(143,62,36,0.18)]`}
+        className={`${markClasses[size]} shrink-0 drop-shadow-[0_6px_14px_rgba(10,42,94,0.22)]`}
         viewBox="0 0 48 48"
         aria-hidden="true"
         focusable="false"
       >
         <defs>
           <linearGradient id={bgId} x1="7" y1="3" x2="42" y2="46" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#25594A" />
-            <stop offset="0.55" stopColor="#173B32" />
-            <stop offset="1" stopColor="#101713" />
+            <stop stopColor="#17498F" />
+            <stop offset="0.55" stopColor="#0A2A5E" />
+            <stop offset="1" stopColor="#061C3F" />
           </linearGradient>
           <linearGradient id={goldId} x1="8" y1="6" x2="41" y2="42" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#F0C08A" />
-            <stop offset="0.5" stopColor="#E6A56C" />
-            <stop offset="1" stopColor="#B85C3A" />
+            <stop stopColor="#F0D8A4" />
+            <stop offset="0.5" stopColor="#C6A15B" />
+            <stop offset="1" stopColor="#8A6A2F" />
           </linearGradient>
         </defs>
         <rect x="1" y="1" width="46" height="46" rx="14" fill={`url(#${bgId})`} />
@@ -83,13 +83,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           S
         </text>
         <path d="M12.5 38.5h23" stroke={`url(#${goldId})`} strokeWidth="2.1" strokeLinecap="round" />
-        <circle cx="36.4" cy="13.6" r="1.8" fill="#F0C08A" />
+        <circle cx="36.4" cy="13.6" r="1.8" fill="#EC1E27" />
       </svg>
 
-      <span className="flex flex-col items-start">
+      <span className="hidden min-[360px]:flex flex-col items-start">
         <span
           className={`brand-wordmark ${
-            variant === 'light' ? 'brand-wordmark--light text-white' : 'text-[#1B211D]'
+            variant === 'light' ? 'brand-wordmark--light text-white' : 'text-[#0A2A5E]'
           } ${wordmarkClasses[size]} transition-colors duration-300`}
         >
           {isAr ? (
@@ -110,7 +110,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             className={`${taglineClasses[size]} ${
               hideTaglineOnMobile ? 'hidden sm:block' : 'block'
             } brand-tagline ${
-              variant === 'light' ? 'text-[#C9B7A4]' : 'text-[#85796D]'
+              variant === 'light' ? 'text-[#C9C3B8]' : 'text-[#6B7280]'
             } transition-colors`}
           >
             {isAr ? 'الرياض • أتيليه الكنب والستائر' : 'RIYADH • SOFA & CURTAIN ATELIER'}

@@ -12,14 +12,14 @@ export const ToastContainer: React.FC = () => {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="pointer-events-auto bg-[#1B211D] text-[#FBF8F3] p-3.5 rounded-2xl shadow-2xl border border-[#3E3830] flex items-center justify-between gap-3 animate-in slide-in-from-bottom-4 duration-300"
+          className="pointer-events-auto bg-[#061C3F] text-[#FAFAF8] p-3.5 rounded-2xl shadow-2xl border border-[#163257] flex items-center justify-between gap-3 animate-in slide-in-from-bottom-4 duration-300"
         >
           <div className="flex items-center gap-2.5 min-w-0">
             {toast.type === 'success' && (
               <CheckCircle2 className="w-5 h-5 text-[#4ADE80] shrink-0" />
             )}
             {toast.type === 'warning' && (
-              <AlertCircle className="w-5 h-5 text-[#FBBF24] shrink-0" />
+              <AlertCircle className="w-5 h-5 text-[#C6A15B] shrink-0" />
             )}
             {toast.type === 'info' && (
               <Info className="w-5 h-5 text-[#60A5FA] shrink-0" />
@@ -31,7 +31,7 @@ export const ToastContainer: React.FC = () => {
 
           <button
             onClick={() => removeToast(toast.id)}
-            className="text-[#9A8F83] hover:text-white p-1 rounded-full transition-colors shrink-0"
+            className="text-[#A8A29A] hover:text-white p-1 rounded-full transition-colors shrink-0"
             aria-label="Dismiss toast"
           >
             <X className="w-3.5 h-3.5" />

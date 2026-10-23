@@ -39,18 +39,18 @@ export const WhyMohammadCurtains: React.FC = () => {
   ];
 
   return (
-    <section id="why-us" className="py-16 sm:py-24 bg-[#FBF8F3] border-t border-[#E8DCCD]">
+    <section id="why-us" className="py-16 sm:py-24 bg-[#FAFAF8] border-t border-[#E6E2D9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#7A351F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'معايير الإتقان والفخامة' : 'Commitment To Perfection'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
             {t('whyTitle')}
           </h2>
-          <p className="text-sm sm:text-base text-[#687168] mt-2">
+          <p className="text-sm sm:text-base text-[#667085] mt-2">
             {t('whySubtitle')}
           </p>
         </div>
@@ -63,17 +63,17 @@ export const WhyMohammadCurtains: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-6 sm:p-7 border border-[#E4D6C7] shadow-2xs hover:shadow-lg transition-all duration-300 flex items-start gap-4.5 group"
+                className="bg-white rounded-2xl p-6 sm:p-7 border border-[#E2DED4] shadow-2xs hover:shadow-lg transition-all duration-300 flex items-start gap-4.5 group"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#F4EDE4] group-hover:bg-[#B85C3A] group-hover:text-white text-[#8F3E24] border border-[#E7DACB] flex items-center justify-center shrink-0 transition-colors duration-300">
+                <div className="w-12 h-12 rounded-2xl bg-[#F3F1EB] group-hover:bg-[#C8102E] group-hover:text-white text-[#0A2A5E] border border-[#E5E1D8] flex items-center justify-center shrink-0 transition-colors duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="text-base font-bold text-[#1B211D] group-hover:text-[#8F3E24] transition-colors mb-1.5">
+                  <h3 className="text-base font-bold text-[#101828] group-hover:text-[#0A2A5E] transition-colors mb-1.5">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#747B72] leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
                     {item.desc}
                   </p>
                 </div>

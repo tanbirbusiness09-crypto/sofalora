@@ -17,7 +17,7 @@ export const WhatsAppButton: React.FC = () => {
     <div className="fixed bottom-20 sm:bottom-6 end-5 sm:end-6 z-40 flex items-center gap-2">
       {/* Concierge Tooltip */}
       {showTooltip && (
-        <div className="hidden md:flex items-center gap-2 bg-[#1B211D] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-[#8F3E24]/30 animate-in fade-in slide-in-from-end-2 duration-300">
+        <div className="hidden md:flex items-center gap-2 bg-[#0A2A5E] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-[#0A2A5E]/30 animate-in fade-in slide-in-from-end-2 duration-300">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
           <span className="font-medium text-stone-200">
             {language === 'ar' ? 'مستشار سوفالورا عبر واتساب' : 'Sofalora Concierge on WhatsApp'}

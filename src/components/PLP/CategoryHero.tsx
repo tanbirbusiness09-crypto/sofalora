@@ -39,7 +39,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
   const count = itemCount !== undefined ? itemCount : category?.itemCount;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-[#1B211D] text-white mb-8 shadow-md">
+    <div className="relative rounded-2xl overflow-hidden bg-[#0A2A5E] text-white mb-8 shadow-md">
       {/* Background Image with Dark Vignette */}
       <div className="absolute inset-0 z-0">
         <img
@@ -47,19 +47,19 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
           alt={title[language]}
           className="w-full h-full object-cover object-center opacity-35 scale-105 filter blur-[0.5px]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#121714] via-[#1B211D]/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#061C3F] via-[#101828]/85 to-transparent" />
       </div>
 
       {/* Content Container */}
       <div className="relative z-10 p-6 sm:p-10 md:p-12 max-w-3xl">
         {/* Top Tag & Count */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8F3E24]/25 text-[#E6C98E] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#8F3E24]/40">
-            <Sparkles className="w-3.5 h-3.5 text-[#E6C98E]" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0A2A5E]/25 text-[#E3C98F] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#0A2A5E]/40">
+            <Sparkles className="w-3.5 h-3.5 text-[#E3C98F]" />
             <span>Sofalora • Riyadh</span>
           </span>
           {count !== undefined && (
-            <span className="text-xs text-[#C5BCB2]">
+            <span className="text-xs text-[#B8B2A8]">
               ({count} {language === 'ar' ? 'تصميم متاح' : 'designs'})
             </span>
           )}
@@ -71,22 +71,22 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xs sm:text-sm md:text-base text-[#D4CBC0] mb-6 leading-relaxed max-w-2xl">
+        <p className="text-xs sm:text-sm md:text-base text-[#D2CCC1] mb-6 leading-relaxed max-w-2xl">
           {subtitle[language]}
         </p>
 
         {/* Key Guarantees Badges */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/15 text-xs text-[#E1D8CC]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/15 text-xs text-[#DFDACF]">
           <div className="flex items-center gap-2">
-            <Ruler className="w-4 h-4 text-[#C59B4D] shrink-0" />
+            <Ruler className="w-4 h-4 text-[#C6A15B] shrink-0" />
             <span>{language === 'ar' ? 'رفع مقاسات مجاني بالرياض' : 'Free In-Home Measurement'}</span>
           </div>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#C59B4D] shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-[#C6A15B] shrink-0" />
             <span>{language === 'ar' ? 'ضمان ٥ سنوات على الأقمشة' : '5-Year Fabric Guarantee'}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Truck className="w-4 h-4 text-[#C59B4D] shrink-0" />
+            <Truck className="w-4 h-4 text-[#C6A15B] shrink-0" />
             <span>{language === 'ar' ? 'تركيب احترافي معتمد' : 'Certified Expert Installers'}</span>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
               onClick={() => onSubcategorySelect && onSubcategorySelect('all')}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                 !activeSubcategory || activeSubcategory === 'all'
-                  ? 'bg-[#8F3E24] text-white'
+                  ? 'bg-[#0A2A5E] text-white'
                   : 'bg-white/10 text-white/80 hover:bg-white/20'
               }`}
             >
@@ -112,7 +112,7 @@ export const CategoryHero: React.FC<CategoryHeroProps> = ({
                 onClick={() => onSubcategorySelect && onSubcategorySelect(sub.slug)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   activeSubcategory === sub.slug
-                    ? 'bg-[#8F3E24] text-white'
+                    ? 'bg-[#0A2A5E] text-white'
                     : 'bg-white/10 text-white/80 hover:bg-white/20'
                 }`}
               >

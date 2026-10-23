@@ -79,7 +79,7 @@ export const CartPage: React.FC = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="bg-[#F7F7F7] min-h-[75vh] py-16 px-4 flex items-center justify-center">
+      <div className="bg-[#F7F7F5] min-h-[75vh] py-16 px-4 flex items-center justify-center">
         <div className="max-w-md w-full text-center bg-white border border-neutral-200 rounded-2xl p-8 sm:p-12 shadow-xs">
           <div className="w-20 h-20 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center mx-auto mb-6">
             <ShoppingBag className="w-10 h-10" />
@@ -95,7 +95,7 @@ export const CartPage: React.FC = () => {
           <div className="space-y-2.5">
             <Link
               href="/shop"
-              className="w-full inline-flex items-center justify-center gap-2 bg-[#8F3E24] hover:bg-[#7A331D] text-white py-3 px-6 rounded-lg font-bold text-xs tracking-wide transition-all shadow-xs"
+              className="w-full inline-flex items-center justify-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white py-3 px-6 rounded-lg font-bold text-xs tracking-wide transition-all shadow-xs"
             >
               <span>{language === 'ar' ? 'ابدأ التسوق الآن' : 'START SHOPPING NOW'}</span>
               <ArrowIcon className="w-4 h-4" />
@@ -110,7 +110,7 @@ export const CartPage: React.FC = () => {
   const installmentAmount = Math.round((grandTotal / 4) * 100) / 100;
 
   return (
-    <div className="bg-[#F7F7F7] min-h-screen py-6 sm:py-10">
+    <div className="bg-[#F7F7F5] min-h-screen py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Cart Top Bar */}
@@ -119,7 +119,7 @@ export const CartPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-neutral-900">
               {language === 'ar' ? 'سلة التسوق' : 'Cart'}
             </h1>
-            <span className="text-xs font-bold bg-[#FBF8F3] text-[#8F3E24] border border-[#E8DCCD] px-2.5 py-0.5 rounded-full">
+            <span className="text-xs font-bold bg-[#FAFAF8] text-[#0A2A5E] border border-[#E6E2D9] px-2.5 py-0.5 rounded-full">
               {totalItemsCount} {language === 'ar' ? 'منتجات' : 'items'}
             </span>
           </div>
@@ -134,7 +134,7 @@ export const CartPage: React.FC = () => {
             </button>
             <Link
               href="/shop"
-              className="text-xs font-bold text-[#8F3E24] hover:text-[#7A331D] hover:underline hidden sm:inline-block"
+              className="text-xs font-bold text-[#0A2A5E] hover:text-[#061C3F] hover:underline hidden sm:inline-block"
             >
               {language === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
             </Link>
@@ -169,7 +169,7 @@ export const CartPage: React.FC = () => {
           <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
-                currentSubtotalAfterDiscount >= FREE_SHIPPING_THRESHOLD ? 'bg-emerald-600' : 'bg-[#8F3E24]'
+                currentSubtotalAfterDiscount >= FREE_SHIPPING_THRESHOLD ? 'bg-emerald-600' : 'bg-[#0A2A5E]'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
@@ -196,7 +196,7 @@ export const CartPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#8F3E24] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
+                  <span className="bg-[#0A2A5E] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
                     {language === 'ar' ? 'توصيل وتركيب سريع' : 'EXPRESS ATELIER'}
                   </span>
                   <span className="text-xs font-bold text-neutral-800">
@@ -231,7 +231,7 @@ export const CartPage: React.FC = () => {
                         <div className="flex items-start justify-between gap-2">
                           <Link
                             href={`/product/${item.product.slug || item.product.id}`}
-                            className="text-sm font-bold text-neutral-900 hover:text-[#8F3E24] transition-colors leading-snug line-clamp-2"
+                            className="text-sm font-bold text-neutral-900 hover:text-[#0A2A5E] transition-colors leading-snug line-clamp-2"
                           >
                             {item.product.name[language]}
                           </Link>
@@ -260,7 +260,7 @@ export const CartPage: React.FC = () => {
                           )}
 
                           {item.customDimensions ? (
-                            <span className="bg-[#FBF8F3] text-[#8F3E24] px-2 py-0.5 rounded border border-[#E8DCCD] font-semibold">
+                            <span className="bg-[#FAFAF8] text-[#0A2A5E] px-2 py-0.5 rounded border border-[#E6E2D9] font-semibold">
                               {language === 'ar' ? 'تفصيل مخصص:' : 'Custom:'} {item.customDimensions.width}m × {item.customDimensions.height}m
                             </span>
                           ) : item.selectedSize ? (
@@ -415,11 +415,11 @@ export const CartPage: React.FC = () => {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                     placeholder={language === 'ar' ? 'أدخل كود الخصم (مثال: WELCOME10)' : 'Coupon code (e.g. WELCOME10)'}
-                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs uppercase font-mono text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#8F3E24] focus:border-[#8F3E24]"
+                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs uppercase font-mono text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0A2A5E] focus:border-[#0A2A5E]"
                   />
                   <button
                     type="submit"
-                    className="px-3.5 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-lg text-xs font-bold transition-all"
+                    className="px-3.5 py-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white rounded-lg text-xs font-bold transition-all"
                   >
                     {language === 'ar' ? 'تطبيق' : 'Apply'}
                   </button>
@@ -442,14 +442,14 @@ export const CartPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleQuickApplyCode('WELCOME10')}
-                      className="text-[#8F3E24] hover:underline font-mono font-bold bg-[#FBF8F3] px-1.5 py-0.5 rounded border border-[#E8DCCD]"
+                      className="text-[#0A2A5E] hover:underline font-mono font-bold bg-[#FAFAF8] px-1.5 py-0.5 rounded border border-[#E6E2D9]"
                     >
                       WELCOME10 (-10%)
                     </button>
                     <button
                       type="button"
                       onClick={() => handleQuickApplyCode('SOFALORA20')}
-                      className="text-[#8F3E24] hover:underline font-mono font-bold bg-[#FBF8F3] px-1.5 py-0.5 rounded border border-[#E8DCCD]"
+                      className="text-[#0A2A5E] hover:underline font-mono font-bold bg-[#FAFAF8] px-1.5 py-0.5 rounded border border-[#E6E2D9]"
                     >
                       SOFALORA20 (-20%)
                     </button>
@@ -462,7 +462,7 @@ export const CartPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/checkout')}
-                  className="w-full py-3.5 px-4 bg-[#8F3E24] hover:bg-[#7A331D] active:bg-[#73531F] text-white rounded-lg font-bold text-sm tracking-wide transition-all shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 bg-[#0A2A5E] hover:bg-[#061C3F] active:bg-[#061C3F] text-white rounded-lg font-bold text-sm tracking-wide transition-all shadow-sm flex items-center justify-center gap-2"
                 >
                   <Lock className="w-4 h-4" />
                   <span>{language === 'ar' ? 'إتمام الطلب بأمان' : 'CHECKOUT'}</span>

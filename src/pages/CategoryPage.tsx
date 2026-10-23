@@ -238,7 +238,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
   };
 
   return (
-    <div className="bg-[#FCF9F4] min-h-screen pb-16">
+    <div className="bg-[#FDFCFA] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb navigation */}
         <Breadcrumbs
@@ -265,7 +265,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
         {/* Main 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Desktop Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E7E2D8] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}
@@ -299,17 +299,17 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
             />
 
             {/* Installation & Guarantee Banner */}
-            <div className="mt-12 bg-white rounded-2xl border border-[#E8DCCE] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="mt-12 bg-white rounded-2xl border border-[#E7E2D8] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div className="space-y-1 text-center sm:text-start">
-                <span className="text-xs uppercase font-semibold text-[#8F3E24] tracking-wider">
+                <span className="text-xs uppercase font-semibold text-[#0A2A5E] tracking-wider">
                   {language === 'ar' ? 'تفصيل وتركيب دقيق' : 'Custom Sizing & Precision Fitting'}
                 </span>
-                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#1B211D]">
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#101828]">
                   {language === 'ar'
                     ? `هل ترغب في تفصيل هذه التشكيلة بمقاسات فيلتك الخاصة؟`
                     : `Want custom dimensions for these ${currentCategory.title.en}?`}
                 </h3>
-                <p className="text-xs text-[#6C7268] max-w-lg">
+                <p className="text-xs text-[#667085] max-w-lg">
                   {language === 'ar'
                     ? 'فريقنا المتخصص في الرياض يقوم برفع المقاسات وتصميم المجرى المخفي وتفصيل الأقمشة بأعلى معايير الدقة.'
                     : 'Our team delivers on-site laser measurements, motorized track installation, and bespoke finishing across all Riyadh districts.'}
@@ -318,7 +318,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
 
               <a
                 href="tel:+966500000000"
-                className="px-5 py-3 rounded-xl bg-[#1B211D] hover:bg-[#8F3E24] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
+                className="px-5 py-3 rounded-xl bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
               >
                 <Calendar className="w-4 h-4" />
                 <span>{language === 'ar' ? 'طلب زيارة فني مقاسات' : 'Book Measurement Visit'}</span>

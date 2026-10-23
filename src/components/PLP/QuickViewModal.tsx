@@ -73,22 +73,22 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute top-4 end-4 z-20 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#4A433A] hover:text-[#1B211D] shadow-sm flex items-center justify-center transition-colors"
+          className="absolute top-4 end-4 z-20 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#4B5563] hover:text-[#101828] shadow-sm flex items-center justify-center transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left: Gallery Stage */}
-          <div className="bg-[#F6F2EC] p-6 flex flex-col justify-between">
-            <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-[#E9DDCE]">
+          <div className="bg-[#F6F4EF] p-6 flex flex-col justify-between">
+            <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-[#E7E2D8]">
               <img
                 src={activeImage || product.image}
                 alt={product.name[language]}
                 className="w-full h-full object-cover transition-all duration-300"
               />
               {product.badge && (
-                <span className="absolute top-3 start-3 px-3 py-1 bg-[#1B211D]/85 text-white text-xs uppercase tracking-wider rounded-full font-medium">
+                <span className="absolute top-3 start-3 px-3 py-1 bg-[#0A2A5E]/85 text-white text-xs uppercase tracking-wider rounded-full font-medium">
                   {product.badge[language]}
                 </span>
               )}
@@ -103,7 +103,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                     type="button"
                     onClick={() => setActiveImage(img)}
                     className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                      activeImage === img ? 'border-[#8F3E24]' : 'border-transparent opacity-70 hover:opacity-100'
+                      activeImage === img ? 'border-[#0A2A5E]' : 'border-transparent opacity-70 hover:opacity-100'
                     }`}
                   >
                     <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -118,53 +118,53 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
             <div>
               {/* Category & Rating */}
               <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-xs uppercase tracking-wider text-[#8F3E24] font-semibold">
+                <span className="text-xs uppercase tracking-wider text-[#0A2A5E] font-semibold">
                   {product.category[language]}
                 </span>
                 <div className="flex items-center gap-1 text-xs">
-                  <Star className="w-4 h-4 fill-[#D99A5A] text-[#D99A5A]" />
-                  <span className="font-semibold text-[#1B211D]">{product.rating.toFixed(1)}</span>
-                  <span className="text-[#877C71]">({product.reviews} {language === 'ar' ? 'تقييم' : 'reviews'})</span>
+                  <Star className="w-4 h-4 fill-[#C6A15B] text-[#C6A15B]" />
+                  <span className="font-semibold text-[#101828]">{product.rating.toFixed(1)}</span>
+                  <span className="text-[#667085]">({product.reviews} {language === 'ar' ? 'تقييم' : 'reviews'})</span>
                 </div>
               </div>
 
               {/* Title */}
-              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#1B211D] mb-3 leading-snug">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#101828] mb-3 leading-snug">
                 {product.name[language]}
               </h2>
 
               {/* Price Row */}
-              <div className="flex items-baseline gap-3 mb-4 pb-4 border-b border-[#ECE3D7]">
-                <span className="text-2xl sm:text-3xl font-serif font-bold text-[#1B211D]">
+              <div className="flex items-baseline gap-3 mb-4 pb-4 border-b border-[#EBE7DE]">
+                <span className="text-2xl sm:text-3xl font-serif font-bold text-[#101828]">
                   {currentPrice}{' '}
-                  <span className="text-sm font-sans font-normal text-[#747D74]">
+                  <span className="text-sm font-sans font-normal text-[#667085]">
                     {language === 'ar' ? 'ر.س' : 'SAR'}
                   </span>
                 </span>
                 {product.oldPrice && (
-                  <span className="text-base text-[#9C9184] line-through">
+                  <span className="text-base text-[#8A847B] line-through">
                     {product.oldPrice + sizeModifier}{' '}
                     <span className="text-xs">{language === 'ar' ? 'ر.س' : 'SAR'}</span>
                   </span>
                 )}
                 {product.discount && (
-                  <span className="px-2.5 py-0.5 bg-[#8F3E24]/15 text-[#886221] text-xs font-semibold rounded-full">
+                  <span className="px-2.5 py-0.5 bg-[#0A2A5E]/15 text-[#8A6A2F] text-xs font-semibold rounded-full">
                     {language === 'ar' ? `وفر ${product.discount}٪` : `Save ${product.discount}%`}
                   </span>
                 )}
               </div>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-[#665D53] mb-5 leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#475467] mb-5 leading-relaxed">
                 {product.description[language]}
               </p>
 
               {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
                 <div className="mb-4">
-                  <label className="block text-xs font-semibold text-[#302B24] mb-2">
+                  <label className="block text-xs font-semibold text-[#1F2937] mb-2">
                     {language === 'ar' ? 'اللون المحدد:' : 'Selected Color:'}{' '}
-                    <span className="font-normal text-[#747D74]">
+                    <span className="font-normal text-[#667085]">
                       {product.colors[selectedColorIdx]?.name[language]}
                     </span>
                   </label>
@@ -176,7 +176,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                         onClick={() => setSelectedColorIdx(idx)}
                         className={`w-7 h-7 rounded-full border transition-all flex items-center justify-center ${
                           selectedColorIdx === idx
-                            ? 'ring-2 ring-[#8F3E24] ring-offset-2 scale-110'
+                            ? 'ring-2 ring-[#0A2A5E] ring-offset-2 scale-110'
                             : 'border-black/20 hover:scale-105'
                         }`}
                         style={{ backgroundColor: c.hex }}
@@ -194,7 +194,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-5">
-                  <label className="block text-xs font-semibold text-[#302B24] mb-2">
+                  <label className="block text-xs font-semibold text-[#1F2937] mb-2">
                     {language === 'ar' ? 'المقاس / الأبعاد:' : 'Size / Dimensions:'}
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -205,12 +205,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                         onClick={() => setSelectedSizeIdx(idx)}
                         className={`p-2.5 text-start rounded-lg border text-xs transition-all ${
                           selectedSizeIdx === idx
-                            ? 'border-[#8F3E24] bg-[#FAF6F0] font-semibold text-[#1B211D]'
-                            : 'border-[#E4DCD0] hover:border-[#BDB09E] text-[#4F5851]'
+                            ? 'border-[#0A2A5E] bg-[#F7F5F0] font-semibold text-[#101828]'
+                            : 'border-[#E2DDD3] hover:border-[#B8B2A8] text-[#475467]'
                         }`}
                       >
                         <div className="truncate">{s.label[language]}</div>
-                        <div className="text-[11px] text-[#877C71] font-normal">{s.dimensions}</div>
+                        <div className="text-[11px] text-[#667085] font-normal">{s.dimensions}</div>
                       </button>
                     ))}
                   </div>
@@ -219,21 +219,21 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
 
               {/* Quantity + Wishlist */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center border border-[#DCD3C5] rounded-lg overflow-hidden bg-[#FCF9F4]">
+                <div className="flex items-center border border-[#DCD7CC] rounded-lg overflow-hidden bg-[#FDFCFA]">
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="px-3 py-2 text-sm text-[#443D35] hover:bg-[#EFE7DC] transition-colors"
+                    className="px-3 py-2 text-sm text-[#4B5563] hover:bg-[#EEEAE2] transition-colors"
                   >
                     -
                   </button>
-                  <span className="px-3 py-2 text-xs font-semibold text-[#1B211D] min-w-[32px] text-center">
+                  <span className="px-3 py-2 text-xs font-semibold text-[#101828] min-w-[32px] text-center">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="px-3 py-2 text-sm text-[#443D35] hover:bg-[#EFE7DC] transition-colors"
+                    className="px-3 py-2 text-sm text-[#4B5563] hover:bg-[#EEEAE2] transition-colors"
                   >
                     +
                   </button>
@@ -245,7 +245,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                   className={`flex-1 py-2.5 px-3 rounded-lg border text-xs font-medium flex items-center justify-center gap-1.5 transition-colors ${
                     isWishlisted
                       ? 'border-rose-300 bg-rose-50 text-rose-600'
-                      : 'border-[#DCD3C5] text-[#4E473D] hover:border-[#1B211D]'
+                      : 'border-[#DCD7CC] text-[#4B5563] hover:border-[#0A2A5E]'
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current text-rose-600' : ''}`} />
@@ -267,7 +267,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                 className={`w-full py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
                   isAdded
                     ? 'bg-emerald-700 text-white'
-                    : 'bg-[#1B211D] hover:bg-[#8F3E24] text-white'
+                    : 'bg-[#0A2A5E] hover:bg-[#061C3F] text-white'
                 }`}
               >
                 {isAdded ? (
@@ -289,7 +289,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                 <Link
                   href={`/product/${productSlug}`}
                   onClick={onClose}
-                  className="inline-flex items-center gap-1.5 text-xs text-[#747D74] hover:text-[#8F3E24] font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#667085] hover:text-[#0A2A5E] font-medium transition-colors"
                 >
                   <span>{language === 'ar' ? 'عرض تفاصيل المنتج والمقاسات الكاملة' : 'View Full Product Details & Specs'}</span>
                   <Arrow className="w-3.5 h-3.5" />
@@ -297,13 +297,13 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
               </div>
 
               {/* Saudi Trust Badges */}
-              <div className="mt-4 pt-4 border-t border-[#ECE3D7] grid grid-cols-2 gap-2 text-[11px] text-[#747D74]">
+              <div className="mt-4 pt-4 border-t border-[#EBE7DE] grid grid-cols-2 gap-2 text-[11px] text-[#667085]">
                 <div className="flex items-center gap-1.5">
-                  <Truck className="w-3.5 h-3.5 text-[#8F3E24] shrink-0" />
+                  <Truck className="w-3.5 h-3.5 text-[#0A2A5E] shrink-0" />
                   <span>{language === 'ar' ? 'توصيل وتركيب داخل الرياض' : 'Riyadh Delivery & Install'}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#8F3E24] shrink-0" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#0A2A5E] shrink-0" />
                   <span>{language === 'ar' ? 'ضمان جودة الأقمشة ٥ سنوات' : '5-Year Quality Warranty'}</span>
                 </div>
               </div>

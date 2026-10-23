@@ -216,7 +216,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
   };
 
   return (
-    <div className="bg-[#FCF9F4] min-h-screen pb-16">
+    <div className="bg-[#FDFCFA] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
@@ -242,7 +242,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
         {/* 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E7E2D8] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}

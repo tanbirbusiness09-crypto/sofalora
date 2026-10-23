@@ -28,18 +28,18 @@ export const BestSellers: React.FC = () => {
   });
 
   return (
-    <section id="bestsellers" className="py-16 sm:py-24 bg-[#FBF8F3]">
+    <section id="bestsellers" className="py-16 sm:py-24 bg-[#FAFAF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          <span className="text-xs font-bold text-[#7A351F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'تشكيلة النخبة في الرياض' : 'Riyadh Elite Curation'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
             {t('bestSellersTitle')}
           </h2>
-          <p className="text-sm sm:text-base text-[#687168] mt-2">
+          <p className="text-sm sm:text-base text-[#667085] mt-2">
             {t('bestSellersSubtitle')}
           </p>
 
@@ -49,8 +49,8 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('all')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'all'
-                  ? 'bg-[#1B211D] text-white shadow-xs'
-                  : 'bg-[#EFE8DF] text-[#4F473E] hover:bg-[#E5DCD1]'
+                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
               {t('filterAll')}
@@ -59,8 +59,8 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('curtains')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'curtains'
-                  ? 'bg-[#1B211D] text-white shadow-xs'
-                  : 'bg-[#EFE8DF] text-[#4F473E] hover:bg-[#E5DCD1]'
+                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
               {t('filterCurtains')}
@@ -69,8 +69,8 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('blinds')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'blinds'
-                  ? 'bg-[#1B211D] text-white shadow-xs'
-                  : 'bg-[#EFE8DF] text-[#4F473E] hover:bg-[#E5DCD1]'
+                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
               {t('filterBlinds')}
@@ -79,8 +79,8 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('blackout')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'blackout'
-                  ? 'bg-[#1B211D] text-white shadow-xs'
-                  : 'bg-[#EFE8DF] text-[#4F473E] hover:bg-[#E5DCD1]'
+                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
               {t('filterBlackout')}
@@ -89,8 +89,8 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('wave')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'wave'
-                  ? 'bg-[#1B211D] text-white shadow-xs'
-                  : 'bg-[#EFE8DF] text-[#4F473E] hover:bg-[#E5DCD1]'
+                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
               {t('filterWave')}
@@ -109,10 +109,10 @@ export const BestSellers: React.FC = () => {
                 key={product.id}
                 onMouseEnter={() => setHoveredCardId(product.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
-                className="group relative bg-white rounded-2xl border border-[#E4D6C7] shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="group relative bg-white rounded-2xl border border-[#E2DED4] shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Top Image Container */}
-                <div className="relative aspect-4/5 w-full bg-[#E7DACB] overflow-hidden">
+                <div className="relative aspect-4/5 w-full bg-[#E5E1D8] overflow-hidden">
                   
                   {/* Primary & Secondary Images Cross-Fade */}
                   <img
@@ -134,7 +134,7 @@ export const BestSellers: React.FC = () => {
 
                   {/* Badge */}
                   {product.badge && (
-                    <span className="absolute top-2.5 start-2.5 bg-[#1B211D]/90 backdrop-blur-xs text-[#F1D5B2] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                    <span className="absolute top-2.5 start-2.5 bg-[#0A2A5E]/90 backdrop-blur-xs text-[#E8D9B6] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-xs">
                       {product.badge[language]}
                     </span>
                   )}
@@ -147,8 +147,8 @@ export const BestSellers: React.FC = () => {
                     }}
                     className={`absolute top-2.5 end-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                       isWishlisted
-                        ? 'bg-[#B85C3A] text-white shadow-md'
-                        : 'bg-white/90 text-[#3C3630] hover:bg-white hover:text-[#B85C3A] shadow-xs'
+                        ? 'bg-[#C8102E] text-white shadow-md'
+                        : 'bg-white/90 text-[#344054] hover:bg-white hover:text-[#C8102E] shadow-xs'
                     }`}
                     aria-label="Wishlist"
                   >
@@ -159,9 +159,9 @@ export const BestSellers: React.FC = () => {
                   <div className="absolute inset-x-3 bottom-3 hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
                     <button
                       onClick={() => openQuickView(product)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-white/95 hover:bg-white text-[#1B211D] text-xs font-bold shadow-lg flex items-center justify-center gap-1.5 transition-all"
+                      className="w-full py-2.5 px-3 rounded-xl bg-white/95 hover:bg-white text-[#101828] text-xs font-bold shadow-lg flex items-center justify-center gap-1.5 transition-all"
                     >
-                      <Eye className="w-3.5 h-3.5 text-[#B85C3A]" />
+                      <Eye className="w-3.5 h-3.5 text-[#C8102E]" />
                       <span>{t('quickView')}</span>
                     </button>
                   </div>
@@ -171,25 +171,25 @@ export const BestSellers: React.FC = () => {
                 <div className="p-3.5 sm:p-4.5 flex-1 flex flex-col justify-between">
                   <div>
                     {/* Category & Rating */}
-                    <div className="flex items-center justify-between gap-1 text-[11px] text-[#85796D] mb-1">
+                    <div className="flex items-center justify-between gap-1 text-[11px] text-[#667085] mb-1">
                       <span className="truncate">{product.category[language]}</span>
-                      <div className="flex items-center gap-0.5 text-[#B85C3A] font-bold shrink-0">
+                      <div className="flex items-center gap-0.5 text-[#C8102E] font-bold shrink-0">
                         <Star className="w-3 h-3 fill-current" />
                         <span>{product.rating}</span>
-                        <span className="text-[#A0968A] font-normal">({product.reviews})</span>
+                        <span className="text-[#8A847B] font-normal">({product.reviews})</span>
                       </div>
                     </div>
 
                     {/* Product Name */}
                     <h3
                       onClick={() => openQuickView(product)}
-                      className="text-xs sm:text-sm font-bold text-[#1B211D] hover:text-[#8F3E24] transition-colors line-clamp-1 cursor-pointer"
+                      className="text-xs sm:text-sm font-bold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1 cursor-pointer"
                     >
                       {product.name[language]}
                     </h3>
 
                     {/* Fabric Spec Note */}
-                    <p className="text-[11px] text-[#747B72] mt-0.5 truncate">
+                    <p className="text-[11px] text-[#667085] mt-0.5 truncate">
                       {product.fabric[language]}
                     </p>
 
@@ -198,7 +198,7 @@ export const BestSellers: React.FC = () => {
                       {product.colors.map((c) => (
                         <span
                           key={c.id}
-                          className="w-3.5 h-3.5 rounded-full border border-[#D3C3B1] shadow-2xs"
+                          className="w-3.5 h-3.5 rounded-full border border-[#CFC8BA] shadow-2xs"
                           style={{ backgroundColor: c.hex }}
                           title={c.name[language]}
                         />
@@ -207,13 +207,13 @@ export const BestSellers: React.FC = () => {
                   </div>
 
                   {/* Price & Add to Cart Button */}
-                  <div className="mt-3.5 pt-3 border-t border-[#F1E9DF] flex items-center justify-between gap-2">
+                  <div className="mt-3.5 pt-3 border-t border-[#F0EDE6] flex items-center justify-between gap-2">
                     <div>
-                      <div className="text-sm sm:text-base font-extrabold text-[#161B18]">
+                      <div className="text-sm sm:text-base font-extrabold text-[#0A2A5E]">
                         {formatPrice(product.price)}
                       </div>
                       {product.oldPrice && (
-                        <div className="text-[11px] text-[#9A8F83] line-through -mt-0.5">
+                        <div className="text-[11px] text-[#8A847B] line-through -mt-0.5">
                           {formatPrice(product.oldPrice)}
                         </div>
                       )}
@@ -221,7 +221,7 @@ export const BestSellers: React.FC = () => {
 
                     <button
                       onClick={() => addToCart(product)}
-                      className="inline-flex items-center justify-center gap-1 bg-[#1B211D] hover:bg-[#B85C3A] hover:text-[#1B211D] text-white p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0"
+                      className="inline-flex items-center justify-center gap-1 bg-[#0A2A5E] hover:bg-[#C8102E] hover:text-[#101828] text-white p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0"
                       title={t('addToCart')}
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />

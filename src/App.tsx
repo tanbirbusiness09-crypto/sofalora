@@ -119,10 +119,10 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBF8F3] text-[#1B211D] selection:bg-[#B85C3A]/25 selection:text-[#1B211D] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#FAFAF8] text-[#101828] selection:bg-[#C8102E]/25 selection:text-[#101828] antialiased">
       {/* 1. Header Area (Utility Bar, Main Header, Mega Menu, Mobile Drawer) */}
       <UtilityBar />
-      <header className="sticky top-0 z-40 bg-[#FBF8F3]/95 backdrop-blur-md shadow-xs transition-shadow">
+      <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md shadow-xs transition-shadow">
         <MainHeader onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
         <Navigation />
       </header>

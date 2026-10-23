@@ -8,23 +8,23 @@ export const ShopByCategory: React.FC = () => {
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <section id="categories" className="py-14 sm:py-20 bg-[#FBF8F3]">
+    <section id="categories" className="py-14 sm:py-20 bg-[#FAFAF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-12 gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#161B18] font-serif-luxury tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
               {t('categoriesTitle')}
             </h2>
-            <p className="text-sm sm:text-base text-[#687168] mt-2 max-w-xl">
+            <p className="text-sm sm:text-base text-[#667085] mt-2 max-w-xl">
               {t('categoriesSubtitle')}
             </p>
           </div>
 
           <a
             href="#bestsellers"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#7A351F] hover:text-[#5E441B] transition-colors group self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#061C3F] hover:text-[#8A6A2F] transition-colors group self-start sm:self-auto"
           >
             <span>{language === 'ar' ? 'عرض كافة التشكيلات' : 'View All Collections'}</span>
             <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
@@ -37,10 +37,10 @@ export const ShopByCategory: React.FC = () => {
             <a
               key={category.id}
               href="#bestsellers"
-              className="group relative rounded-2xl overflow-hidden bg-white border border-[#E4D6C7] shadow-2xs hover:shadow-xl transition-all duration-500 flex flex-col"
+              className="group relative rounded-2xl overflow-hidden bg-white border border-[#E2DED4] shadow-2xs hover:shadow-xl transition-all duration-500 flex flex-col"
             >
               {/* Image Container with Zoom */}
-              <div className="relative aspect-4/3 sm:aspect-square overflow-hidden bg-[#E7DACB]">
+              <div className="relative aspect-4/3 sm:aspect-square overflow-hidden bg-[#E5E1D8]">
                 <img
                   src={category.image}
                   alt={category.title[language]}
@@ -52,7 +52,7 @@ export const ShopByCategory: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
                 {/* Designs Count Pill */}
-                <span className="absolute top-3 end-3 bg-white/90 backdrop-blur-xs text-[#1B211D] text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
+                <span className="absolute top-3 end-3 bg-white/90 backdrop-blur-xs text-[#101828] text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
                   {category.itemCount} {t('itemsCount')}
                 </span>
               </div>
@@ -60,18 +60,18 @@ export const ShopByCategory: React.FC = () => {
               {/* Card Meta Content */}
               <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between bg-white">
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-[#1B211D] group-hover:text-[#8F3E24] transition-colors">
+                  <h3 className="text-sm sm:text-base font-bold text-[#101828] group-hover:text-[#0A2A5E] transition-colors">
                     {category.title[language]}
                   </h3>
-                  <p className="text-xs text-[#747B72] mt-1 line-clamp-1">
+                  <p className="text-xs text-[#667085] mt-1 line-clamp-1">
                     {category.subtitle[language]}
                   </p>
                 </div>
 
                 {/* Explore Link with Directional Arrow */}
-                <div className="mt-3.5 pt-3 border-t border-[#F4EDE4] flex items-center justify-between text-xs font-bold text-[#8F3E24] group-hover:text-[#7A5A24]">
+                <div className="mt-3.5 pt-3 border-t border-[#F3F1EB] flex items-center justify-between text-xs font-bold text-[#0A2A5E] group-hover:text-[#8A6A2F]">
                   <span>{t('exploreCategory')}</span>
-                  <div className="w-6 h-6 rounded-full bg-[#FBF8F3] group-hover:bg-[#B85C3A] group-hover:text-white flex items-center justify-center transition-all duration-300">
+                  <div className="w-6 h-6 rounded-full bg-[#FAFAF8] group-hover:bg-[#C8102E] group-hover:text-white flex items-center justify-center transition-all duration-300">
                     <ArrowIcon className="w-3.5 h-3.5" />
                   </div>
                 </div>

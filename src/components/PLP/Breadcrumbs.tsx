@@ -20,11 +20,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
   return (
     <nav
       aria-label="Breadcrumb"
-      className={`flex items-center text-xs text-[#827568] flex-wrap gap-1.5 py-3 ${className}`}
+      className={`flex items-center text-xs text-[#6B7280] flex-wrap gap-1.5 py-3 ${className}`}
     >
       <Link
         href="/"
-        className="flex items-center gap-1 text-[#665D53] hover:text-[#8F3E24] transition-colors"
+        className="flex items-center gap-1 text-[#475467] hover:text-[#0A2A5E] transition-colors"
       >
         <Home className="w-3.5 h-3.5" />
         <span>{language === 'ar' ? 'الرئيسية' : 'Home'}</span>
@@ -34,17 +34,17 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
         const isLast = idx === items.length - 1;
         return (
           <React.Fragment key={idx}>
-            <Chevron className="w-3.5 h-3.5 text-[#B8ADA0] shrink-0" />
+            <Chevron className="w-3.5 h-3.5 text-[#A8A29A] shrink-0" />
             {item.href && !isLast ? (
               <Link
                 href={item.href}
-                className="text-[#665D53] hover:text-[#8F3E24] transition-colors truncate max-w-[160px] sm:max-w-none"
+                className="text-[#475467] hover:text-[#0A2A5E] transition-colors truncate max-w-[160px] sm:max-w-none"
               >
                 {item.label[language]}
               </Link>
             ) : (
               <span
-                className="font-semibold text-[#1B211D] truncate max-w-[200px] sm:max-w-none"
+                className="font-semibold text-[#101828] truncate max-w-[200px] sm:max-w-none"
                 aria-current={isLast ? 'page' : undefined}
               >
                 {item.label[language]}

@@ -4,14 +4,20 @@
   --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Fraunces', ui-serif, Georgia, serif;
 
-  --color-sofalora-cream: #FBF8F3;
-  --color-sofalora-sand: #F4EDE4;
-  --color-sofalora-line: #E8DCCD;
-  --color-sofalora-clay: #B85C3A;
-  --color-sofalora-clay-deep: #8F3E24;
-  --color-sofalora-amber: #E6A56C;
-  --color-sofalora-forest: #173B32;
-  --color-sofalora-ink: #1B211D;
+  --color-sofalora-cream: #FAFAF8;
+  --color-sofalora-sand: #F3F1EB;
+  --color-sofalora-line: #E6E2D9;
+  --color-sofalora-clay: #C8102E;
+  --color-sofalora-clay-deep: #0A2A5E;
+  --color-sofalora-amber: #C6A15B;
+  --color-sofalora-forest: #0A2A5E;
+  --color-sofalora-ink: #101828;
+  --color-sofalora-navy: #0A2A5E;
+  --color-sofalora-navy-deep: #061C3F;
+  --color-sofalora-red: #C8102E;
+  --color-sofalora-red-bright: #EC1E27;
+  --color-sofalora-gold: #C6A15B;
+  --color-sofalora-gold-soft: #E3C98F;
 }
 
 @layer base {
@@ -19,16 +25,16 @@
     --font-en-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-en-serif: 'Fraunces', Georgia, serif;
     --font-ar-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
-    --color-sand-50: #FBF8F3;
-    --color-sand-100: #F4EDE4;
-    --color-sand-200: #E8DCCD;
-    --color-sand-300: #D8C8B6;
-    --color-gold-400: #E6B183;
-    --color-gold-500: #B85C3A;
-    --color-gold-600: #8F3E24;
-    --color-charcoal-900: #161B18;
-    --color-charcoal-800: #232A25;
-    --color-charcoal-700: #39413B;
+    --color-sand-50: #FAFAF8;
+    --color-sand-100: #F3F1EB;
+    --color-sand-200: #E6E2D9;
+    --color-sand-300: #D6D0C4;
+    --color-gold-400: #E3C98F;
+    --color-gold-500: #C6A15B;
+    --color-gold-600: #8A6A2F;
+    --color-charcoal-900: #061C3F;
+    --color-charcoal-800: #0E2A52;
+    --color-charcoal-700: #344054;
   }
 
   html {
@@ -57,13 +63,13 @@
   }
 
   body {
-    background-color: #FBF8F3;
-    color: #1B211D;
+    background-color: #FAFAF8;
+    color: #101828;
   }
 
   ::selection {
-    background: rgba(184, 92, 58, 0.22);
-    color: #1B211D;
+    background: rgba(200, 16, 46, 0.16);
+    color: #101828;
   }
 }
 
@@ -71,22 +77,22 @@
    Sofalora design language
 ------------------------------------------------------------------ */
 .brand-gradient {
-  background-image: linear-gradient(120deg, #8F3E24 0%, #B85C3A 45%, #E6A56C 100%);
+  background-image: linear-gradient(120deg, #061C3F 0%, #0A2A5E 52%, #17498F 100%);
 }
 
 .brand-gradient-dark {
   background-image:
-    radial-gradient(circle at 12% 18%, rgba(184, 92, 58, 0.35) 0%, transparent 42%),
-    radial-gradient(circle at 86% 82%, rgba(230, 165, 108, 0.18) 0%, transparent 48%),
-    linear-gradient(135deg, #101713 0%, #173B32 58%, #232A25 100%);
+    radial-gradient(circle at 12% 18%, rgba(200, 16, 46, 0.28) 0%, transparent 42%),
+    radial-gradient(circle at 86% 82%, rgba(198, 161, 91, 0.2) 0%, transparent 48%),
+    linear-gradient(135deg, #061C3F 0%, #0A2A5E 58%, #0E2A52 100%);
 }
 
 .brand-gradient-soft {
-  background-image: linear-gradient(135deg, #FBF8F3 0%, #F4EDE4 48%, #EDDDCA 100%);
+  background-image: linear-gradient(135deg, #FDFCFA 0%, #F3F1EB 48%, #F1E7D6 100%);
 }
 
 .text-gradient-brand {
-  background-image: linear-gradient(100deg, #8F3E24 0%, #B85C3A 48%, #D98B4F 100%);
+  background-image: linear-gradient(100deg, #0A2A5E 0%, #17498F 52%, #C8102E 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -115,12 +121,12 @@
   font-weight: 500;
   letter-spacing: 0.11em;
   margin-inline-start: 0.015em;
-  color: #B85C3A;
+  color: #C8102E;
   transition: color 300ms ease;
 }
 
 .brand-wordmark--light .brand-wordmark-accent {
-  color: #E6A56C;
+  color: #E3C98F;
 }
 
 html[dir="rtl"] .brand-wordmark {
@@ -156,18 +162,18 @@ html[dir="rtl"] .brand-tagline {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  background-image: linear-gradient(120deg, #8F3E24 0%, #B85C3A 52%, #D98B4F 100%);
+  background-image: linear-gradient(120deg, #061C3F 0%, #0A2A5E 52%, #17498F 100%);
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.01em;
-  box-shadow: 0 10px 26px -12px rgba(143, 62, 36, 0.7);
+  box-shadow: 0 10px 26px -12px rgba(10, 42, 94, 0.7);
   transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
 }
 
 .btn-brand:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
   transform: translateY(-1px);
-  box-shadow: 0 16px 32px -14px rgba(143, 62, 36, 0.8);
+  box-shadow: 0 16px 32px -14px rgba(10, 42, 94, 0.78);
 }
 
 .btn-brand:active {
@@ -180,15 +186,15 @@ html[dir="rtl"] .brand-tagline {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  border: 1px solid rgba(143, 62, 36, 0.35);
-  color: #8F3E24;
+  border: 1px solid rgba(10, 42, 94, 0.3);
+  color: #0A2A5E;
   font-weight: 700;
   transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
 
 .btn-brand-outline:hover {
-  background-color: rgba(184, 92, 58, 0.08);
-  border-color: rgba(143, 62, 36, 0.6);
+  background-color: rgba(10, 42, 94, 0.06);
+  border-color: rgba(10, 42, 94, 0.55);
 }
 
 .eyebrow-brand {
@@ -199,7 +205,7 @@ html[dir="rtl"] .brand-tagline {
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8F3E24;
+  color: #C8102E;
 }
 
 .card-lift {
@@ -208,15 +214,15 @@ html[dir="rtl"] .brand-tagline {
 
 .card-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 24px 48px -28px rgba(27, 33, 29, 0.35);
+  box-shadow: 0 24px 48px -28px rgba(10, 42, 94, 0.28);
 }
 
 .soft-shadow {
-  box-shadow: 0 18px 40px -30px rgba(27, 33, 29, 0.45);
+  box-shadow: 0 18px 40px -30px rgba(10, 42, 94, 0.35);
 }
 
 .glass-brand {
-  background: rgba(251, 248, 243, 0.78);
+  background: rgba(250, 250, 248, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -227,14 +233,14 @@ html[dir="rtl"] .brand-tagline {
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4EDE4;
+  background: #F3F1EB;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D3C3B1;
+  background: #CFC8BA;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B85C3A;
+  background: #C8102E;
 }
 
 /* Hide scrollbar for category bars and carousels */

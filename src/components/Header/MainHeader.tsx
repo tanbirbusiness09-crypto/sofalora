@@ -168,7 +168,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
 
   return (
     <div
-      className={`bg-transparent border-b border-[#E8DCCD] transition-all duration-300 ${
+      className={`bg-transparent border-b border-[#E6E2D9] transition-all duration-300 ${
         isScrolled ? 'py-1.5 sm:py-2' : 'py-3 sm:py-3.5'
       }`}
     >
@@ -179,13 +179,13 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <button
               onClick={onOpenMobileMenu}
-              className="lg:hidden shrink-0 p-1.5 sm:p-2 -ms-2 rounded-lg text-[#1B211D] hover:bg-[#E8DCCD]/60 transition-colors"
+              className="lg:hidden shrink-0 p-1.5 sm:p-2 -ms-2 rounded-lg text-[#101828] hover:bg-[#E6E2D9]/60 transition-colors"
               aria-label="Open Navigation Menu"
             >
               <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
-            <Link href="/" className="group min-w-0 shrink-0">
+            <Link href="/" className="group min-w-0 shrink-0" aria-label="Sofalora">
               <BrandLogo size="md" hideTaglineOnMobile />
             </Link>
           </div>
@@ -204,9 +204,9 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                 onFocus={() => setIsSearchFocused(true)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('searchPlaceholder')}
-                className="w-full bg-[#F4EDE4] text-[#1B211D] placeholder-[#837A70] text-sm rounded-full py-2.5 ps-11 pe-10 border border-[#DFD2C2] focus:outline-none focus:border-[#B85C3A] focus:ring-2 focus:ring-[#B85C3A]/20 transition-all shadow-2xs"
+                className="w-full bg-[#F3F1EB] text-[#101828] placeholder-[#667085] text-sm rounded-full py-2.5 ps-11 pe-10 border border-[#DDD8CD] focus:outline-none focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/20 transition-all shadow-2xs"
               />
-              <Search className="w-4 h-4 text-[#837A70] absolute start-4 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#667085] absolute start-4 pointer-events-none" />
               {searchTerm && (
                 <button
                   type="button"
@@ -215,7 +215,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                     setSelectedIndex(-1);
                     searchInputRef.current?.focus();
                   }}
-                  className="absolute end-3 p-1 text-[#837A70] hover:text-[#1B211D] transition-colors"
+                  className="absolute end-3 p-1 text-[#667085] hover:text-[#101828] transition-colors"
                   aria-label="Clear Search"
                 >
                   <X className="w-4 h-4" />
@@ -225,24 +225,24 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
 
             {/* Live Search Autocomplete Popover */}
             {isSearchFocused && (
-              <div className="absolute top-full mt-2 inset-x-0 bg-white rounded-2xl shadow-xl border border-[#E4D6C7] p-3.5 z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+              <div className="absolute top-full mt-2 inset-x-0 bg-white rounded-2xl shadow-xl border border-[#E2DED4] p-3.5 z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
                 {searchTerm.trim().length > 0 ? (
                   searchResults.length > 0 ? (
                     <div>
-                      <div className="flex items-center justify-between text-[11px] font-semibold text-[#85796D] uppercase tracking-wider px-2.5 py-1 mb-1 border-b border-[#F4EDE4]">
+                      <div className="flex items-center justify-between text-[11px] font-semibold text-[#667085] uppercase tracking-wider px-2.5 py-1 mb-1 border-b border-[#F3F1EB]">
                         <span>
                           {language === 'ar' ? `اقتراحات سريعة لـ "${searchTerm}"` : `Suggestions for "${searchTerm}"`}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleSearchSubmit()}
-                          className="text-[#8F3E24] hover:underline normal-case text-xs font-bold"
+                          className="text-[#0A2A5E] hover:underline normal-case text-xs font-bold"
                         >
                           {language === 'ar' ? 'عرض كافة النتائج' : 'View all'}
                         </button>
                       </div>
 
-                      <div className="divide-y divide-[#F4EDE4]/80">
+                      <div className="divide-y divide-[#F3F1EB]/80">
                         {searchResults.map((product, idx) => (
                           <div
                             key={product.id}
@@ -253,43 +253,43 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                             }}
                             className={`flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-colors ${
                               selectedIndex === idx
-                                ? 'bg-[#FAF6F0] text-[#8F3E24]'
-                                : 'hover:bg-[#FBF8F3]'
+                                ? 'bg-[#F7F5F0] text-[#0A2A5E]'
+                                : 'hover:bg-[#FAFAF8]'
                             }`}
                           >
                             <img
                               src={product.image}
                               alt={product.name[language]}
-                              className="w-11 h-11 rounded-lg object-cover bg-[#F4EDE4] shrink-0"
+                              className="w-11 h-11 rounded-lg object-cover bg-[#F3F1EB] shrink-0"
                             />
                             <div className="flex-1 min-w-0">
-                              <p className="text-xs font-bold text-[#1B211D] truncate">
+                              <p className="text-xs font-bold text-[#101828] truncate">
                                 {product.name[language]}
                               </p>
-                              <p className="text-[11px] text-[#85796D] truncate">
+                              <p className="text-[11px] text-[#667085] truncate">
                                 {product.category[language]} • {product.fabric[language]}
                               </p>
                             </div>
-                            <div className="text-xs font-bold text-[#8F3E24] font-serif shrink-0">
+                            <div className="text-xs font-bold text-[#0A2A5E] font-serif shrink-0">
                               {formatPrice(product.price)}
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div className="pt-2.5 border-t border-[#F4EDE4] mt-2">
+                      <div className="pt-2.5 border-t border-[#F3F1EB] mt-2">
                         <button
                           type="button"
                           onClick={() => handleSearchSubmit()}
-                          className="w-full py-2 bg-[#FAF6F0] hover:bg-[#F3ECE0] text-[#1B211D] text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5"
+                          className="w-full py-2 bg-[#F7F5F0] hover:bg-[#F2EEE7] text-[#101828] text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5"
                         >
                           <span>{language === 'ar' ? 'عرض جميع النتائج المطابقة' : 'View all matching results'}</span>
-                          <ArrowIcon className="w-3.5 h-3.5 text-[#8F3E24]" />
+                          <ArrowIcon className="w-3.5 h-3.5 text-[#0A2A5E]" />
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className="py-6 text-center text-xs text-[#85796D]">
+                    <div className="py-6 text-center text-xs text-[#667085]">
                       <p className="font-semibold text-neutral-800 mb-1">
                         {t('noResults')} "{searchTerm}"
                       </p>
@@ -306,15 +306,15 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                     {/* Recent Searches */}
                     {recentSearches.length > 0 && (
                       <div>
-                        <div className="flex items-center justify-between text-[11px] font-semibold text-[#85796D] uppercase tracking-wider px-2 mb-2">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-[#667085] uppercase tracking-wider px-2 mb-2">
                           <span className="flex items-center gap-1.5">
-                            <History className="w-3 h-3 text-[#8F3E24]" />
+                            <History className="w-3 h-3 text-[#0A2A5E]" />
                             {language === 'ar' ? 'عمليات البحث الأخيرة' : 'Recent Searches'}
                           </span>
                           <button
                             type="button"
                             onClick={clearRecentSearches}
-                            className="text-[#998F84] hover:text-[#C53030] text-[10px] lowercase transition-colors"
+                            className="text-[#8A847B] hover:text-[#C53030] text-[10px] lowercase transition-colors"
                           >
                             {language === 'ar' ? 'مسح السجل' : 'clear'}
                           </button>
@@ -330,7 +330,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                                 setIsSearchFocused(false);
                                 navigate(`/search?q=${encodeURIComponent(item)}`);
                               }}
-                              className="px-3 py-1 bg-[#F5EFE8] hover:bg-[#EAE1D3] text-[#3D362F] text-xs rounded-full transition-colors font-medium flex items-center gap-1"
+                              className="px-3 py-1 bg-[#F3F1EB] hover:bg-[#E8E3DA] text-[#344054] text-xs rounded-full transition-colors font-medium flex items-center gap-1"
                             >
                               <span>{item}</span>
                             </button>
@@ -341,8 +341,8 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
 
                     {/* Popular Searches */}
                     <div>
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#85796D] uppercase tracking-wider px-2 mb-2">
-                        <TrendingUp className="w-3 h-3 text-[#8F3E24]" />
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#667085] uppercase tracking-wider px-2 mb-2">
+                        <TrendingUp className="w-3 h-3 text-[#0A2A5E]" />
                         <span>{language === 'ar' ? 'الأكثر بحثاً في الرياض' : 'Popular in Riyadh'}</span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 px-2">
@@ -357,10 +357,10 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                               setIsSearchFocused(false);
                               navigate(`/search?q=${encodeURIComponent(query)}`);
                             }}
-                            className="text-start px-3 py-2 rounded-xl bg-[#FBF8F3] hover:bg-[#F3ECE0] border border-[#EAE2D5] text-xs font-semibold text-[#292623] transition-colors flex items-center justify-between"
+                            className="text-start px-3 py-2 rounded-xl bg-[#FAFAF8] hover:bg-[#F2EEE7] border border-[#E8E3DA] text-xs font-semibold text-[#1F2937] transition-colors flex items-center justify-between"
                           >
                             <span className="truncate">{pop[language]}</span>
-                            <ArrowIcon className="w-3 h-3 text-[#8F3E24] opacity-70" />
+                            <ArrowIcon className="w-3 h-3 text-[#0A2A5E] opacity-70" />
                           </button>
                         ))}
                       </div>
@@ -378,14 +378,14 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DFD2C2] bg-[#F4EDE4]/90 text-[11px] font-bold text-[#1B211D] shadow-2xs transition-colors hover:border-[#B85C3A] hover:text-[#8F3E24]"
+              className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#DDD8CD] bg-[#F3F1EB]/90 text-[11px] font-bold text-[#101828] shadow-2xs transition-colors hover:border-[#C8102E] hover:text-[#0A2A5E]"
               aria-label={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
               title={language === 'en' ? 'العربية' : 'English'}
             >
               {language === 'en' ? 'AR' : 'EN'}
             </button>
             <div
-              className="hidden sm:flex items-center rounded-full border border-[#DFD2C2] bg-[#F4EDE4]/90 p-0.5 shadow-2xs"
+              className="hidden sm:flex items-center rounded-full border border-[#DDD8CD] bg-[#F3F1EB]/90 p-0.5 shadow-2xs"
               role="group"
               aria-label={language === 'ar' ? 'اختيار اللغة' : 'Select language'}
             >
@@ -394,8 +394,8 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                 onClick={() => setLanguage('en')}
                 className={`min-w-7 rounded-full px-2 py-1 text-[10px] font-bold uppercase transition-all ${
                   language === 'en'
-                    ? 'bg-[#1B211D] text-white shadow-xs'
-                    : 'text-[#6F655B] hover:text-[#8F3E24]'
+                    ? 'bg-[#0A2A5E] text-white shadow-xs'
+                    : 'text-[#475467] hover:text-[#0A2A5E]'
                 }`}
                 aria-pressed={language === 'en'}
                 title="English"
@@ -407,8 +407,8 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                 onClick={() => setLanguage('ar')}
                 className={`min-w-7 rounded-full px-2 py-1 text-[10px] font-bold transition-all ${
                   language === 'ar'
-                    ? 'bg-[#1B211D] text-white shadow-xs'
-                    : 'text-[#6F655B] hover:text-[#8F3E24]'
+                    ? 'bg-[#0A2A5E] text-white shadow-xs'
+                    : 'text-[#475467] hover:text-[#0A2A5E]'
                 }`}
                 aria-pressed={language === 'ar'}
                 title="العربية"
@@ -420,24 +420,24 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
             {/* Account Link */}
             <Link
               href="/orders"
-              className="hidden lg:flex items-center gap-1.5 p-2 rounded-full hover:bg-[#E8DCCD]/50 text-[#1B211D] transition-colors"
+              className="hidden lg:flex items-center gap-1.5 p-2 rounded-full hover:bg-[#E6E2D9]/50 text-[#101828] transition-colors"
               title={t('account')}
               aria-label={t('account')}
             >
-              <User className="w-5 h-5 text-[#29302B]" />
+              <User className="w-5 h-5 text-[#14284A]" />
               <span className="text-xs font-medium hidden xl:inline-block">{t('account')}</span>
             </Link>
 
             {/* Wishlist Button with Badge */}
             <button
               onClick={() => setIsWishlistOpen(true)}
-              className="relative p-2 rounded-full hover:bg-[#E8DCCD]/50 text-[#1B211D] transition-colors active:scale-95"
+              className="relative p-2 rounded-full hover:bg-[#E6E2D9]/50 text-[#101828] transition-colors active:scale-95"
               title={t('wishlist')}
               aria-label={t('wishlist')}
             >
-              <Heart className="w-5 h-5 text-[#29302B]" />
+              <Heart className="w-5 h-5 text-[#14284A]" />
               {wishlistCount > 0 && (
-                <span className="absolute top-1 -end-1 bg-[#8F3E24] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-xs transition-transform duration-300">
+                <span className="absolute top-1 -end-1 bg-[#0A2A5E] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-xs transition-transform duration-300">
                   {wishlistCount}
                 </span>
               )}
@@ -446,15 +446,15 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
             {/* Cart Button with Animated Badge and Subtotal */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-2 bg-[#1B211D] hover:bg-[#29302B] text-white px-3.5 py-2 rounded-full transition-all duration-200 shadow-xs group active:scale-95"
+              className="flex items-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-3.5 py-2 rounded-full transition-all duration-200 shadow-xs group active:scale-95"
               title={t('cart')}
               aria-label={t('cart')}
             >
               <div className="relative">
-                <ShoppingBag className="w-4 h-4 text-[#E6B183] group-hover:scale-110 transition-transform duration-200" />
+                <ShoppingBag className="w-4 h-4 text-[#E3C98F] group-hover:scale-110 transition-transform duration-200" />
                 {cartCount > 0 && (
                   <span
-                    className={`absolute -top-2 -end-2.5 bg-[#B85C3A] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center transition-transform duration-300 ${
+                    className={`absolute -top-2 -end-2.5 bg-[#C8102E] text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center transition-transform duration-300 ${
                       cartBadgeScale ? 'scale-125 bg-amber-300' : 'scale-100'
                     }`}
                   >
@@ -479,14 +479,14 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
               placeholder={t('searchPlaceholder')}
-              className="w-full bg-[#F4EDE4] text-[#1B211D] placeholder-[#837A70] text-xs rounded-full py-2.5 ps-9 pe-8 border border-[#DFD2C2] focus:outline-none focus:border-[#B85C3A]"
+              className="w-full bg-[#F3F1EB] text-[#101828] placeholder-[#667085] text-xs rounded-full py-2.5 ps-9 pe-8 border border-[#DDD8CD] focus:outline-none focus:border-[#C8102E]"
             />
-            <Search className="w-3.5 h-3.5 text-[#837A70] absolute start-3 top-3 pointer-events-none" />
+            <Search className="w-3.5 h-3.5 text-[#667085] absolute start-3 top-3 pointer-events-none" />
             {searchTerm && (
               <button
                 type="button"
                 onClick={() => setSearchTerm('')}
-                className="absolute end-2.5 top-2.5 p-0.5 text-[#837A70]"
+                className="absolute end-2.5 top-2.5 p-0.5 text-[#667085]"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -495,10 +495,10 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
 
           {/* Mobile Popover */}
           {isSearchFocused && (
-            <div className="absolute top-full mt-2 inset-x-0 bg-white rounded-xl shadow-xl border border-[#E4D6C7] p-3 z-50">
+            <div className="absolute top-full mt-2 inset-x-0 bg-white rounded-xl shadow-xl border border-[#E2DED4] p-3 z-50">
               {searchTerm.trim().length > 0 ? (
                 searchResults.length > 0 ? (
-                  <div className="divide-y divide-[#F4EDE4]">
+                  <div className="divide-y divide-[#F3F1EB]">
                     {searchResults.map((product) => (
                       <div
                         key={product.id}
@@ -507,7 +507,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                           setIsSearchFocused(false);
                           navigate(`/product/${product.slug || product.id}`);
                         }}
-                        className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FBF8F3] cursor-pointer"
+                        className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#FAFAF8] cursor-pointer"
                       >
                         <img
                           src={product.image}
@@ -515,10 +515,10 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                           className="w-10 h-10 rounded-md object-cover"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold truncate text-[#1B211D]">
+                          <p className="text-xs font-semibold truncate text-[#101828]">
                             {product.name[language]}
                           </p>
-                          <p className="text-[11px] text-[#8F3E24] font-bold">
+                          <p className="text-[11px] text-[#0A2A5E] font-bold">
                             {formatPrice(product.price)}
                           </p>
                         </div>
@@ -529,21 +529,21 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                       <button
                         type="button"
                         onClick={handleSearchSubmit}
-                        className="w-full py-2 bg-[#FAF6F0] text-[#1B211D] text-xs font-semibold rounded-lg text-center"
+                        className="w-full py-2 bg-[#F7F5F0] text-[#101828] text-xs font-semibold rounded-lg text-center"
                       >
                         {language === 'ar' ? 'عرض كافة النتائج' : 'View all results'}
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <p className="py-4 text-center text-xs text-[#85796D]">
+                  <p className="py-4 text-center text-xs text-[#667085]">
                     {t('noResults')} "{searchTerm}"
                   </p>
                 )
               ) : (
                 /* Mobile recent suggestions */
                 <div className="space-y-2">
-                  <span className="text-[10px] uppercase font-bold text-[#85796D]">
+                  <span className="text-[10px] uppercase font-bold text-[#667085]">
                     {language === 'ar' ? 'الأكثر طلباً' : 'Popular'}
                   </span>
                   <div className="flex flex-wrap gap-1">
@@ -557,7 +557,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
                           setIsSearchFocused(false);
                           navigate(`/search?q=${encodeURIComponent(item[language])}`);
                         }}
-                        className="px-2.5 py-1 bg-[#F4EDE4] text-[11px] font-medium rounded-full text-[#3D362F]"
+                        className="px-2.5 py-1 bg-[#F3F1EB] text-[11px] font-medium rounded-full text-[#344054]"
                       >
                         {item[language]}
                       </button>

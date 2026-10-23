@@ -191,7 +191,7 @@ export const SearchResultsPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#FCF9F4] min-h-screen pb-16">
+    <div className="bg-[#FDFCFA] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
@@ -203,12 +203,12 @@ export const SearchResultsPage: React.FC = () => {
         />
 
         {/* Search Header Banner */}
-        <div className="bg-white rounded-2xl border border-[#E9DDCE] p-6 sm:p-8 mb-8 shadow-sm">
+        <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 sm:p-8 mb-8 shadow-sm">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1B211D] mb-2">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#101828] mb-2">
               {language === 'ar' ? 'البحث في كتالوج سوفالورا' : 'Search Sofalora'}
             </h1>
-            <p className="text-xs sm:text-sm text-[#6C7268] mb-5">
+            <p className="text-xs sm:text-sm text-[#667085] mb-5">
               {language === 'ar'
                 ? 'ابحث بالاسم أو الخامة (مخمل، كتان، شيفون) أو نوع العزل أو السكك الذكية'
                 : 'Search by drapery name, fabric type, light filtration, or smart motorized systems.'}
@@ -225,29 +225,29 @@ export const SearchResultsPage: React.FC = () => {
                     ? 'مثال: كنبة مقسمة، مجلس، كرسي بوكليه، ستائر معتمة...'
                     : 'e.g. sectional sofa, majlis, bouclé chair, blackout curtains...'
                 }
-                className="w-full py-3.5 ps-11 pe-24 bg-[#FCF9F4] border border-[#DACDBE] rounded-xl text-sm text-[#1B211D] placeholder-[#9E9385] focus:outline-none focus:border-[#8F3E24] focus:bg-white shadow-inner transition-all"
+                className="w-full py-3.5 ps-11 pe-24 bg-[#FDFCFA] border border-[#D8D2C6] rounded-xl text-sm text-[#101828] placeholder-[#8A847B] focus:outline-none focus:border-[#0A2A5E] focus:bg-white shadow-inner transition-all"
               />
-              <Search className="w-5 h-5 text-[#877C71] absolute start-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-5 h-5 text-[#667085] absolute start-3.5 top-1/2 -translate-y-1/2" />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute end-20 top-1/2 -translate-y-1/2 text-[#877C71] hover:text-black p-1"
+                  className="absolute end-20 top-1/2 -translate-y-1/2 text-[#667085] hover:text-black p-1"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
               <button
                 type="submit"
-                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#1B211D] hover:bg-[#8F3E24] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
+                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
               >
                 {language === 'ar' ? 'بحث' : 'Search'}
               </button>
             </form>
 
             {/* Popular Suggested Search Tags */}
-            <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-[#827568]">
-              <span className="me-1 font-medium text-[#454D47]">
+            <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs text-[#6B7280]">
+              <span className="me-1 font-medium text-[#475467]">
                 {language === 'ar' ? 'كلمات شائعة:' : 'Popular:'}
               </span>
               {SUGGESTED_SEARCHES.map((item, idx) => (
@@ -255,7 +255,7 @@ export const SearchResultsPage: React.FC = () => {
                   key={idx}
                   type="button"
                   onClick={() => handleSuggestedClick(item[language])}
-                  className="px-2.5 py-1 rounded-full bg-[#FAF6F0] hover:bg-[#8F3E24] hover:text-white text-[#4F5851] transition-colors border border-[#ECE4D8]"
+                  className="px-2.5 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white text-[#475467] transition-colors border border-[#EBE7DF]"
                 >
                   {item[language]}
                 </button>
@@ -266,17 +266,17 @@ export const SearchResultsPage: React.FC = () => {
 
         {/* Query Result Summary */}
         {activeQuery && (
-          <div className="mb-6 flex items-center justify-between flex-wrap gap-2 text-sm text-[#4F5851]">
+          <div className="mb-6 flex items-center justify-between flex-wrap gap-2 text-sm text-[#475467]">
             <div>
               {language === 'ar' ? (
                 <>
-                  نتائج البحث عن: <strong className="text-[#1B211D]">"{activeQuery}"</strong> (
-                  <span className="text-[#8F3E24] font-semibold">{filteredProducts.length}</span> نتيجة)
+                  نتائج البحث عن: <strong className="text-[#101828]">"{activeQuery}"</strong> (
+                  <span className="text-[#0A2A5E] font-semibold">{filteredProducts.length}</span> نتيجة)
                 </>
               ) : (
                 <>
-                  Search results for: <strong className="text-[#1B211D]">"{activeQuery}"</strong> (
-                  <span className="text-[#8F3E24] font-semibold">{filteredProducts.length}</span> items)
+                  Search results for: <strong className="text-[#101828]">"{activeQuery}"</strong> (
+                  <span className="text-[#0A2A5E] font-semibold">{filteredProducts.length}</span> items)
                 </>
               )}
             </div>
@@ -288,7 +288,7 @@ export const SearchResultsPage: React.FC = () => {
                 setActiveQuery('');
                 navigate('/search', { scroll: false });
               }}
-              className="text-xs text-[#8F3E24] hover:underline flex items-center gap-1 font-medium"
+              className="text-xs text-[#0A2A5E] hover:underline flex items-center gap-1 font-medium"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'ar' ? 'عرض كافة المنتجات' : 'View all products'}</span>
@@ -299,7 +299,7 @@ export const SearchResultsPage: React.FC = () => {
         {/* 2-Column PLP Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E7E2D8] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}

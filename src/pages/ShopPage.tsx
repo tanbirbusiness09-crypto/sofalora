@@ -139,7 +139,7 @@ export const ShopPage: React.FC = () => {
   const Arrow = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <div className="bg-[#FCF9F4] min-h-screen pb-16">
+    <div className="bg-[#FDFCFA] min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         {/* Breadcrumb */}
         <Breadcrumbs
@@ -181,13 +181,13 @@ export const ShopPage: React.FC = () => {
                   }}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
                     isSelected
-                      ? 'bg-[#1B211D] text-white border-[#1B211D] shadow-sm'
-                      : 'bg-white text-[#4A433A] border-[#E5DEC7] hover:border-[#8F3E24]'
+                      ? 'bg-[#0A2A5E] text-white border-[#0A2A5E] shadow-sm'
+                      : 'bg-white text-[#4B5563] border-[#E3DED2] hover:border-[#0A2A5E]'
                   }`}
                 >
                   <span
                     className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: isSelected ? '#C59B4D' : '#D1C7BA' }}
+                    style={{ backgroundColor: isSelected ? '#C6A15B' : '#D2CCC1' }}
                   />
                   <span>{cat.title[language]}</span>
                   <span className="text-[10px] opacity-70">({cat.itemCount})</span>
@@ -200,7 +200,7 @@ export const ShopPage: React.FC = () => {
         {/* Main 2-Column PLP Layout: Filters Sidebar + Product Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           {/* Desktop Filter Sidebar */}
-          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E9DDCE] p-5 sticky top-24 shadow-sm">
+          <aside className="hidden lg:block lg:col-span-1 bg-white rounded-2xl border border-[#E7E2D8] p-5 sticky top-24 shadow-sm">
             <ProductFilters
               categories={CATEGORIES}
               filters={filters}
@@ -234,9 +234,9 @@ export const ShopPage: React.FC = () => {
             />
 
             {/* Riyadh Consultation Banner */}
-            <div className="mt-12 bg-gradient-to-r from-[#1B211D] to-[#2E2822] rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
+            <div className="mt-12 bg-gradient-to-r from-[#101828] to-[#1F2937] rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
               <div className="space-y-2 text-center sm:text-start">
-                <span className="text-xs uppercase tracking-widest text-[#C59B4D] font-semibold">
+                <span className="text-xs uppercase tracking-widest text-[#C6A15B] font-semibold">
                   {language === 'ar' ? 'خدمة مخصصة لمدينة الرياض' : 'Riyadh Bespoke Service'}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
@@ -244,7 +244,7 @@ export const ShopPage: React.FC = () => {
                     ? 'هل تحتاج استشارة خبير أو رفع مقاسات في فلتك؟'
                     : 'Need In-Home Sizing & Design Advice for Your Villa?'}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#D1C7BA] max-w-xl">
+                <p className="text-xs sm:text-sm text-[#D2CCC1] max-w-xl">
                   {language === 'ar'
                     ? 'يزوركم خبير سوفالورا مع عينات الأقمشة الطبيعية والمخمل والشيفونات مجاناً داخل مدينة الرياض.'
                     : 'Our certified master draper visits your location with physical textile catalogs and precision laser measurements at zero cost.'}
@@ -254,7 +254,7 @@ export const ShopPage: React.FC = () => {
               <div className="flex items-center gap-3 shrink-0">
                 <a
                   href="tel:+966500000000"
-                  className="px-5 py-3 rounded-xl bg-[#8F3E24] hover:bg-[#B88E47] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
+                  className="px-5 py-3 rounded-xl bg-[#0A2A5E] hover:bg-[#C6A15B] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>{language === 'ar' ? 'احجز زيارة مجانية' : 'Book Free Visit'}</span>

@@ -47,7 +47,7 @@ export const BackToTop: React.FC = () => {
       type="button"
       onClick={scrollToTop}
       aria-label={language === 'ar' ? 'الرجوع إلى أعلى الصفحة' : 'Scroll back to top'}
-      className="fixed bottom-6 start-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#1B211D] text-[#E6B183] hover:bg-[#8F3E24] hover:text-white shadow-lg border border-[#8F3E24]/30 flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-[#8F3E24]"
+      className="fixed bottom-6 start-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#0A2A5E] text-[#E3C98F] hover:bg-[#061C3F] hover:text-white shadow-lg border border-[#0A2A5E]/30 flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-[#0A2A5E]"
     >
       {/* Subtle Progress Ring */}
       <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 48 48">
@@ -58,14 +58,14 @@ export const BackToTop: React.FC = () => {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-[#3D3833]"
+          className="text-[#344054]"
         />
         <circle
           cx="24"
           cy="24"
           r="21"
           fill="none"
-          stroke="#B85C3A"
+          stroke="#C8102E"
           strokeWidth="2.5"
           strokeDasharray={132}
           strokeDashoffset={132 - (132 * scrollProgress) / 100}
