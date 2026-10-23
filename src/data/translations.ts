@@ -156,7 +156,6 @@ export const translations = {
     // Product Card
     addToCart: "Add to Cart",
     addedToCart: "Added to Cart",
-    quickView: "Quick View",
     currency: "SAR",
     reviewsCount: "reviews",
     fabricLabel: "Fabric",
@@ -469,7 +468,6 @@ export const translations = {
     // Product Card
     addToCart: "أضف إلى السلة",
     addedToCart: "تمت الإضافة",
-    quickView: "عرض سريع",
     currency: "ر.س",
     reviewsCount: "تقييم",
     fabricLabel: "القماش",

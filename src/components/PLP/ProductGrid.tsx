@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SearchX, RotateCcw } from 'lucide-react';
 import { Product } from '../../types';
 import { ProductCard } from './ProductCard';
-import { QuickViewModal } from './QuickViewModal';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 
@@ -20,7 +19,6 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   onResetFilters
 }) => {
   const { language } = useShop();
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   // Loading skeleton
   if (isLoading) {
@@ -123,30 +121,21 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   }
 
   return (
-    <>
-      <div
-        className={
-          viewMode === 'grid'
-            ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6'
-            : 'space-y-4'
-        }
-      >
-        {products.map((prod, idx) => (
-          <ProductCard
-            key={prod.id}
-            product={prod}
-            viewMode={viewMode}
-            priorityImage={idx < 4}
-            onQuickView={(p) => setQuickViewProduct(p)}
-          />
-        ))}
-      </div>
-
-      {/* Quick View Modal */}
-      <QuickViewModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-      />
-    </>
+    <div
+      className={
+        viewMode === 'grid'
+          ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6'
+          : 'space-y-4'
+      }
+    >
+      {products.map((prod, idx) => (
+        <ProductCard
+          key={prod.id}
+          product={prod}
+          viewMode={viewMode}
+          priorityImage={idx < 4}
+        />
+      ))}
+    </div>
   );
 };

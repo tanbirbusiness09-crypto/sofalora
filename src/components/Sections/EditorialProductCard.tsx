@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Heart, Star, Eye, ShoppingBag, Check } from 'lucide-react';
+import { Heart, Star, ShoppingBag, Check } from 'lucide-react';
 import { Product } from '../../types';
 import { useShop } from '../../context/LanguageContext';
+import { Link } from '../../context/RouterContext';
 
 interface EditorialProductCardProps {
   product: Product;
@@ -9,11 +10,12 @@ interface EditorialProductCardProps {
 }
 
 export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ product, className = '' }) => {
-  const { language, t, openQuickView, addToCart, toggleWishlist, isInWishlist } = useShop();
+  const { language, t, addToCart, toggleWishlist, isInWishlist } = useShop();
   const [isHovered, setIsHovered] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
   const isWishlisted = isInWishlist(product.id);
+  const productUrl = `/product/${product.slug || product.id}`;
 
   const discountPercent = product.oldPrice
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
@@ -34,27 +36,29 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
     >
       {/* 1. Image Container */}
       <div className="relative aspect-4/5 w-full bg-[#F3F1EB] overflow-hidden">
-        {/* Primary Image */}
-        <img
-          src={product.image}
-          alt={product.name[language]}
-          loading="lazy"
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
-            isHovered && product.secondaryImage ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-          }`}
-        />
-
-        {/* Secondary Image (Cross-Fade on Hover) */}
-        {product.secondaryImage && (
+        <Link href={productUrl} className="block absolute inset-0">
+          {/* Primary Image */}
           <img
-            src={product.secondaryImage}
+            src={product.image}
             alt={product.name[language]}
             loading="lazy"
             className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
-              isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+              isHovered && product.secondaryImage ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
             }`}
           />
-        )}
+
+          {/* Secondary Image (Cross-Fade on Hover) */}
+          {product.secondaryImage && (
+            <img
+              src={product.secondaryImage}
+              alt={product.name[language]}
+              loading="lazy"
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+              }`}
+            />
+          )}
+        </Link>
 
         {/* Badge (Top-Start) */}
         {product.badge ? (
@@ -83,26 +87,28 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
           <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
 
-        {/* Hover Quick View Overlay Action */}
+        {/* Hover Add to Cart Action (Desktop) */}
         <div className="absolute inset-x-2.5 bottom-2.5 hidden sm:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-10">
           <button
-            onClick={() => openQuickView(product)}
-            className="flex-1 py-2 px-3 rounded-lg bg-white/95 hover:bg-white text-[#101828] text-xs font-semibold shadow-md flex items-center justify-center gap-1.5 transition-colors"
-          >
-            <Eye className="w-3.5 h-3.5 text-[#C8102E]" />
-            <span>{t('quickView')}</span>
-          </button>
-          <button
             onClick={handleQuickAdd}
-            className={`p-2 rounded-lg text-xs font-semibold shadow-md transition-colors flex items-center justify-center ${
+            className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold shadow-md transition-colors flex items-center justify-center gap-1.5 ${
               isAdded
                 ? 'bg-[#166534] text-white'
                 : 'bg-[#0A2A5E]/90 hover:bg-[#061C3F] text-[#E8D9B6]'
             }`}
-            aria-label="Add to cart"
             title={t('addToCart')}
           >
-            {isAdded ? <Check className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />}
+            {isAdded ? (
+              <>
+                <Check className="w-4 h-4" />
+                <span>{t('addedToCart')}</span>
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="w-4 h-4" />
+                <span>{t('addToCart')}</span>
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -120,13 +126,14 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
           </div>
 
           {/* Product Name */}
-          <h3
-            onClick={() => openQuickView(product)}
-            className="text-xs sm:text-sm font-semibold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1 cursor-pointer"
-            title={product.name[language]}
-          >
-            {product.name[language]}
-          </h3>
+          <Link href={productUrl}>
+            <h3
+              className="text-xs sm:text-sm font-semibold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1"
+              title={product.name[language]}
+            >
+              {product.name[language]}
+            </h3>
+          </Link>
 
           {/* Color Dots */}
           {product.colors && product.colors.length > 0 && (

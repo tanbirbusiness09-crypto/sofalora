@@ -31,8 +31,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
     formatPrice,
     setIsCartOpen,
     wishlistCount,
-    setIsWishlistOpen,
-    openQuickView
+    setIsWishlistOpen
   } = useShop();
 
   const { navigate } = useRouter();

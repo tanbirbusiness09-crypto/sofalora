@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, ShoppingBag, Eye, Star, Check } from 'lucide-react';
+import { Heart, ShoppingBag, Star, Check } from 'lucide-react';
 import { Product } from '../../types';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
@@ -7,17 +7,15 @@ import { Link } from '../../context/RouterContext';
 interface ProductCardProps {
   product: Product;
   viewMode?: 'grid' | 'list';
-  onQuickView?: (product: Product) => void;
   priorityImage?: boolean;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   viewMode = 'grid',
-  onQuickView,
   priorityImage = false
 }) => {
-  const { language, addToCart, wishlist, toggleWishlist, openQuickView } = useShop();
+  const { language, addToCart, wishlist, toggleWishlist } = useShop();
   const [isHovered, setIsHovered] = useState(false);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [buttonState, setButtonState] = useState<'idle' | 'adding' | 'added'>('idle');
@@ -48,16 +46,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setHeartAnim(true);
     setTimeout(() => setHeartAnim(false), 300);
     toggleWishlist(product.id);
-  };
-
-  const handleQuickViewClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onQuickView) {
-      onQuickView(product);
-    } else {
-      openQuickView(product);
-    }
   };
 
   // ========================== LIST VIEW ==========================
@@ -200,16 +188,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={handleQuickViewClick}
-                aria-label="Quick View product"
-                className="min-h-[44px] px-4 py-2 text-xs font-semibold border border-[#D6D0C4] text-[#4B5563] rounded-xl hover:border-[#0A2A5E] hover:text-[#101828] transition-colors flex items-center gap-1.5 active:scale-95"
-              >
-                <Eye className="w-4 h-4 text-[#0A2A5E]" />
-                <span>{language === 'ar' ? 'معاينة سريعة' : 'Quick View'}</span>
-              </button>
-
-              <button
-                type="button"
                 onClick={handleAddToCart}
                 disabled={buttonState === 'adding'}
                 aria-label="Add to cart"
@@ -306,19 +284,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             } ${heartAnim ? 'scale-125' : 'scale-100'}`}
           />
         </button>
-
-        {/* Quick View Button Hover Overlay (Desktop) */}
-        <div className="absolute inset-x-3 bottom-3 hidden sm:flex justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-10">
-          <button
-            type="button"
-            onClick={handleQuickViewClick}
-            aria-label="Quick View product"
-            className="w-full min-h-[40px] py-2 bg-white/95 backdrop-blur-xs hover:bg-white text-[#101828] text-xs font-bold rounded-xl shadow-md hover:text-[#0A2A5E] transition-colors flex items-center justify-center gap-1.5 active:scale-95"
-          >
-            <Eye className="w-3.5 h-3.5 text-[#0A2A5E]" />
-            <span>{language === 'ar' ? 'معاينة سريعة' : 'Quick View'}</span>
-          </button>
-        </div>
       </div>
 
       {/* Product Information */}

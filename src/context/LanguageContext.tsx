@@ -82,11 +82,6 @@ export interface ShopContextType {
   createOrder: (orderInput: CreateOrderInput) => Order;
   getOrderById: (orderId: string) => Order | undefined;
 
-  // Quick View
-  quickViewProduct: Product | null;
-  openQuickView: (product: Product) => void;
-  closeQuickView: () => void;
-
   // Consultation Modal
   isConsultationOpen: boolean;
   openConsultation: () => void;
@@ -201,9 +196,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [wishlist]);
 
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-
-  // Quick View State
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   // Consultation Modal
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
@@ -517,9 +509,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return orders.find((o) => o.id.toLowerCase() === orderId.toLowerCase());
   };
 
-  const openQuickView = (product: Product) => setQuickViewProduct(product);
-  const closeQuickView = () => setQuickViewProduct(null);
-
   const openConsultation = () => setIsConsultationOpen(true);
   const closeConsultation = () => setIsConsultationOpen(false);
 
@@ -569,9 +558,6 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         orders,
         createOrder,
         getOrderById,
-        quickViewProduct,
-        openQuickView,
-        closeQuickView,
         isConsultationOpen,
         openConsultation,
         closeConsultation,

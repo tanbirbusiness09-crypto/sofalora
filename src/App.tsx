@@ -24,7 +24,6 @@ import { WishlistPage } from './pages/WishlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Modals & Overlays
-import { QuickViewModal } from './components/UI/QuickViewModal';
 import { CartDrawer } from './components/UI/CartDrawer';
 import { WishlistDrawer } from './components/UI/WishlistDrawer';
 import { ConsultationModal } from './components/UI/ConsultationModal';
@@ -144,7 +143,6 @@ const MainLayout: React.FC = () => {
       <Footer />
 
       {/* Interactive Overlays & Modals */}
-      <QuickViewModal />
       <CartDrawer />
       <WishlistDrawer />
       <ConsultationModal />

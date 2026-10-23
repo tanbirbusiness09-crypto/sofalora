@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { PRODUCTS } from '../../data/products';
-import { Product } from '../../types';
-import { Star, Heart, Eye, ShoppingBag, Check } from 'lucide-react';
+import { Link } from '../../context/RouterContext';
+import { Star, Heart, ShoppingBag } from 'lucide-react';
 
 export const BestSellers: React.FC = () => {
   const {
@@ -10,7 +10,6 @@ export const BestSellers: React.FC = () => {
     t,
     formatPrice,
     addToCart,
-    openQuickView,
     toggleWishlist,
     isInWishlist
   } = useShop();
@@ -103,6 +102,7 @@ export const BestSellers: React.FC = () => {
           {filteredProducts.map((product) => {
             const isWishlisted = isInWishlist(product.id);
             const isHovered = hoveredCardId === product.id;
+            const productUrl = `/product/${product.slug || product.id}`;
 
             return (
               <div
@@ -113,24 +113,25 @@ export const BestSellers: React.FC = () => {
               >
                 {/* Top Image Container */}
                 <div className="relative aspect-4/5 w-full bg-[#E5E1D8] overflow-hidden">
-                  
-                  {/* Primary & Secondary Images Cross-Fade */}
-                  <img
-                    src={product.image}
-                    alt={product.name[language]}
-                    loading="lazy"
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
-                      isHovered ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-                    }`}
-                  />
-                  <img
-                    src={product.secondaryImage}
-                    alt={product.name[language]}
-                    loading="lazy"
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
-                      isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
-                    }`}
-                  />
+                  <Link href={productUrl} className="block absolute inset-0">
+                    {/* Primary & Secondary Images Cross-Fade */}
+                    <img
+                      src={product.image}
+                      alt={product.name[language]}
+                      loading="lazy"
+                      className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                        isHovered ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
+                      }`}
+                    />
+                    <img
+                      src={product.secondaryImage}
+                      alt={product.name[language]}
+                      loading="lazy"
+                      className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                        isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+                      }`}
+                    />
+                  </Link>
 
                   {/* Badge */}
                   {product.badge && (
@@ -154,17 +155,6 @@ export const BestSellers: React.FC = () => {
                   >
                     <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
                   </button>
-
-                  {/* Desktop Quick View Overlay Button */}
-                  <div className="absolute inset-x-3 bottom-3 hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
-                    <button
-                      onClick={() => openQuickView(product)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-white/95 hover:bg-white text-[#101828] text-xs font-bold shadow-lg flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <Eye className="w-3.5 h-3.5 text-[#C8102E]" />
-                      <span>{t('quickView')}</span>
-                    </button>
-                  </div>
                 </div>
 
                 {/* Card Body */}
@@ -181,12 +171,11 @@ export const BestSellers: React.FC = () => {
                     </div>
 
                     {/* Product Name */}
-                    <h3
-                      onClick={() => openQuickView(product)}
-                      className="text-xs sm:text-sm font-bold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1 cursor-pointer"
-                    >
-                      {product.name[language]}
-                    </h3>
+                    <Link href={productUrl}>
+                      <h3 className="text-xs sm:text-sm font-bold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1">
+                        {product.name[language]}
+                      </h3>
+                    </Link>
 
                     {/* Fabric Spec Note */}
                     <p className="text-[11px] text-[#667085] mt-0.5 truncate">
