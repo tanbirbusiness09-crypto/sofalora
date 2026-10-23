@@ -1,33 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 import {
   ArrowRight,
   ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
   Sparkles,
-  Flame,
-  Tag,
   ShieldCheck,
   Truck,
   Ruler,
-  CheckCircle2,
-  Percent,
+  Home,
 } from 'lucide-react';
-
-interface HeroSlide {
-  id: string;
-  labelKey: 'heroSlide1Label' | 'heroSlide2Label' | 'heroSlide3Label';
-  titleKey: 'heroSlide1Title' | 'heroSlide2Title' | 'heroSlide3Title';
-  descKey: 'heroSlide1Desc' | 'heroSlide2Desc' | 'heroSlide3Desc';
-  ctaKey: 'heroSlide1Cta' | 'heroSlide2Cta' | 'heroSlide3Cta';
-  secondaryKey: 'heroSlide1Secondary' | 'heroSlide2Secondary' | 'heroSlide3Secondary';
-  badgeKey: 'heroSlide1Badge' | 'heroSlide2Badge' | 'heroSlide3Badge';
-  image: string;
-  link: string;
-  isCustomAction?: boolean;
-}
 
 interface QuickCategoryItem {
   id: string;
@@ -55,51 +37,7 @@ export const Hero: React.FC = () => {
 
   const isRtl = direction === 'rtl';
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
-  const PrevIcon = isRtl ? ChevronRight : ChevronLeft;
-  const NextIcon = isRtl ? ChevronLeft : ChevronRight;
 
-  // Carousel Slides Configuration
-  const slides: HeroSlide[] = [
-    {
-      id: 'slide-sofas',
-      labelKey: 'heroSlide1Label',
-      titleKey: 'heroSlide1Title',
-      descKey: 'heroSlide1Desc',
-      ctaKey: 'heroSlide1Cta',
-      secondaryKey: 'heroSlide1Secondary',
-      badgeKey: 'heroSlide1Badge',
-      image:
-        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1600&auto=format&fit=crop',
-      link: '/category/sofas',
-    },
-    {
-      id: 'slide-curtains',
-      labelKey: 'heroSlide2Label',
-      titleKey: 'heroSlide2Title',
-      descKey: 'heroSlide2Desc',
-      ctaKey: 'heroSlide2Cta',
-      secondaryKey: 'heroSlide2Secondary',
-      badgeKey: 'heroSlide2Badge',
-      image:
-        'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1600&auto=format&fit=crop',
-      link: '/category/curtains',
-    },
-    {
-      id: 'slide-pairing',
-      labelKey: 'heroSlide3Label',
-      titleKey: 'heroSlide3Title',
-      descKey: 'heroSlide3Desc',
-      ctaKey: 'heroSlide3Cta',
-      secondaryKey: 'heroSlide3Secondary',
-      badgeKey: 'heroSlide3Badge',
-      image:
-        'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
-      link: '#custom',
-      isCustomAction: true,
-    },
-  ];
-
-  // Quick Categories Bar Data
   const quickCategories: QuickCategoryItem[] = [
     {
       id: 'sofas',
@@ -194,375 +132,179 @@ export const Hero: React.FC = () => {
     },
   ];
 
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-
-  // Mobile Touch Swipe Handling
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  const SLIDE_DURATION = 5000; // 5 seconds
-  const PROGRESS_TICK = 50; // 50ms update
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setProgress(0);
-  }, [slides.length]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setProgress(0);
-  }, [slides.length]);
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setProgress(0);
-  };
-
-  // Autoplay Timer with Progress Tracking
-  useEffect(() => {
-    if (isPaused) return;
-
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          nextSlide();
-          return 0;
-        }
-        return prev + (PROGRESS_TICK / SLIDE_DURATION) * 100;
-      });
-    }, PROGRESS_TICK);
-
-    return () => clearInterval(interval);
-  }, [isPaused, nextSlide]);
-
-  // Touch handlers for mobile swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setTouchEnd(null);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const minSwipeDistance = 45;
-
-    if (Math.abs(distance) > minSwipeDistance) {
-      if (distance > 0) {
-        // Swiped left
-        if (isRtl) prevSlide();
-        else nextSlide();
-      } else {
-        // Swiped right
-        if (isRtl) nextSlide();
-        else prevSlide();
-      }
-    }
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-
   return (
     <section
       id="hero-ecommerce"
-      className="bg-[#F6F4EF] pt-3 sm:pt-4 lg:pt-6 pb-6 sm:pb-8 lg:pb-10 border-b border-[#E2DDD2]"
-      aria-label="Promotional Showcase"
+      className="bg-white border-b border-[#E5E1D8]"
+      aria-label="Featured Showcase"
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-14">
+
         {/* ============================================================ */}
-        {/* TOP ECOMMERCE HERO CONTAINER: MAIN CAROUSEL + PROMO CARDS */}
+        {/* CLEAN SPLIT HERO: LEFT COPY + RIGHT IMAGE CARDS              */}
         {/* ============================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-5">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
           {/* ---------------------------------------------------------- */}
-          {/* MAIN PROMOTIONAL CAROUSEL (Desktop: 8 Cols, Mobile: Full)  */}
+          {/* LEFT: COPY & CTA BLOCK                                     */}
           {/* ---------------------------------------------------------- */}
-          <div
-            className="lg:col-span-8 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-[#081A36] group"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="Promotional Offers"
-          >
-            {/* Aspect Ratio Container for Responsive Height */}
-            <div className="relative w-full h-[400px] sm:h-[430px] md:h-[460px] lg:h-[480px] xl:h-[500px]">
-              
-              {/* Slides */}
-              {slides.map((slide, idx) => {
-                const isActive = idx === currentSlide;
-                return (
-                  <div
-                    key={slide.id}
-                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                      isActive
-                        ? 'opacity-100 z-10 pointer-events-auto'
-                        : 'opacity-0 z-0 pointer-events-none'
-                    }`}
-                    aria-hidden={!isActive}
-                  >
-                    {/* Background Image with subtle zoom on active */}
-                    <img
-                      src={slide.image}
-                      alt={t(slide.titleKey)}
-                      className={`w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out ${
-                        isActive ? 'scale-100' : 'scale-105'
-                      }`}
-                      loading={idx === 0 ? 'eager' : 'lazy'}
-                    />
+          <div className="lg:col-span-6 order-1 text-start">
+            {/* Eyebrow Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3F1EB] border border-[#E5E1D8] text-[#061C3F] text-[11px] sm:text-xs font-bold tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C8102E]" />
+              <span>{t('heroEyebrow')}</span>
+            </div>
 
-                    {/* LTR/RTL Adaptive Dark Gradient Overlay for Maximum Text Contrast */}
-                    <div
-                      className={`absolute inset-0 pointer-events-none ${
-                        isRtl
-                          ? 'bg-gradient-to-l from-black/85 via-black/55 to-transparent/20'
-                          : 'bg-gradient-to-r from-black/85 via-black/55 to-transparent/20'
-                      }`}
-                    />
-                    {/* Bottom Vignette for Pill & Controls Contrast */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+            {/* Heading */}
+            <h1 className="mt-4 sm:mt-5 font-serif-luxury text-[28px] sm:text-4xl lg:text-[44px] xl:text-[50px] font-extrabold text-[#0A2A5E] leading-[1.12] tracking-tight whitespace-pre-line">
+              {t('heroHeading')}
+            </h1>
 
-                    {/* Slide Content Overlay */}
-                    <div
-                      className={`absolute inset-0 flex flex-col justify-between p-5 sm:p-7 md:p-9 lg:p-10 z-20 ${
-                        isActive ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    >
-                      
-                      {/* Top Row: Promotional Eyebrow Badge & Discount Tag */}
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-[#E3C98F] text-xs sm:text-sm font-bold tracking-wider uppercase">
-                          <Sparkles className="w-3.5 h-3.5 text-[#E3C98F]" />
-                          <span>{t(slide.labelKey)}</span>
-                        </div>
+            {/* Description */}
+            <p className="mt-3.5 sm:mt-4 text-sm sm:text-base lg:text-lg text-[#4B5563] leading-relaxed max-w-lg">
+              {t('heroDescription')}
+            </p>
 
-                        {slide.badgeKey && (
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C8102E] text-[#081A36] text-xs sm:text-sm font-extrabold shadow-sm tracking-wide">
-                            <Tag className="w-3.5 h-3.5" />
-                            <span>{t(slide.badgeKey)}</span>
-                          </div>
-                        )}
-                      </div>
+            {/* CTA Row */}
+            <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-2.5 sm:gap-3.5">
+              <Link
+                href="/category/sofas"
+                className="brand-gradient inline-flex items-center justify-center gap-2.5 text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group/cta"
+              >
+                <span>{t('heroExploreCollection')}</span>
+                <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover/cta:translate-x-1 rtl:group-hover/cta:-translate-x-1" />
+              </Link>
 
-                      {/* Center/Lower: Main Heading, Description, CTA, and Secondary Text */}
-                      <div className="max-w-xl text-start space-y-3 sm:space-y-4">
-                        
-                        {/* Heading */}
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-extrabold text-white leading-[1.2] font-serif-luxury tracking-tight drop-shadow-sm">
-                          {t(slide.titleKey)}
-                        </h2>
+              <Link
+                href="/category/curtains"
+                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold text-[#0A2A5E] bg-white border-2 border-[#0A2A5E]/15 hover:border-[#0A2A5E] hover:bg-[#F3F1EB] transition-all duration-200"
+              >
+                {t('heroShopCurtains')}
+              </Link>
 
-                        {/* Description */}
-                        <p className="text-[#E1DCD2] text-sm sm:text-base md:text-lg leading-relaxed line-clamp-2 sm:line-clamp-3 font-normal max-w-lg">
-                          {t(slide.descKey)}
-                        </p>
+              <button
+                type="button"
+                onClick={openConsultation}
+                className="inline-flex items-center gap-1.5 px-1 py-2 text-sm font-semibold text-[#061C3F] hover:text-[#C8102E] underline decoration-[#C8102E]/40 decoration-2 underline-offset-4 hover:decoration-[#C8102E] transition-colors cursor-pointer"
+              >
+                {t('heroCustomSize')}
+              </button>
+            </div>
 
-                        {/* CTA Row with Price/Value Cue */}
-                        <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
-                          {slide.isCustomAction ? (
-                            <button
-                              type="button"
-                              onClick={openConsultation}
-                              className="brand-gradient inline-flex items-center justify-center gap-2.5 text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group/btn cursor-pointer"
-                            >
-                              <span>{t(slide.ctaKey)}</span>
-                              <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1" />
-                            </button>
-                          ) : (
-                            <Link
-                              href={slide.link}
-                              className="brand-gradient inline-flex items-center justify-center gap-2.5 text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group/btn cursor-pointer"
-                            >
-                              <span>{t(slide.ctaKey)}</span>
-                              <ArrowIcon className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1" />
-                            </Link>
-                          )}
-
-                          {/* Secondary Text / Price Indicator */}
-                          {slide.secondaryKey && (
-                            <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-sm border border-white/15 text-white/90 text-xs sm:text-sm font-semibold">
-                              <CheckCircle2 className="w-4 h-4 text-[#C8102E]" />
-                              <span>{t(slide.secondaryKey)}</span>
-                            </div>
-                          )}
-                        </div>
-
-                      </div>
-
-                      {/* Bottom Controls Bar */}
-                      <div className="pt-2 flex items-center justify-between gap-4">
-                        
-                        {/* Slide Dots / Indicators */}
-                        <div className="flex items-center gap-2">
-                          {slides.map((_, i) => (
-                            <button
-                              key={i}
-                              type="button"
-                              onClick={() => goToSlide(i)}
-                              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                                i === currentSlide
-                                  ? 'w-7 sm:w-8 bg-[#C8102E]'
-                                  : 'w-2 sm:w-2.5 bg-white/40 hover:bg-white/70'
-                              }`}
-                              aria-label={`Go to slide ${i + 1}`}
-                            />
-                          ))}
-                        </div>
-
-                        {/* Prev & Next Arrow Controls */}
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={prevSlide}
-                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 cursor-pointer border border-white/20"
-                            aria-label="Previous Slide"
-                          >
-                            <PrevIcon className="w-5 h-5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={nextSlide}
-                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 cursor-pointer border border-white/20"
-                            aria-label="Next Slide"
-                          >
-                            <NextIcon className="w-5 h-5" />
-                          </button>
-                        </div>
-
-                      </div>
-
-                    </div>
-                  </div>
-                );
-              })}
-
-              {/* Live Progress Bar at Top of Carousel */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-white/15 z-30 pointer-events-none">
-                <div
-                  className="h-full bg-[#C8102E] transition-all ease-linear"
-                  style={{ width: `${progress}%` }}
-                />
+            {/* Stats Row */}
+            <div className="mt-6 sm:mt-8 pt-5 border-t border-[#EDE9E2] flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="flex items-center gap-3">
+                <div>
+                  <p className="text-xl sm:text-2xl font-extrabold text-[#0A2A5E] font-serif-luxury leading-none">
+                    {t('heroStat1Val')}
+                  </p>
+                  <p className="mt-1 text-[11px] sm:text-xs text-[#667085] font-medium">
+                    {t('heroStat1Label')}
+                  </p>
+                </div>
               </div>
 
+              <div className="hidden sm:block w-px h-9 bg-[#E5E1D8]" />
+
+              <div className="flex items-center gap-3">
+                <div>
+                  <p className="text-xl sm:text-2xl font-extrabold text-[#0A2A5E] font-serif-luxury leading-none">
+                    {t('heroStat2Val')}
+                  </p>
+                  <p className="mt-1 text-[11px] sm:text-xs text-[#667085] font-medium">
+                    {t('heroStat2Label')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="hidden md:flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F3F1EB] border border-[#E5E1D8] text-[11px] font-bold text-[#061C3F]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C8102E]" />
+                  {t('heroBadge1')}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F3F1EB] border border-[#E5E1D8] text-[11px] font-bold text-[#061C3F]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C6A15B]" />
+                  {t('heroBadge2')}
+                </span>
+              </div>
             </div>
           </div>
 
           {/* ---------------------------------------------------------- */}
-          {/* RIGHT-SIDE PROMOTIONAL CARDS (Desktop: 4 Cols Stacked)     */}
+          {/* RIGHT: IMAGE CARDS COLLAGE                                 */}
           {/* ---------------------------------------------------------- */}
-          <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-4">
-            
-            {/* PROMO CARD 1: Blackout Collection Up to 30% Off */}
-            <Link
-              href="/category/sofas"
-              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E2DDD3] bg-[#0B1F3A] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
-              id="hero-promo-card-1"
-            >
-              {/* Background Image */}
-              <img
-                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop"
-                alt={t('heroPromo1Title')}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                loading="lazy"
-              />
-
-              {/* Gradient Overlay for Readability */}
-              <div
-                className={`absolute inset-0 ${
-                  isRtl
-                    ? 'bg-gradient-to-l from-black/85 via-black/55 to-transparent'
-                    : 'bg-gradient-to-r from-black/85 via-black/55 to-transparent'
-                }`}
-              />
-
-              {/* Badge */}
-              <div className="absolute top-3.5 end-3.5 z-10">
-                <span className="inline-flex items-center gap-1 bg-[#C8102E] text-[#0A2A5E] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
-                  <Percent className="w-3 h-3" />
-                  <span>{t('heroPromo1Badge')}</span>
-                </span>
-              </div>
-
-              {/* Card Content */}
-              <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-start z-10">
-                <span className="text-xs font-semibold text-[#E3C98F] uppercase tracking-wider mb-1">
-                  {language === 'ar' ? 'تشكيلة مختارة' : 'Featured Collection'}
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-white font-serif-luxury leading-snug">
-                  {t('heroPromo1Title')}
-                </h3>
-                <p className="text-sm font-medium text-[#DED9CF] mb-3">
-                  {t('heroPromo1Subtitle')}
-                </p>
-
-                {/* Micro Action Button */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FAFAF8] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#C8102E] group-hover:text-white group-hover:border-[#C8102E]">
-                  <span>{t('heroPromo1Cta')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+          <div className="lg:col-span-6 order-2">
+            <div className="grid grid-cols-3 grid-rows-2 gap-2 sm:gap-2.5 h-[300px] sm:h-[400px] lg:h-[500px]">
+              {/* Main Sofa Image */}
+              <div className="relative col-span-2 row-span-2 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E1D8] shadow-sm group">
+                <img
+                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop"
+                  alt={t('heroExploreCollection')}
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                  loading="eager"
+                />
+                {/* Floating Stat Card on Main Image */}
+                <div className="absolute bottom-3 start-3 sm:bottom-5 sm:start-5 inline-flex items-center gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-white/50 shadow-lg">
+                  <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#0A2A5E] flex items-center justify-center shrink-0">
+                    <Home className="w-4 h-4 sm:w-5 sm:h-5 text-[#E3C98F]" />
+                  </span>
+                  <span>
+                    <span className="block text-sm sm:text-base font-extrabold text-[#0A2A5E] leading-none">
+                      {t('heroStat1Val')}
+                    </span>
+                    <span className="block mt-1 text-[10px] sm:text-xs text-[#4B5563] font-medium leading-none">
+                      {t('heroStat1Label')}
+                    </span>
+                  </span>
                 </div>
               </div>
-            </Link>
 
-            {/* PROMO CARD 2: Curtain Atelier */}
-            <Link
-              href="/category/curtains"
-              className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md border border-[#E2DDD3] bg-[#0B1F3A] group block h-[190px] sm:h-[205px] lg:h-[232px] xl:h-[242px] transition-all duration-300"
-              id="hero-promo-card-2"
-            >
-              {/* Background Image */}
-              <img
-                src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800&auto=format&fit=crop"
-                alt={t('heroPromo2Title')}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                loading="lazy"
-              />
-
-              {/* Gradient Overlay for Readability */}
-              <div
-                className={`absolute inset-0 ${
-                  isRtl
-                    ? 'bg-gradient-to-l from-black/85 via-black/55 to-transparent'
-                    : 'bg-gradient-to-r from-black/85 via-black/55 to-transparent'
-                }`}
-              />
-
-              {/* Badge */}
-              <div className="absolute top-3.5 end-3.5 z-10">
-                <span className="inline-flex items-center gap-1 bg-white/90 text-[#0A2A5E] text-[11px] font-black px-2.5 py-1 rounded-full shadow-sm">
-                  <Flame className="w-3 h-3 text-[#C8102E]" />
-                  <span>{t('heroPromo2Badge')}</span>
-                </span>
-              </div>
-
-              {/* Card Content */}
-              <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-end text-start z-10">
-                <span className="text-xs font-semibold text-[#E3C98F] uppercase tracking-wider mb-1">
-                  {language === 'ar' ? 'أتيليه الستائر' : 'Curtain Atelier'}
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-white font-serif-luxury leading-snug">
-                  {t('heroPromo2Title')}
-                </h3>
-                <p className="text-sm font-medium text-[#DED9CF] mb-3">
-                  {t('heroPromo2Subtitle')}
-                </p>
-
-                {/* Micro Action Button */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FAFAF8] bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-lg w-fit transition-all duration-200 group-hover:bg-[#C8102E] group-hover:text-white group-hover:border-[#C8102E]">
-                  <span>{t('heroPromo2Cta')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              {/* Curtain Image Card */}
+              <Link
+                href="/category/curtains"
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E1D8] shadow-xs group block"
+                aria-label={t('heroShopCurtains')}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800&auto=format&fit=crop"
+                  alt={t('heroPromo2Title')}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-2.5 start-2.5 end-2.5">
+                  <p className="text-[11px] sm:text-xs font-bold text-white font-serif-luxury truncate">
+                    {t('heroPromo2Title')}
+                  </p>
+                  <p className="text-[9px] sm:text-[11px] text-white/80 font-medium truncate">
+                    {t('heroPromo2Subtitle')}
+                  </p>
                 </div>
-              </div>
-            </Link>
+              </Link>
 
+              {/* Majlis Image Card */}
+              <Link
+                href="/category/majlis-sofas"
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E1D8] shadow-xs group block"
+                aria-label={t('navMajlis')}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800&auto=format&fit=crop"
+                  alt={t('navMajlis')}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-2.5 start-2.5 end-2.5">
+                  <p className="text-[11px] sm:text-xs font-bold text-white font-serif-luxury truncate">
+                    {t('navMajlis')}
+                  </p>
+                  <p className="text-[9px] sm:text-[11px] text-white/80 font-medium truncate">
+                    {t('heroPromo1Subtitle')}
+                  </p>
+                </div>
+              </Link>
+            </div>
           </div>
 
         </div>
@@ -571,7 +313,7 @@ export const Hero: React.FC = () => {
         {/* QUICK CATEGORY NAVIGATION BAR (Directly Below Hero)          */}
         {/* ============================================================ */}
         <div
-          className="mt-4 sm:mt-5 lg:mt-6 bg-[#FAFAF8] border border-[#E3DED4] rounded-2xl p-2.5 sm:p-3.5 shadow-xs"
+          className="mt-6 sm:mt-8 lg:mt-10 bg-[#FAFAF8] border border-[#E3DED4] rounded-2xl p-2.5 sm:p-3.5 shadow-xs"
           id="hero-quick-categories"
         >
           {/* Header Label / Micro Bar for Context */}
@@ -598,7 +340,7 @@ export const Hero: React.FC = () => {
 
               const content = (
                 <div className="flex flex-col items-center gap-2 text-center group cursor-pointer shrink-0 w-[84px] sm:w-[94px] md:w-[102px] lg:flex-1 p-1.5 rounded-xl hover:bg-[#EFEBE3] transition-all duration-200 snap-start">
-                  
+
                   {/* Category Thumbnail Container with Badge */}
                   <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#D6D0C4] group-hover:border-[#C8102E] group-hover:shadow-md transition-all duration-200 bg-[#E2DDD2]">
                     <img
@@ -649,28 +391,28 @@ export const Hero: React.FC = () => {
         {/* SAUDI VALUE PILLARS STRIP (Compact Ecommerce Confidence Bar) */}
         {/* ============================================================ */}
         <div className="mt-3 sm:mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 text-start">
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#FAFAF8] border border-[#E6E2D8] text-[#4B5563]">
             <Truck className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'توصيل مجاني في الرياض' : 'Free Delivery in Riyadh'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#FAFAF8] border border-[#E6E2D8] text-[#4B5563]">
             <Ruler className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'رفع مقاسات ليزر دقيق' : 'Precision Laser Measurement'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#FAFAF8] border border-[#E6E2D8] text-[#4B5563]">
             <ShieldCheck className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'ضمان ٥ سنوات على الهيكل والأقمشة' : '5-Year Frame & Fabric Guarantee'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/70 border border-[#E6E2D8] text-[#4B5563]">
+          <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#FAFAF8] border border-[#E6E2D8] text-[#4B5563]">
             <Sparkles className="w-4 h-4 text-[#C8102E] shrink-0" />
             <span className="text-xs font-semibold">
               {language === 'ar' ? 'تشطيب مخصص بتوقيع سوفالورا' : 'Signature Bespoke Finishing'}

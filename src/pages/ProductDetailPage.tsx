@@ -910,7 +910,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
 
       {/* Mobile Sticky Bottom Action Bar */}
       {showStickyBar && (
-        <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-3 sm:hidden z-30 shadow-2xl flex items-center justify-between gap-3 animate-in slide-in-from-bottom duration-300">
+        <div className="fixed bottom-[62px] inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-3 sm:hidden z-30 shadow-2xl flex items-center justify-between gap-3 animate-in slide-in-from-bottom duration-300">
           <div className="min-w-0 flex-1">
             <div className="text-xs font-bold text-neutral-900 truncate">
               {product.name[language]}

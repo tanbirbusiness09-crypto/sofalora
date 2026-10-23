@@ -30,6 +30,7 @@ import { ConsultationModal } from './components/UI/ConsultationModal';
 import { ToastContainer } from './components/UI/ToastContainer';
 import { BackToTop } from './components/UI/BackToTop';
 import { WhatsAppButton } from './components/UI/WhatsAppButton';
+import { BottomTabBar } from './components/UI/BottomTabBar';
 
 const MainLayout: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -141,6 +142,9 @@ const MainLayout: React.FC = () => {
 
       {/* Footer */}
       <Footer />
+
+      {/* App-style mobile bottom navigation */}
+      <BottomTabBar />
 
       {/* Interactive Overlays & Modals */}
       <CartDrawer />

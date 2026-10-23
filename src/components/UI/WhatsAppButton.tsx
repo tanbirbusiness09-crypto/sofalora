@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
+import { useRouter } from '../../context/RouterContext';
 
 export const WhatsAppButton: React.FC = () => {
   const { language } = useShop();
+  const { pathname } = useRouter();
   const [showTooltip, setShowTooltip] = useState(true);
+  const isProductPage = pathname.toLowerCase().startsWith('/product/');
 
   const phoneNumber = '+966559821100';
   const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
@@ -14,7 +17,7 @@ export const WhatsAppButton: React.FC = () => {
   )}`;
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 end-5 sm:end-6 z-40 flex items-center gap-2">
+    <div className={`fixed end-5 sm:end-6 z-40 flex items-center gap-2 ${isProductPage ? 'bottom-[142px] sm:bottom-6' : 'bottom-[76px] sm:bottom-6'}`}>
       {/* Concierge Tooltip */}
       {showTooltip && (
         <div className="hidden md:flex items-center gap-2 bg-[#0A2A5E] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-[#0A2A5E]/30 animate-in fade-in slide-in-from-end-2 duration-300">
