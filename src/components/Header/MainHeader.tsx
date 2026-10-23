@@ -418,7 +418,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
 
             {/* Account Link */}
             <Link
-              href="/orders"
+              href="/account"
               className="hidden lg:flex items-center gap-1.5 p-2 rounded-full hover:bg-[#E6E2D9]/50 text-[#101828] transition-colors"
               title={t('account')}
               aria-label={t('account')}

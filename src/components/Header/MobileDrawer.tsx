@@ -8,6 +8,7 @@ import {
   ShoppingBag,
   Heart,
   PackageCheck,
+  User,
   Sparkles,
   MessageCircle,
   Armchair
@@ -116,6 +117,15 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
 
           {/* Quick Direct Links */}
           <div className="grid grid-cols-2 gap-2 pb-2">
+            <Link
+              href="/account"
+              onClick={onClose}
+              className="min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0A2A5E] transition-colors shadow-2xs"
+            >
+              <User className="w-4 h-4 text-[#0A2A5E]" />
+              <span>{isAr ? 'حسابي' : 'My Account'}</span>
+            </Link>
+
             <Link
               href="/orders"
               onClick={onClose}

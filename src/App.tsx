@@ -20,6 +20,7 @@ import { OrderConfirmationPage } from './pages/OrderConfirmationPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { OrderDetailsPage } from './pages/OrderDetailsPage';
 import { WishlistPage } from './pages/WishlistPage';
+import { AccountPage } from './pages/AccountPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Modals & Overlays
@@ -111,6 +112,9 @@ const MainLayout: React.FC = () => {
     }
     if (path === '/wishlist') {
       return <WishlistPage />;
+    }
+    if (path === '/account') {
+      return <AccountPage />;
     }
 
     // 404 Fallback for unmatched routes

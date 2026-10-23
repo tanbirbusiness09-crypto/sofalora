@@ -3,24 +3,24 @@
 @theme {
   /* ----------------------------------------------------------------
      Design system type scale (noon KSA tokens)
-     Base 14px / 19.6px line height, weight 400
+     Base 15px / 22.5px line height, weight 500
   ---------------------------------------------------------------- */
-  --text-xs: 12.6px;
-  --text-xs--line-height: 15.8px;
-  --text-sm: 13px;
-  --text-sm--line-height: 18px;
-  --text-base: 14px;
-  --text-base--line-height: 19.6px;
-  --text-lg: 15px;
-  --text-lg--line-height: 21px;
-  --text-xl: 15.4px;
-  --text-xl--line-height: 21.6px;
-  --text-2xl: 16px;
-  --text-2xl--line-height: 22.4px;
-  --text-3xl: 21px;
-  --text-3xl--line-height: 27px;
-  --text-4xl: 24px;
-  --text-4xl--line-height: 30px;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 15px;
+  --text-base--line-height: 22.5px;
+  --text-lg: 16.5px;
+  --text-lg--line-height: 24px;
+  --text-xl: 18px;
+  --text-xl--line-height: 26px;
+  --text-2xl: 20px;
+  --text-2xl--line-height: 28px;
+  --text-3xl: 24px;
+  --text-3xl--line-height: 32px;
+  --text-4xl: 30px;
+  --text-4xl--line-height: 38px;
 
   --radius-xl: 12px;
   --radius-2xl: 12px;
@@ -101,10 +101,10 @@
 
   body {
     background-color: #FAFAF8;
-    color: var(--ds-text-primary);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 19.6px;
+    color: #212121;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22.5px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

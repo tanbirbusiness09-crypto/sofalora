@@ -29,7 +29,7 @@ export const BottomTabBar: React.FC = () => {
         ? 'wishlist'
         : p === '/cart'
           ? 'cart'
-          : p === '/orders' || p.startsWith('/orders/')
+          : p === '/account' || p === '/orders' || p.startsWith('/orders/')
             ? 'account'
             : null;
 
@@ -108,8 +108,8 @@ export const BottomTabBar: React.FC = () => {
             {activeKey === 'cart' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
           </button>
 
-          {/* Account / Orders */}
-          <Link href="/orders" className={tabClass('account')} aria-label={t('account')} aria-current={activeKey === 'account' ? 'page' : undefined}>
+      {/* Account / Orders */}
+      <Link href="/account" className={tabClass('account')} aria-label={t('account')} aria-current={activeKey === 'account' ? 'page' : undefined}>
             <User className={`w-5 h-5 ${activeKey === 'account' ? 'stroke-[2]' : 'stroke-[1.8]'}`} />
             {tabLabel(t('account'), activeKey === 'account')}
             {activeKey === 'account' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}

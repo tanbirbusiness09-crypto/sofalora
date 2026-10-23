@@ -1,6 +1,7 @@
 import React from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface QuickCategoryItem {
   id: string;
@@ -25,6 +26,8 @@ interface QuickCategoryItem {
 
 export const QuickCategoryBar: React.FC = () => {
   const { language, t, openConsultation } = useShop();
+
+  const ArrowIcon = language !== 'ar' ? ArrowRight : ArrowLeft;
 
   const quickCategories: QuickCategoryItem[] = [
     {
@@ -125,7 +128,21 @@ export const QuickCategoryBar: React.FC = () => {
       className="bg-white border-b border-[#E5E1D8]"
       aria-label={language === 'ar' ? 'تصفح سريع للفئات' : 'Quick Category Browser'}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-2">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-5 sm:pt-7 pb-2">
+        {/* Heading Row (noon style: title left, VIEW ALL right) */}
+        <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[#101828] tracking-tight">
+            {t('categoriesTitle')}
+          </h2>
+          <Link
+            href="/shop"
+            className="no-underline inline-flex items-center gap-1.5 bg-white border border-[#E5E1D8] rounded-lg px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wide text-[#101828] hover:bg-[#F3F1EB] hover:border-[#C6A15B] transition-colors shadow-sm"
+          >
+            <span>{t('viewAll')}</span>
+            <ArrowIcon size={14} strokeWidth={2.5} />
+          </Link>
+        </div>
+
         {/* Big Rounded-Square Category Tiles (noon style) */}
         <div className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x">
           {quickCategories.map((cat) => {

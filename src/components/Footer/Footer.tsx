@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
   const { language, t } = useShop();
 
   return (
-    <footer id="footer" className="bg-[#061C3F] text-[#D5CEC0] pt-16 pb-12 border-t border-[#0A2344]">
+    <footer id="footer" className="hidden md:block bg-[#061C3F] text-[#D5CEC0] pt-16 pb-12 border-t border-[#0A2344]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Grid: Brand Statement & 5 Columns */}
