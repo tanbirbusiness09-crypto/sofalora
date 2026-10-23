@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { ChevronDown, Sparkles, Tag, Scissors, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from '../../context/RouterContext';
+import { CATEGORIES } from '../../data/products';
 
 export const Navigation: React.FC = () => {
   const { language, direction, t, openConsultation } = useShop();
@@ -10,20 +11,21 @@ export const Navigation: React.FC = () => {
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
   const isAr = language === 'ar';
 
+  const getCategoryImage = (slug: string) =>
+    CATEGORIES.find((category) => category.slug === slug)?.image || '';
+
   const sofaLinks = [
-    { href: '/category/sofas', label: t('catSofas') },
-    { href: '/category/sectional-sofas', label: t('catSectionals') },
-    { href: '/category/majlis-sofas', label: t('catMajlis') },
-    { href: '/category/accent-chairs', label: t('catArmchairs') },
-    { href: '/category/sofa-beds', label: t('catSofaBeds') },
+    { href: '/category/sofas', label: t('catSofas'), slug: 'sofas' },
+    { href: '/category/sectional-sofas', label: t('catSectionals'), slug: 'sectional-sofas' },
+    { href: '/category/majlis-sofas', label: t('catMajlis'), slug: 'majlis-sofas' },
+    { href: '/category/sofa-beds', label: t('catSofaBeds'), slug: 'sofa-beds' },
   ];
 
   const curtainLinks = [
-    { href: '/category/curtains', label: t('catCurtains') },
-    { href: '/category/blackout-curtains', label: t('catBlackout') },
-    { href: '/category/sheer-curtains', label: t('catSheer') },
-    { href: '/category/custom-curtains', label: t('catCustom') },
-    { href: '/category/ready-made-curtains', label: t('catReady') },
+    { href: '/category/curtains', label: t('catCurtains'), slug: 'curtains' },
+    { href: '/category/blackout-curtains', label: t('catBlackout'), slug: 'blackout-curtains' },
+    { href: '/category/sheer-curtains', label: t('catSheer'), slug: 'sheer-curtains' },
+    { href: '/category/custom-curtains', label: t('catCustom'), slug: 'custom-curtains' },
   ];
 
   return (
@@ -67,20 +69,26 @@ export const Navigation: React.FC = () => {
                   <h4 className="text-xs font-bold text-[#667085] uppercase tracking-wider mb-3">
                     {isAr ? 'تشكيلة الكنب' : 'Sofa Collection'}
                   </h4>
-                  <ul className="space-y-2 text-sm text-[#344054]">
+                  <div className="grid grid-cols-2 gap-2.5">
                     {sofaLinks.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={() => setActiveMenu(null)}
-                          className="hover:text-[#0A2A5E] transition-colors flex items-center justify-between"
-                        >
-                          <span>{item.label}</span>
-                          <ArrowIcon className="w-3 h-3 opacity-40" />
-                        </Link>
-                      </li>
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
+                      >
+                        <img
+                          src={getCategoryImage(item.slug)}
+                          alt={item.label}
+                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                        />
+                        <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
+                          {item.label}
+                        </span>
+                        <ArrowIcon className="w-3 h-3 text-[#0A2A5E] opacity-30 group-hover:opacity-70 transition-opacity shrink-0" />
+                      </Link>
                     ))}
-                  </ul>
+                  </div>
                 </div>
 
                 <div>
@@ -175,20 +183,26 @@ export const Navigation: React.FC = () => {
                   <h4 className="text-xs font-bold text-[#667085] uppercase tracking-wider mb-3">
                     {isAr ? 'تشكيلة الستائر' : 'Curtain Collection'}
                   </h4>
-                  <ul className="space-y-2 text-sm text-[#344054]">
+                  <div className="grid grid-cols-2 gap-2.5">
                     {curtainLinks.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={() => setActiveMenu(null)}
-                          className="hover:text-[#0A2A5E] transition-colors flex items-center justify-between"
-                        >
-                          <span>{item.label}</span>
-                          <ArrowIcon className="w-3 h-3 opacity-40" />
-                        </Link>
-                      </li>
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
+                      >
+                        <img
+                          src={getCategoryImage(item.slug)}
+                          alt={item.label}
+                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                        />
+                        <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
+                          {item.label}
+                        </span>
+                        <ArrowIcon className="w-3 h-3 text-[#0A2A5E] opacity-30 group-hover:opacity-70 transition-opacity shrink-0" />
+                      </Link>
                     ))}
-                  </ul>
+                  </div>
                 </div>
 
                 <div>

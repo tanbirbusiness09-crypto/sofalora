@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Link } from '../../context/RouterContext';
 import { BrandLogo } from '../UI/BrandLogo';
+import { CATEGORIES } from '../../data/products';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -34,20 +35,21 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
   const isRtl = direction === 'rtl';
   const isAr = language === 'ar';
 
+  const getCategoryImage = (slug: string) =>
+    CATEGORIES.find((category) => category.slug === slug)?.image || '';
+
   const sofaLinks = [
-    { href: '/category/sofas', label: t('catSofas') },
-    { href: '/category/sectional-sofas', label: t('catSectionals') },
-    { href: '/category/majlis-sofas', label: t('catMajlis') },
-    { href: '/category/accent-chairs', label: t('catArmchairs') },
-    { href: '/category/sofa-beds', label: t('catSofaBeds') },
+    { href: '/category/sofas', label: t('catSofas'), slug: 'sofas' },
+    { href: '/category/sectional-sofas', label: t('catSectionals'), slug: 'sectional-sofas' },
+    { href: '/category/majlis-sofas', label: t('catMajlis'), slug: 'majlis-sofas' },
+    { href: '/category/sofa-beds', label: t('catSofaBeds'), slug: 'sofa-beds' },
   ];
 
   const curtainLinks = [
-    { href: '/category/curtains', label: t('catCurtains') },
-    { href: '/category/blackout-curtains', label: t('catBlackout') },
-    { href: '/category/sheer-curtains', label: t('catSheer') },
-    { href: '/category/custom-curtains', label: t('catCustom') },
-    { href: '/category/ready-made-curtains', label: t('catReady') },
+    { href: '/category/curtains', label: t('catCurtains'), slug: 'curtains' },
+    { href: '/category/blackout-curtains', label: t('catBlackout'), slug: 'blackout-curtains' },
+    { href: '/category/sheer-curtains', label: t('catSheer'), slug: 'sheer-curtains' },
+    { href: '/category/custom-curtains', label: t('catCustom'), slug: 'custom-curtains' },
   ];
 
   return (
@@ -174,15 +176,22 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
             </button>
 
             {expandedSection === 'sofas' && (
-              <div className="px-4 pb-3 pt-1 space-y-1 border-t border-[#F3F1EB] text-xs font-medium text-[#344054]">
+              <div className="px-3 pb-3 pt-2 grid grid-cols-2 gap-2 border-t border-[#F3F1EB]">
                 {sofaLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className="min-h-[40px] flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#FAFAF8] hover:text-[#0A2A5E]"
+                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
                   >
-                    <span>{item.label}</span>
+                    <img
+                      src={getCategoryImage(item.slug)}
+                      alt={item.label}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                    />
+                    <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
+                      {item.label}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -208,15 +217,22 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
             </button>
 
             {expandedSection === 'curtains' && (
-              <div className="px-4 pb-3 pt-1 space-y-1 border-t border-[#F3F1EB] text-xs font-medium text-[#344054]">
+              <div className="px-3 pb-3 pt-2 grid grid-cols-2 gap-2 border-t border-[#F3F1EB]">
                 {curtainLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className="min-h-[40px] flex items-center justify-between py-2 px-2.5 rounded-lg hover:bg-[#FAFAF8] hover:text-[#0A2A5E]"
+                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
                   >
-                    <span>{item.label}</span>
+                    <img
+                      src={getCategoryImage(item.slug)}
+                      alt={item.label}
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                    />
+                    <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
+                      {item.label}
+                    </span>
                   </Link>
                 ))}
               </div>
