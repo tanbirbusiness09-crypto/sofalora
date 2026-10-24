@@ -22,7 +22,12 @@ import {
   Mail,
   Home,
   CreditCard,
-  Gift
+  Gift,
+  LogOut,
+  Bell,
+  RotateCcw,
+  Lock,
+  BadgeCheck
 } from 'lucide-react';
 import { Order } from '../types';
 
@@ -35,7 +40,15 @@ interface Profile {
   notes: string;
 }
 
+interface NotifPrefs {
+  orderUpdates: boolean;
+  offers: boolean;
+  whatsapp: boolean;
+  email: boolean;
+}
+
 const PROFILE_KEY = 'sofalora_profile';
+const NOTIF_KEY = 'sofalora_notif';
 
 const EMPTY_PROFILE: Profile = {
   name: '',
@@ -44,6 +57,13 @@ const EMPTY_PROFILE: Profile = {
   city: '',
   street: '',
   notes: ''
+};
+
+const DEFAULT_NOTIF: NotifPrefs = {
+  orderUpdates: true,
+  offers: true,
+  whatsapp: true,
+  email: false
 };
 
 export const AccountPage: React.FC = () => {
@@ -67,6 +87,37 @@ export const AccountPage: React.FC = () => {
   const [draft, setDraft] = useState<Profile>(profile);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [addressDraft, setAddressDraft] = useState({ city: profile.city, street: profile.street, notes: profile.notes });
+  const [notif, setNotif] = useState<NotifPrefs>(() => {
+    try {
+      const saved = localStorage.getItem(NOTIF_KEY);
+      if (saved) return { ...DEFAULT_NOTIF, ...JSON.parse(saved) };
+    } catch {
+      // ignore
+    }
+    return DEFAULT_NOTIF;
+  });
+
+  const toggleNotif = (key: keyof NotifPrefs) => {
+    const next = { ...notif, [key]: !notif[key] };
+    setNotif(next);
+    try {
+      localStorage.setItem(NOTIF_KEY, JSON.stringify(next));
+    } catch {
+      // ignore
+    }
+  };
+
+  const signOut = () => {
+    saveProfile(EMPTY_PROFILE);
+    setDraft(EMPTY_PROFILE);
+    try {
+      localStorage.removeItem(NOTIF_KEY);
+    } catch {
+      // ignore
+    }
+    setNotif(DEFAULT_NOTIF);
+    setIsEditingProfile(false);
+  };
 
   const saveProfile = (next: Profile) => {
     setProfile(next);
@@ -132,6 +183,13 @@ export const AccountPage: React.FC = () => {
       action: () => setLanguage(isAr ? 'en' : 'ar')
     },
     {
+      id: 'payment',
+      icon: CreditCard,
+      label: isAr ? 'طرق الدفع' : 'Payment Methods',
+      value: isAr ? 'الدفع عند الاستلام' : 'Cash on Delivery',
+      action: () => {}
+    },
+    {
       id: 'whatsapp',
       icon: Headset,
       label: isAr ? 'دعم واتساب' : 'WhatsApp Support',
@@ -144,6 +202,20 @@ export const AccountPage: React.FC = () => {
       label: isAr ? 'مكافآت الكوبونات' : 'Offers & Coupons',
       value: isAr ? 'وفّر 30%' : 'Save up to 30%',
       action: () => navigate('/offers')
+    },
+    {
+      id: 'returns',
+      icon: RotateCcw,
+      label: isAr ? 'الإرجاع والاستبدال' : 'Returns & Exchanges',
+      value: isAr ? 'خلال 14 يوم' : 'Within 14 days',
+      action: () => navigate('/orders')
+    },
+    {
+      id: 'password',
+      icon: Lock,
+      label: isAr ? 'تغيير كلمة المرور' : 'Change Password',
+      value: isAr ? 'آخر تحديث' : 'Last updated',
+      action: () => {}
     }
   ];
 
@@ -207,6 +279,9 @@ export const AccountPage: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h1 className="text-xl sm:text-2xl font-extrabold">{displayName}</h1>
+                    {profile.phone && (
+                      <BadgeCheck className="w-5 h-5 text-[#E3C98F]" />
+                    )}
                     <button
                       type="button"
                       onClick={() => {
@@ -416,6 +491,56 @@ export const AccountPage: React.FC = () => {
                 );
               })}
             </div>
+
+            {/* Notification Preferences */}
+            <div className="mt-5 pt-4 border-t border-[#F0EDE6]">
+              <div className="flex items-center gap-2 mb-3">
+                <Bell className="w-4 h-4 text-[#0A2A5E]" />
+                <h3 className="text-sm font-extrabold text-[#101828]">
+                  {isAr ? 'تفضيلات الإشعارات' : 'Notification Preferences'}
+                </h3>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { key: 'orderUpdates' as const, label: isAr ? 'تحديثات حالة الطلب' : 'Order status updates' },
+                  { key: 'offers' as const, label: isAr ? 'العروض والتخفيضات' : 'Offers & promotions' },
+                  { key: 'whatsapp' as const, label: isAr ? 'تنبيهات واتساب' : 'WhatsApp alerts' },
+                  { key: 'email' as const, label: isAr ? 'النشرة البريدية' : 'Email newsletter' }
+                ].map((row) => (
+                  <div key={row.key} className="flex items-center justify-between py-2">
+                    <span className="text-xs sm:text-sm text-[#344054]">{row.label}</span>
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={notif[row.key]}
+                      onClick={() => toggleNotif(row.key)}
+                      className={`relative w-11 h-6 rounded-full transition-colors cursor-pointer shrink-0 ${
+                        notif[row.key] ? 'bg-[#0A2A5E]' : 'bg-[#D6D0C4]'
+                      }`}
+                    >
+                      <span
+                        className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${
+                          notif[row.key] ? 'start-5.5' : 'start-0.5'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sign Out */}
+            <button
+              type="button"
+              onClick={signOut}
+              className="mt-5 w-full inline-flex items-center justify-center gap-2 border border-[#E5E1D8] rounded-xl px-4 py-3 text-sm font-bold text-[#C8102E] hover:bg-[#FEF2F2] hover:border-[#C8102E]/40 transition-colors cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>{isAr ? 'تسجيل الخروج' : 'Sign Out'}</span>
+            </button>
+            <p className="mt-2 text-[11px] text-[#98A2B3] text-center">
+              {isAr ? 'سيتم حذف بياناتك من هذا الجهاز' : 'This clears your data from this device'}
+            </p>
           </div>
         </div>
 
