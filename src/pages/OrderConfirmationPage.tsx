@@ -29,10 +29,8 @@ export const OrderConfirmationPage: React.FC = () => {
   // Retrieve order from URL query (?orderId=...) or latest order in state
   const order: Order | undefined = useMemo(() => {
     const queryOrderId = route.query?.orderId || route.params?.id;
-    if (queryOrderId) {
-      const found = getOrderById(queryOrderId);
-      if (found) return found;
-    }
+    // A specific order number must match an order saved in this browser.
+    if (queryOrderId) return getOrderById(queryOrderId);
     // fallback to most recent order
     return orders[0];
   }, [route, orders, getOrderById]);
@@ -41,7 +39,7 @@ export const OrderConfirmationPage: React.FC = () => {
     return (
       <div className="bg-[#FDFCFA] min-h-[70vh] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-[#E8DEC\-D] text-center shadow-xs">
-          <div className="w-16 h-16 bg-[#F3F1EB] text-[#0A2A5E] rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-[#F3F1EB] text-[#0B2345] rounded-full flex items-center justify-center mx-auto mb-4">
             <Package className="w-8 h-8" />
           </div>
           <h2 className="text-xl font-bold font-serif text-[#101828] mb-2">
@@ -54,7 +52,7 @@ export const OrderConfirmationPage: React.FC = () => {
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center gap-2 bg-[#0A2A5E] text-white px-6 py-3 rounded-full text-xs font-bold"
+            className="inline-flex items-center justify-center gap-2 bg-[#0B2345] text-white px-6 py-3 rounded-full text-xs font-bold"
           >
             <span>{language === 'ar' ? 'الذهاب للتسوق' : 'Go Shopping'}</span>
             <ArrowIcon className="w-4 h-4" />
@@ -77,7 +75,7 @@ export const OrderConfirmationPage: React.FC = () => {
             <CheckCircle2 className="w-12 h-12" />
           </div>
 
-          <span className="text-xs font-bold uppercase tracking-widest text-[#0A2A5E]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#0B2345]">
             {language === 'ar' ? 'تم استلام طلبك بنجاح' : 'Order Received & Verified'}
           </span>
           <h1 className="text-2xl sm:text-4xl font-serif font-bold text-[#101828] mt-1 mb-2">
@@ -85,32 +83,32 @@ export const OrderConfirmationPage: React.FC = () => {
           </h1>
           <p className="text-xs sm:text-sm text-[#667085] max-w-lg mx-auto leading-relaxed">
             {language === 'ar'
-              ? `تم تسجيل طلبكم رقم #${order.id} بنجاح. سيقوم مستشار التصميم والتركيب بالتواصل معكم لتنسيق الزيارة ومطابقة ألوان الأقمشة في الفيلا.`
-              : `Order #${order.id} has been logged. Our Riyadh fitting concierge will contact you shortly to arrange precision window installation.`}
+              ? `تم تسجيل طلبكم رقم #${order.id} بنجاح. سنتواصل معكم لتأكيد موعد التوصيل. يمكنكم تتبع الطلب برقم الطلب ورقم الجوال.`
+              : `Order #${order.id} has been placed. We will contact you to confirm delivery. Track it any time with your order number and mobile number.`}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 mt-6 pt-6 border-t border-[#F0EDE6] text-xs">
             <div className="flex items-center gap-2 bg-[#FDFCFA] px-3.5 py-1.5 rounded-full border border-[#E8DEC\-D] text-[#101828]">
               <span className="text-[#667085]">{language === 'ar' ? 'رقم الطلب:' : 'Order ID:'}</span>
-              <strong className="font-mono font-bold text-[#0A2A5E]">#{order.id}</strong>
+              <strong id="confirmation-order-number" className="font-mono font-bold text-[#0B2345]">#{order.id}</strong>
             </div>
 
             <div className="flex items-center gap-2 bg-[#FDFCFA] px-3.5 py-1.5 rounded-full border border-[#E8DEC\-D] text-[#101828]">
-              <Calendar className="w-3.5 h-3.5 text-[#0A2A5E]" />
+              <Calendar className="w-3.5 h-3.5 text-[#0B2345]" />
               <span>{new Date(order.createdAt).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US')}</span>
             </div>
 
             <div className="flex items-center gap-2 bg-[#FDFCFA] px-3.5 py-1.5 rounded-full border border-[#E8DEC\-D] text-[#101828]">
-              <Truck className="w-3.5 h-3.5 text-[#0A2A5E]" />
+              <Truck className="w-3.5 h-3.5 text-[#0B2345]" />
               <span>{order.deliveryMethod.name[language]}</span>
             </div>
           </div>
         </div>
 
         {/* Riyadh Concierge Hotline Banner */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#0A2A5E] text-white flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#0B2345] text-white flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3.5 text-center sm:text-start">
-            <div className="w-10 h-10 rounded-full bg-[#0A2A5E]/20 border border-[#0A2A5E]/40 text-[#E3C98F] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#0B2345]/20 border border-[#0B2345]/40 text-[#D9C29A] flex items-center justify-center shrink-0">
               <Phone className="w-5 h-5" />
             </div>
             <div>
@@ -126,7 +124,7 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
           <a
             href="tel:+966500000000"
-            className="shrink-0 bg-[#0A2A5E] hover:bg-[#8A6A2F] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm"
+            className="shrink-0 bg-[#0B2345] hover:bg-[#8A6A2F] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm"
           >
             +966 50 000 0000
           </a>
@@ -156,7 +154,7 @@ export const OrderConfirmationPage: React.FC = () => {
 
             {/* Step 2 */}
             <div className="flex items-center gap-3 sm:flex-col sm:text-center flex-1">
-              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#0A2A5E] border-2 border-[#0A2A5E] flex items-center justify-center font-bold text-sm shrink-0">
+              <div className="w-10 h-10 rounded-full bg-[#F7F5F0] text-[#0B2345] border-2 border-[#0B2345] flex items-center justify-center font-bold text-sm shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
@@ -210,7 +208,7 @@ export const OrderConfirmationPage: React.FC = () => {
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A2A5E] hover:underline print:hidden"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B2345] hover:underline print:hidden"
             >
               <Printer className="w-4 h-4" />
               <span>{language === 'ar' ? 'طباعة الفاتورة' : 'Print Invoice'}</span>
@@ -236,7 +234,7 @@ export const OrderConfirmationPage: React.FC = () => {
 
                   <div className="flex flex-wrap items-center gap-2 text-[11px] text-[#667085] mt-1">
                     {item.customDimensions ? (
-                      <span className="bg-[#F7F5F0] text-[#0A2A5E] font-semibold px-2 py-0.5 rounded border border-[#DDD7CA]">
+                      <span className="bg-[#F7F5F0] text-[#0B2345] font-semibold px-2 py-0.5 rounded border border-[#DDD7CA]">
                         {language === 'ar' ? 'تفصيل خاص:' : 'Custom Dimensions:'}{' '}
                         {item.customDimensions.width}m × {item.customDimensions.height}m
                       </span>
@@ -273,26 +271,26 @@ export const OrderConfirmationPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-5 rounded-2xl bg-[#FDFCFA] border border-[#E8DEC\-D] mb-6 text-xs text-[#475467]">
             <div className="space-y-1.5">
               <h4 className="font-bold text-[#101828] flex items-center gap-1.5 text-xs">
-                <MapPin className="w-3.5 h-3.5 text-[#0A2A5E]" />
+                <MapPin className="w-3.5 h-3.5 text-[#0B2345]" />
                 {language === 'ar' ? 'عنوان التركيب بالرياض' : 'Installation Address'}
               </h4>
               <p className="font-semibold text-[#101828]">
                 {order.customer.firstName} {order.customer.lastName}
               </p>
               <p>
-                {order.deliveryAddress.building}, {order.deliveryAddress.street}
+                {[order.deliveryAddress.building, order.deliveryAddress.street].filter(Boolean).join(', ')}
               </p>
               <p>
-                {order.deliveryAddress.district}, {order.deliveryAddress.city}
+                {[order.deliveryAddress.district, order.deliveryAddress.city].filter(Boolean).join(', ')}
               </p>
-              <p className="text-[11px] text-[#667085]">
-                {order.customer.phone} • {order.customer.email}
+              <p className="text-[11px] text-[#667085]" dir="ltr">
+                {[order.customer.phone, order.customer.email].filter(Boolean).join(' • ')}
               </p>
             </div>
 
             <div className="space-y-1.5">
               <h4 className="font-bold text-[#101828] flex items-center gap-1.5 text-xs">
-                <Truck className="w-3.5 h-3.5 text-[#0A2A5E]" />
+                <Truck className="w-3.5 h-3.5 text-[#0B2345]" />
                 {language === 'ar' ? 'بيانات التوصيل والدفع' : 'Fulfillment & Payment'}
               </h4>
               <p>
@@ -306,8 +304,8 @@ export const OrderConfirmationPage: React.FC = () => {
                   : order.paymentMethod === 'apple_pay'
                   ? 'Apple Pay'
                   : language === 'ar'
-                  ? 'الدفع عند التركيب'
-                  : 'Cash on Fitting'}
+                  ? 'الدفع عند الاستلام'
+                  : 'Cash on Delivery'}
               </p>
               {order.deliveryAddress.additionalInstructions && (
                 <p className="text-[11px] italic text-[#667085]">
@@ -342,7 +340,7 @@ export const OrderConfirmationPage: React.FC = () => {
             </div>
 
             <div className="flex justify-between text-[11px] text-[#667085]">
-              <span>{language === 'ar' ? 'ضريبة القيمة المضافة (١٥٪)' : 'VAT (15%)'}</span>
+              <span>{language === 'ar' ? 'ضريبة القيمة المضافة المشمولة (١٥٪)' : 'Includes VAT (15%)'}</span>
               <span>{formatPrice(order.vatAmount)}</span>
             </div>
 
@@ -350,7 +348,7 @@ export const OrderConfirmationPage: React.FC = () => {
               <span className="text-sm font-black text-[#101828]">
                 {language === 'ar' ? 'الإجمالي المدفوع' : 'Grand Total'}
               </span>
-              <span className="text-xl font-serif font-bold text-[#0A2A5E]">
+              <span className="text-xl font-serif font-bold text-[#0B2345]">
                 {formatPrice(order.grandTotal ?? order.total)}
               </span>
             </div>
@@ -363,13 +361,13 @@ export const OrderConfirmationPage: React.FC = () => {
             href="/orders"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-[#FDFCFA] text-[#101828] px-6 py-3 rounded-full text-xs font-bold border border-[#CFC8BA] transition-all"
           >
-            <Package className="w-4 h-4 text-[#0A2A5E]" />
+            <Package className="w-4 h-4 text-[#0B2345]" />
             <span>{language === 'ar' ? 'عرض جميع طلباتي' : 'View All My Orders'}</span>
           </Link>
 
           <Link
             href="/shop"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-8 py-3.5 rounded-full text-xs font-bold transition-all shadow-md"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0B2345] hover:bg-[#071A35] text-white px-8 py-3.5 rounded-full text-xs font-bold transition-all shadow-md"
           >
             <span>{language === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}</span>
             <ArrowIcon className="w-4 h-4" />

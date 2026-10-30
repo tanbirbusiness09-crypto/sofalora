@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     // Utility Bar
-    freeDelivery: "Complimentary Delivery & Styling in Riyadh",
+    freeDelivery: "Delivery & installation across Riyadh",
     contactUs: "Contact Us",
     trackOrder: "Track Order",
     storeLocator: "Showroom",
@@ -63,14 +63,14 @@ export const translations = {
     heroSlide1Title: "Sculpted Sofas for Modern Living",
     heroSlide1Desc: "Bouclé, velvet and leather seating made for the way you live.",
     heroSlide1Cta: "Shop Sofas",
-    heroSlide1Secondary: "From SAR 2,790",
-    heroSlide1Badge: "20% OFF",
+    heroSlide1Secondary: "From ⃁ 2,790",
+    heroSlide1Badge: "NEW SEASON",
 
     heroSlide2Label: "WINDOW COUTURE",
     heroSlide2Title: "Curtains That Change a Room",
     heroSlide2Desc: "Blackout, sheer and bespoke drapes tailored to the millimetre.",
     heroSlide2Cta: "Shop Curtains",
-    heroSlide2Secondary: "From SAR 149",
+    heroSlide2Secondary: "From ⃁ 149",
     heroSlide2Badge: "NEW",
 
     heroSlide3Label: "PAIR IT PERFECTLY",
@@ -82,9 +82,9 @@ export const translations = {
 
     // Hero Promo Cards
     heroPromo1Title: "Sofa Collection",
-    heroPromo1Subtitle: "Up to 20% Off",
+    heroPromo1Subtitle: "Comfort for Every Gathering",
     heroPromo1Cta: "Shop Now",
-    heroPromo1Badge: "20% OFF",
+    heroPromo1Badge: "NEW",
 
     heroPromo2Title: "Curtain Atelier",
     heroPromo2Subtitle: "Made for Every Window",
@@ -111,8 +111,8 @@ export const translations = {
     // Badges
     badgeNew: "NEW",
     badgeBestSeller: "BEST SELLER",
-    badge30Off: "30% OFF",
-    badgeLimitedOffer: "LIMITED OFFER",
+    badge30Off: "POPULAR",
+    badgeLimitedOffer: "FEATURED",
     badgePopular: "POPULAR",
 
     // Categories
@@ -156,7 +156,7 @@ export const translations = {
     // Product Card
     addToCart: "Add to Cart",
     addedToCart: "Added to Cart",
-    currency: "SAR",
+    currency: "⃁",
     reviewsCount: "reviews",
     fabricLabel: "Fabric",
     colorLabel: "Color",
@@ -178,14 +178,13 @@ export const translations = {
     // Promotional Section
     promoEyebrow: "SEASONAL HOME CURATION",
     promoTitle: "Refurnish Your Home",
-    promoSubtitle: "Up to 20% Off Sofa & Curtain Pairings",
-    promoDesc: "Pair a designer sofa with made-to-measure curtains and enjoy complimentary styling, delivery and installation on orders over SAR 2,500.",
-    promoCTA: "Shop Offers",
+    promoSubtitle: "Sofas & Curtains, Styled Together",
+    promoDesc: "Pair a designer sofa with made-to-measure curtains. Our team helps you coordinate fabrics, colours and sizes for every room.",
+    promoCTA: "Shop Best Sellers",
     days: "Days",
     hours: "Hours",
     minutes: "Mins",
     seconds: "Secs",
-    promoCode: "Use code: SOFALORA20",
 
     // Shop by Room
     roomTitle: "Style Every Room",
@@ -227,7 +226,7 @@ export const translations = {
     why5Title: "Expert Styling",
     why5Desc: "In-house stylists pair upholstery tones with drape textures and lighting.",
     why6Title: "Quality Guarantee",
-    why6Desc: "Guaranteed frame, fabric and mechanism quality with a 5-year warranty.",
+    why6Desc: "Carefully checked frames, fabrics and mechanisms.",
 
     // Customer Reviews
     reviewsTitle: "What Our Clients Say",
@@ -263,7 +262,7 @@ export const translations = {
     emptyCartDesc: "Explore designer sofas and made-to-measure curtains to elevate your home.",
     startShopping: "Discover Collections",
     subtotal: "Subtotal",
-    taxNote: "VAT included (15%). Free delivery in Riyadh applied at checkout.",
+    taxNote: "VAT included (15%). Delivery charges, if any, are shown at checkout.",
     checkout: "Proceed to Checkout",
     checkoutCTA: "Proceed to Secure Checkout",
     continueShopping: "Continue Shopping",
@@ -272,7 +271,7 @@ export const translations = {
     emptyWishlist: "No saved items yet.",
     emptyWishlistDesc: "Click the heart icon on any sofa or curtain to save it for your home project.",
     moveToCart: "Move to Bag",
-    freeShippingBanner: "Congratulations! You qualified for Free White-Glove Delivery & Installation in Riyadh!",
+    freeShippingBanner: "Your order qualifies for free delivery.",
 
     // Footer
     footerAbout: "Sofalora is a Riyadh atelier for designer sofas, majlis seating and made-to-measure curtains. We pair premium materials with precise craftsmanship to elevate homes across the Kingdom of Saudi Arabia.",
@@ -313,7 +312,7 @@ export const translations = {
 
   ar: {
     // Utility Bar
-    freeDelivery: "توصيل وتنسيق مجاني في الرياض",
+    freeDelivery: "توصيل وتركيب داخل الرياض",
     contactUs: "اتصل بنا",
     trackOrder: "تتبع الطلب",
     storeLocator: "المعرض",
@@ -375,14 +374,14 @@ export const translations = {
     heroSlide1Title: "كنب منحوت للمعيشة العصرية",
     heroSlide1Desc: "بوكليه ومخمل وجلد طبيعي لجلسات صُممت لأسلوب حياتك.",
     heroSlide1Cta: "تسوق الكنب",
-    heroSlide1Secondary: "ابتداءً من 2,790 ر.س",
-    heroSlide1Badge: "خصم 20٪",
+    heroSlide1Secondary: "ابتداءً من 2,790 ⃁",
+    heroSlide1Badge: "موسم جديد",
 
     heroSlide2Label: "أناقة النوافذ",
     heroSlide2Title: "ستائر تغيّر إحساس الغرفة",
     heroSlide2Desc: "ستائر معتمة وشفافة ومفصلة على المقاس بالمليمتر.",
     heroSlide2Cta: "تسوق الستائر",
-    heroSlide2Secondary: "ابتداءً من 149 ر.س",
+    heroSlide2Secondary: "ابتداءً من 149 ⃁",
     heroSlide2Badge: "جديد",
 
     heroSlide3Label: "ننسقها معاً",
@@ -394,9 +393,9 @@ export const translations = {
 
     // Hero Promo Cards
     heroPromo1Title: "مجموعة الكنب",
-    heroPromo1Subtitle: "خصم يصل إلى 20٪",
+    heroPromo1Subtitle: "راحة لكل لقاء",
     heroPromo1Cta: "تسوق الآن",
-    heroPromo1Badge: "خصم 20٪",
+    heroPromo1Badge: "جديد",
 
     heroPromo2Title: "أتيليه الستائر",
     heroPromo2Subtitle: "لكل نافذة حل مناسب",
@@ -423,8 +422,8 @@ export const translations = {
     // Badges
     badgeNew: "جديد",
     badgeBestSeller: "الأكثر مبيعاً",
-    badge30Off: "خصم 30٪",
-    badgeLimitedOffer: "عرض لفترة محدودة",
+    badge30Off: "الأكثر طلباً",
+    badgeLimitedOffer: "مميز",
     badgePopular: "الأكثر طلباً",
 
     // Categories
@@ -468,7 +467,7 @@ export const translations = {
     // Product Card
     addToCart: "أضف إلى السلة",
     addedToCart: "تمت الإضافة",
-    currency: "ر.س",
+    currency: "⃁",
     reviewsCount: "تقييم",
     fabricLabel: "القماش",
     colorLabel: "اللون",
@@ -490,14 +489,13 @@ export const translations = {
     // Promotional Section
     promoEyebrow: "عروض الموسم للمنزل",
     promoTitle: "جدّد أثاث منزلك",
-    promoSubtitle: "خصم يصل إلى 20% على تنسيقات الكنب والستائر",
-    promoDesc: "نسّق كنبة مصممة مع ستائر مفصلة على المقاس واستمتع بتنسيق وتوصيل وتركيب مجاني للطلبات التي تتجاوز ٢,٥٠٠ ر.س.",
-    promoCTA: "تسوق العروض",
+    promoSubtitle: "كنب وستائر بتنسيق متكامل",
+    promoDesc: "نسّق كنبة مصممة مع ستائر مفصلة على المقاس. فريقنا يساعدك في تنسيق الأقمشة والألوان والمقاسات لكل غرفة.",
+    promoCTA: "تسوق الأكثر مبيعاً",
     days: "أيام",
     hours: "ساعات",
     minutes: "دقائق",
     seconds: "ثواني",
-    promoCode: "كود الخصم: SOFALORA20",
 
     // Shop by Room
     roomTitle: "نسّق كل غرفة",
@@ -539,7 +537,7 @@ export const translations = {
     why5Title: "تنسيق احترافي",
     why5Desc: "خبراء التنسيق يزاوجون ألوان الكنب مع ملمس الستائر والإضاءة.",
     why6Title: "ضمان الجودة",
-    why6Desc: "ضمان ٥ سنوات على الهيكل والأقمشة والآليات.",
+    why6Desc: "فحص دقيق للهياكل والأقمشة والآليات.",
 
     // Customer Reviews
     reviewsTitle: "آراء عملاء سوفالورا",
@@ -575,7 +573,7 @@ export const translations = {
     emptyCartDesc: "تصفح تشكيلاتنا الفاخرة من الكنب والستائر لتزيين منزلك بأناقة.",
     startShopping: "استكشف التشكيلات",
     subtotal: "المجموع الفرعي",
-    taxNote: "شامل ضريبة القيمة المضافة (١٥٪). التوصيل مجاني داخل الرياض.",
+    taxNote: "شامل ضريبة القيمة المضافة (١٥٪). تظهر رسوم التوصيل، إن وجدت، عند إتمام الطلب.",
     checkout: "إتمام الطلب",
     checkoutCTA: "متابعة لإتمام الطلب بأمان",
     continueShopping: "متابعة التسوق",
@@ -584,7 +582,7 @@ export const translations = {
     emptyWishlist: "لم تقم بحفظ أي منتجات بعد.",
     emptyWishlistDesc: "اضغط على أيقونة القلب عند أي كنبة أو ستارة لحفظها في قائمة أمنياتك والرجوع إليها لاحقاً.",
     moveToCart: "نقل إلى السلة",
-    freeShippingBanner: "مبروك! حصلت على توصيل وتركيب فندقي مجاني بالكامل داخل مدينة الرياض!",
+    freeShippingBanner: "طلبك مؤهل للتوصيل المجاني.",
 
     // Footer
     footerAbout: "سوفالورا أتيليه في الرياض للكنب المصمم وجلسات المجالس والستائر المفصلة على المقاس. نزاوج الخامات الفاخرة بالحرفية الدقيقة لنثري المنازل في جميع أنحاء المملكة العربية السعودية.",

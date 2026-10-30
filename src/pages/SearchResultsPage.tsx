@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter } from '../context/RouterContext';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { useCatalog } from '../context/CatalogContext';
 import { FilterState, SortOption, Product } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { ProductFilters } from '../components/PLP/ProductFilters';
@@ -37,6 +37,7 @@ const SUGGESTED_SEARCHES = [
 export const SearchResultsPage: React.FC = () => {
   const { language } = useShop();
   const { route, navigate } = useRouter();
+  const { products: PRODUCTS, categories: CATEGORIES } = useCatalog();
 
   const initialQuery = route.query.q || '';
   const [searchTerm, setSearchTerm] = useState(initialQuery);
@@ -95,7 +96,7 @@ export const SearchResultsPage: React.FC = () => {
         matchRoomAr
       );
     });
-  }, [activeQuery]);
+  }, [PRODUCTS, activeQuery]);
 
   // Secondary Filters
   const filteredProducts = useMemo(() => {
@@ -225,7 +226,7 @@ export const SearchResultsPage: React.FC = () => {
                     ? 'مثال: كنبة مقسمة، مجلس، كرسي بوكليه، ستائر معتمة...'
                     : 'e.g. sectional sofa, majlis, bouclé chair, blackout curtains...'
                 }
-                className="w-full py-3.5 ps-11 pe-24 bg-[#FDFCFA] border border-[#D8D2C6] rounded-xl text-sm text-[#101828] placeholder-[#8A847B] focus:outline-none focus:border-[#0A2A5E] focus:bg-white shadow-inner transition-all"
+                className="w-full py-3.5 ps-11 pe-24 bg-[#FDFCFA] border border-[#D8D2C6] rounded-xl text-sm text-[#101828] placeholder-[#8A847B] focus:outline-none focus:border-[#0B2345] focus:bg-white shadow-inner transition-all"
               />
               <Search className="w-5 h-5 text-[#667085] absolute start-3.5 top-1/2 -translate-y-1/2" />
               {searchTerm && (
@@ -239,7 +240,7 @@ export const SearchResultsPage: React.FC = () => {
               )}
               <button
                 type="submit"
-                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
+                className="absolute end-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#0B2345] hover:bg-[#071A35] text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
               >
                 {language === 'ar' ? 'بحث' : 'Search'}
               </button>
@@ -255,7 +256,7 @@ export const SearchResultsPage: React.FC = () => {
                   key={idx}
                   type="button"
                   onClick={() => handleSuggestedClick(item[language])}
-                  className="px-2.5 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white text-[#475467] transition-colors border border-[#EBE7DF]"
+                  className="px-2.5 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#071A35] hover:text-white text-[#475467] transition-colors border border-[#EBE7DF]"
                 >
                   {item[language]}
                 </button>
@@ -271,12 +272,12 @@ export const SearchResultsPage: React.FC = () => {
               {language === 'ar' ? (
                 <>
                   نتائج البحث عن: <strong className="text-[#101828]">"{activeQuery}"</strong> (
-                  <span className="text-[#0A2A5E] font-semibold">{filteredProducts.length}</span> نتيجة)
+                  <span className="text-[#0B2345] font-semibold">{filteredProducts.length}</span> نتيجة)
                 </>
               ) : (
                 <>
                   Search results for: <strong className="text-[#101828]">"{activeQuery}"</strong> (
-                  <span className="text-[#0A2A5E] font-semibold">{filteredProducts.length}</span> items)
+                  <span className="text-[#0B2345] font-semibold">{filteredProducts.length}</span> items)
                 </>
               )}
             </div>
@@ -288,7 +289,7 @@ export const SearchResultsPage: React.FC = () => {
                 setActiveQuery('');
                 navigate('/search', { scroll: false });
               }}
-              className="text-xs text-[#0A2A5E] hover:underline flex items-center gap-1 font-medium"
+              className="text-xs text-[#0B2345] hover:underline flex items-center gap-1 font-medium"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'ar' ? 'عرض كافة المنتجات' : 'View all products'}</span>

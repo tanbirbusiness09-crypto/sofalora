@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useShop } from '../context/LanguageContext';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { useCatalog } from '../context/CatalogContext';
 import { FilterState, SortOption, Product } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { CategoryHero } from '../components/PLP/CategoryHero';
 import { ProductFilters } from '../components/PLP/ProductFilters';
 import { ProductSortToolbar } from '../components/PLP/ProductSortToolbar';
 import { ProductGrid } from '../components/PLP/ProductGrid';
-import { Link } from '../context/RouterContext';
+import { Link, useRouter } from '../context/RouterContext';
 import { Phone, Calendar, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const INITIAL_FILTERS: FilterState = {
@@ -26,8 +26,33 @@ const INITIAL_FILTERS: FilterState = {
 
 export const ShopPage: React.FC = () => {
   const { language, direction } = useShop();
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
-  const [sortOption, setSortOption] = useState<SortOption>('featured');
+  const { products: PRODUCTS, categories: CATEGORIES } = useCatalog();
+  const { searchParams } = useRouter();
+  const qs = searchParams.toString();
+  // URL filters: /shop?maxPrice=1999 and /shop?onSale=1 (used by the home price bands and deals row).
+  const filtersFromUrl = (): FilterState => {
+    const p = new URLSearchParams(qs);
+    const max = Number(p.get('maxPrice'));
+    const min = Number(p.get('minPrice'));
+    const sale = p.get('onSale');
+    return {
+      ...INITIAL_FILTERS,
+      priceRange: [Number.isFinite(min) && min > 0 ? min : 0, Number.isFinite(max) && max > 0 ? max : INITIAL_FILTERS.priceRange[1]],
+      onSaleOnly: sale === '1' || sale === 'true',
+      categories: p.get('category') ? [String(p.get('category'))] : [],
+    };
+  };
+  const [filters, setFilters] = useState<FilterState>(filtersFromUrl);
+  useEffect(() => {
+    setFilters(filtersFromUrl());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qs]);
+  const sortFromUrl = (): SortOption => (new URLSearchParams(qs).get('sort') as SortOption) || 'featured';
+  const [sortOption, setSortOption] = useState<SortOption>(sortFromUrl);
+  useEffect(() => {
+    setSortOption(sortFromUrl());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qs]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
@@ -98,7 +123,7 @@ export const ShopPage: React.FC = () => {
 
     // On Sale Only
     if (filters.onSaleOnly) {
-      result = result.filter((p) => p.isSale || (p.discount && p.discount > 0) || p.oldPrice);
+      result = result.filter((p) => p.isSale || (p.discount && p.discount > 0) || Number(p.oldPrice ?? p.comparePrice ?? 0) > p.price);
     }
 
     // Sort
@@ -130,7 +155,7 @@ export const ShopPage: React.FC = () => {
     }
 
     return result;
-  }, [filters, sortOption]);
+  }, [PRODUCTS, filters, sortOption]);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);
@@ -181,13 +206,13 @@ export const ShopPage: React.FC = () => {
                   }}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all ${
                     isSelected
-                      ? 'bg-[#0A2A5E] text-white border-[#0A2A5E] shadow-sm'
-                      : 'bg-white text-[#4B5563] border-[#E3DED2] hover:border-[#0A2A5E]'
+                      ? 'bg-[#0B2345] text-white border-[#0B2345] shadow-sm'
+                      : 'bg-white text-[#4B5563] border-[#E3DED2] hover:border-[#0B2345]'
                   }`}
                 >
                   <span
                     className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: isSelected ? '#C6A15B' : '#D2CCC1' }}
+                    style={{ backgroundColor: isSelected ? '#B59460' : '#D2CCC1' }}
                   />
                   <span>{cat.title[language]}</span>
                   <span className="text-[10px] opacity-70">({cat.itemCount})</span>
@@ -236,7 +261,7 @@ export const ShopPage: React.FC = () => {
             {/* Riyadh Consultation Banner */}
             <div className="mt-12 bg-gradient-to-r from-[#101828] to-[#1F2937] rounded-2xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
               <div className="space-y-2 text-center sm:text-start">
-                <span className="text-xs uppercase tracking-widest text-[#C6A15B] font-semibold">
+                <span className="text-xs uppercase tracking-widest text-[#B59460] font-semibold">
                   {language === 'ar' ? 'خدمة مخصصة لمدينة الرياض' : 'Riyadh Bespoke Service'}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
@@ -254,7 +279,7 @@ export const ShopPage: React.FC = () => {
               <div className="flex items-center gap-3 shrink-0">
                 <a
                   href="tel:+966500000000"
-                  className="px-5 py-3 rounded-xl bg-[#0A2A5E] hover:bg-[#C6A15B] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
+                  className="px-5 py-3 rounded-xl bg-[#0B2345] hover:bg-[#B59460] text-white text-xs font-semibold transition-colors flex items-center gap-2 shadow-md"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>{language === 'ar' ? 'احجز زيارة مجانية' : 'Book Free Visit'}</span>

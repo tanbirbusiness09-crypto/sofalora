@@ -62,7 +62,7 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
 
         {/* Badge (Top-Start) */}
         {product.badge ? (
-          <span className="absolute top-2.5 start-2.5 bg-[#0A2A5E]/85 backdrop-blur-xs text-[#E8D9B6] text-[10px] sm:text-[11px] font-semibold tracking-wider px-2 py-0.5 rounded-full shadow-xs uppercase">
+          <span className="absolute top-2.5 start-2.5 bg-[#0B2345]/85 backdrop-blur-xs text-[#E8D9B6] text-[10px] sm:text-[11px] font-semibold tracking-wider px-2 py-0.5 rounded-full shadow-xs uppercase">
             {product.badge[language]}
           </span>
         ) : discountPercent ? (
@@ -79,8 +79,8 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
           }}
           className={`absolute top-2.5 end-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 z-10 ${
             isWishlisted
-              ? 'bg-[#C8102E] text-white shadow-md'
-              : 'bg-white/90 text-[#344054] hover:bg-white hover:text-[#C8102E] shadow-xs'
+              ? 'bg-[#B59460] text-white shadow-md'
+              : 'bg-white/90 text-[#344054] hover:bg-white hover:text-[#B59460] shadow-xs'
           }`}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
@@ -94,7 +94,7 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
             className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold shadow-md transition-colors flex items-center justify-center gap-1.5 ${
               isAdded
                 ? 'bg-[#166534] text-white'
-                : 'bg-[#0A2A5E]/90 hover:bg-[#061C3F] text-[#E8D9B6]'
+                : 'bg-[#0B2345]/90 hover:bg-[#071A35] text-[#E8D9B6]'
             }`}
             title={t('addToCart')}
           >
@@ -119,16 +119,18 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
           {/* Category & Rating */}
           <div className="flex items-center justify-between gap-1 text-[11px] text-[#667085] mb-1">
             <span className="truncate">{product.category[language]}</span>
-            <div className="flex items-center gap-1 text-[#C8102E] font-medium shrink-0">
-              <Star className="w-3 h-3 fill-current" />
-              <span>{product.rating}</span>
-            </div>
+            {product.rating > 0 && (
+              <div className="flex items-center gap-1 text-[#B59460] font-medium shrink-0">
+                <Star className="w-3 h-3 fill-current" />
+                <span>{product.rating}</span>
+              </div>
+            )}
           </div>
 
           {/* Product Name */}
           <Link href={productUrl}>
             <h3
-              className="text-xs sm:text-sm font-semibold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1"
+              className="text-xs sm:text-sm font-semibold text-[#101828] hover:text-[#0B2345] transition-colors line-clamp-1"
               title={product.name[language]}
             >
               {product.name[language]}
@@ -179,7 +181,7 @@ export const EditorialProductCard: React.FC<EditorialProductCardProps> = ({ prod
             className={`sm:hidden p-2 rounded-lg text-xs font-semibold shadow-xs transition-colors flex items-center justify-center ${
               isAdded
                 ? 'bg-[#166534] text-white'
-                : 'bg-[#0A2A5E] text-[#E8D9B6] active:scale-95'
+                : 'bg-[#0B2345] text-[#E8D9B6] active:scale-95'
             }`}
             aria-label="Add to cart"
           >

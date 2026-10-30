@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter, Link } from '../context/RouterContext';
 import {
@@ -19,39 +19,46 @@ import {
   Info
 } from 'lucide-react';
 import { Order, OrderStatus } from '../types';
+import { TrackOrderForm } from '../components/Orders/TrackOrderForm';
 
 export const OrderDetailsPage: React.FC = () => {
   const { route, navigate } = useRouter();
-  const { getOrderById, orders, addToCart, language, direction, formatPrice } = useShop();
+  const { getOrderById, orders, addToCart, trackOrderByNumber, language, direction, formatPrice } = useShop();
 
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   const orderId = route.params.id;
 
   const order: Order | undefined = useMemo(() => {
-    if (orderId) {
-      const found = getOrderById(orderId);
-      if (found) return found;
-    }
+    if (orderId) return getOrderById(orderId);
     return orders[0];
   }, [orderId, orders, getOrderById]);
+
+  // Refresh status/totals from the API (POST /storefront/orders/track).
+  const trackKey = order ? `${order.orderNumber || order.id}|${order.customer?.phone ?? ''}` : '';
+  useEffect(() => {
+    if (!order || !order.customer?.phone) return;
+    trackOrderByNumber(order.orderNumber || order.id, order.customer.phone).catch(() => null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackKey]);
 
   if (!order) {
     return (
       <div className="bg-[#FDFCFA] min-h-[70vh] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-[#E8DEC\-D] text-center shadow-xs">
-          <Package className="w-12 h-12 text-[#0A2A5E] mx-auto mb-4" />
+          <Package className="w-12 h-12 text-[#0B2345] mx-auto mb-4" />
           <h2 className="text-xl font-bold font-serif text-[#101828] mb-2">
             {language === 'ar' ? 'الطلب غير موجود' : 'Order Not Found'}
           </h2>
           <p className="text-xs text-[#667085] mb-6">
             {language === 'ar'
-              ? 'لم يتم العثور على سجل لهذا الطلب.'
-              : 'The requested order record was not found.'}
+              ? 'هذا الطلب غير محفوظ في هذا المتصفح. ابحث عنه برقم الجوال.'
+              : 'This order is not saved in this browser. Look it up with your mobile number.'}
           </p>
+          <TrackOrderForm initialOrderNumber={orderId ?? ''} className="text-start mb-6" />
           <Link
             href="/orders"
-            className="inline-flex items-center gap-2 bg-[#0A2A5E] text-white px-6 py-2.5 rounded-full text-xs font-bold"
+            className="inline-flex items-center gap-2 bg-[#0B2345] text-white px-6 py-2.5 rounded-full text-xs font-bold"
           >
             <span>{language === 'ar' ? 'العودة لقائمة الطلبات' : 'Back to Orders'}</span>
             <ArrowIcon className="w-3.5 h-3.5" />
@@ -66,7 +73,8 @@ export const OrderDetailsPage: React.FC = () => {
   };
 
   const handleReorder = () => {
-    order.items.forEach((item) => {
+    // Only lines that map to a real catalog product id can be re-added.
+    order.items.filter((item) => /^\d+$/.test(item.productId)).forEach((item) => {
       addToCart(item.product, item.selectedColor, item.selectedSize, item.quantity, item.customDimensions);
     });
     navigate('/cart');
@@ -91,15 +99,15 @@ export const OrderDetailsPage: React.FC = () => {
               onClick={handlePrint}
               className="inline-flex items-center gap-1.5 bg-white text-[#101828] hover:bg-[#FDFCFA] px-3.5 py-2 rounded-xl text-xs font-bold border border-[#CFC8BA] transition-all"
             >
-              <Printer className="w-3.5 h-3.5 text-[#0A2A5E]" />
+              <Printer className="w-3.5 h-3.5 text-[#0B2345]" />
               <span>{language === 'ar' ? 'طباعة الفاتورة' : 'Print Invoice'}</span>
             </button>
             <button
               type="button"
               onClick={handleReorder}
-              className="inline-flex items-center gap-1.5 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs"
+              className="inline-flex items-center gap-1.5 bg-[#0B2345] hover:bg-[#071A35] text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-[#E3C98F]" />
+              <RotateCcw className="w-3.5 h-3.5 text-[#D9C29A]" />
               <span>{language === 'ar' ? 'إعادة طلب نفس الستائر' : 'Re-order Items'}</span>
             </button>
           </div>
@@ -113,18 +121,34 @@ export const OrderDetailsPage: React.FC = () => {
                 <span className="text-xl sm:text-2xl font-serif font-bold text-[#101828]">
                   {language === 'ar' ? 'تفاصيل الطلب' : 'Order Details'} #{order.id}
                 </span>
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-full border border-emerald-200">
+                <span
+                  id="order-status"
+                  data-server-status={order.serverStatus ?? ''}
+                  className={`px-3 py-1 text-xs font-bold rounded-full border ${
+                    order.status === 'cancelled'
+                      ? 'bg-rose-50 text-rose-800 border-rose-200'
+                      : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                  }`}
+                >
                   {order.status === 'delivered'
                     ? language === 'ar'
                       ? 'تم التوصيل والتركيب'
                       : 'Delivered & Installed'
+                    : order.status === 'cancelled'
+                    ? language === 'ar'
+                      ? 'ملغي'
+                      : 'Cancelled'
+                    : order.status === 'order_placed'
+                    ? language === 'ar'
+                      ? 'تم استلام الطلب'
+                      : 'Order Received'
                     : language === 'ar'
                     ? 'قيد التجهيز'
                     : 'In Progress'}
                 </span>
               </div>
               <p className="text-xs text-[#667085] mt-1 flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5 text-[#0A2A5E]" />
+                <Calendar className="w-3.5 h-3.5 text-[#0B2345]" />
                 <span>
                   {language === 'ar' ? 'تاريخ التسجيل:' : 'Order Placed on:'}{' '}
                   {new Date(order.createdAt).toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', {
@@ -138,7 +162,7 @@ export const OrderDetailsPage: React.FC = () => {
 
             <div className="text-start sm:text-end">
               <div className="text-xs text-[#667085]">{language === 'ar' ? 'الإجمالي الكلي:' : 'Total Amount:'}</div>
-              <div className="text-2xl font-serif font-bold text-[#0A2A5E]">
+              <div className="text-2xl font-serif font-bold text-[#0B2345]">
                 {formatPrice(order.grandTotal ?? order.total)}
               </div>
             </div>
@@ -148,26 +172,26 @@ export const OrderDetailsPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 text-xs text-[#475467]">
             <div className="p-4 rounded-xl bg-[#FDFCFA] border border-[#E8DEC\-D] space-y-1.5">
               <h4 className="font-bold text-[#101828] flex items-center gap-1.5 text-xs">
-                <MapPin className="w-4 h-4 text-[#0A2A5E]" />
+                <MapPin className="w-4 h-4 text-[#0B2345]" />
                 <span>{language === 'ar' ? 'عنوان التركيب في الرياض' : 'Riyadh Installation Site'}</span>
               </h4>
               <p className="font-semibold text-[#101828]">
                 {order.customer.firstName} {order.customer.lastName}
               </p>
               <p>
-                {order.deliveryAddress.building}, {order.deliveryAddress.street}
+                {[order.deliveryAddress.building, order.deliveryAddress.street].filter(Boolean).join(', ')}
               </p>
               <p>
-                {order.deliveryAddress.district}, {order.deliveryAddress.city}
+                {[order.deliveryAddress.district, order.deliveryAddress.city].filter(Boolean).join(', ')}
               </p>
               <p className="text-[#667085]">
-                {order.customer.phone} • {order.customer.email}
+                {[order.customer.phone, order.customer.email].filter(Boolean).join(' • ')}
               </p>
             </div>
 
             <div className="p-4 rounded-xl bg-[#FDFCFA] border border-[#E8DEC\-D] space-y-1.5">
               <h4 className="font-bold text-[#101828] flex items-center gap-1.5 text-xs">
-                <Truck className="w-4 h-4 text-[#0A2A5E]" />
+                <Truck className="w-4 h-4 text-[#0B2345]" />
                 <span>{language === 'ar' ? 'التسليم والدفع' : 'Fulfillment & Warranty'}</span>
               </h4>
               <p>
@@ -181,7 +205,7 @@ export const OrderDetailsPage: React.FC = () => {
                   : order.paymentMethod === 'apple_pay'
                   ? 'Apple Pay'
                   : language === 'ar'
-                  ? 'عند التركيب'
+                  ? 'الدفع عند الاستلام'
                   : 'Cash on Delivery'}
               </p>
               <p className="text-emerald-700 font-semibold flex items-center gap-1">
@@ -217,7 +241,7 @@ export const OrderDetailsPage: React.FC = () => {
 
                     <div className="flex flex-wrap items-center gap-2 text-xs text-[#667085] mt-1">
                       {item.customDimensions ? (
-                        <span className="bg-[#F7F5F0] text-[#0A2A5E] font-semibold px-2 py-0.5 rounded border border-[#DDD7CA]">
+                        <span className="bg-[#F7F5F0] text-[#0B2345] font-semibold px-2 py-0.5 rounded border border-[#DDD7CA]">
                           {language === 'ar' ? 'تفصيل خاص:' : 'Custom:'} {item.customDimensions.width}m ×{' '}
                           {item.customDimensions.height}m
                         </span>
@@ -276,7 +300,7 @@ export const OrderDetailsPage: React.FC = () => {
             </div>
 
             <div className="flex justify-between text-[11px] text-[#667085]">
-              <span>{language === 'ar' ? 'ضريبة القيمة المضافة (١٥٪)' : 'VAT (15%)'}</span>
+              <span>{language === 'ar' ? 'ضريبة القيمة المضافة المشمولة (١٥٪)' : 'Includes VAT (15%)'}</span>
               <span>{formatPrice(order.vatAmount)}</span>
             </div>
 
@@ -284,7 +308,7 @@ export const OrderDetailsPage: React.FC = () => {
               <span className="text-sm font-black text-[#101828]">
                 {language === 'ar' ? 'الإجمالي النهائي' : 'Grand Total'}
               </span>
-              <span className="text-xl font-serif font-bold text-[#0A2A5E]">
+              <span className="text-xl font-serif font-bold text-[#0B2345]">
                 {formatPrice(order.grandTotal ?? order.total)}
               </span>
             </div>

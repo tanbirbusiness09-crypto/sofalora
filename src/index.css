@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* New Saudi Riyal sign (U+20C1). Web fonts don't ship it yet, so a one-glyph font
+   (public/fonts/sofalora-riyal.woff) supplies it everywhere prices are rendered as text. */
+@font-face {
+  font-family: 'Sofalora Riyal';
+  src: url('/fonts/sofalora-riyal.woff') format('woff');
+  unicode-range: U+20C1;
+  font-display: block;
+}
+
+
 @theme {
   /* ----------------------------------------------------------------
      Design system type scale (noon KSA tokens)
@@ -25,31 +35,32 @@
   --radius-xl: 12px;
   --radius-2xl: 12px;
 
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Sofalora Riyal', 'Figtree', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* noon-style: bold sans for headings site-wide (serif kept for logo + hero display) */
+  --font-serif: 'Sofalora Riyal', 'Figtree', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
 
-  --color-sofalora-cream: #FAFAF8;
+  --color-sofalora-cream: #FAF9F6;
   --color-sofalora-sand: #F3F1EB;
   --color-sofalora-line: #E6E2D9;
   --color-sofalora-clay: #C8102E;
-  --color-sofalora-clay-deep: #0A2A5E;
-  --color-sofalora-amber: #C6A15B;
-  --color-sofalora-forest: #0A2A5E;
+  --color-sofalora-clay-deep: #0B2345;
+  --color-sofalora-amber: #B59460;
+  --color-sofalora-forest: #0B2345;
   --color-sofalora-ink: #101828;
-  --color-sofalora-navy: #0A2A5E;
-  --color-sofalora-navy-deep: #061C3F;
+  --color-sofalora-navy: #0B2345;
+  --color-sofalora-navy-deep: #071A35;
   --color-sofalora-red: #C8102E;
   --color-sofalora-red-bright: #EC1E27;
-  --color-sofalora-gold: #C6A15B;
-  --color-sofalora-gold-soft: #E3C98F;
+  --color-sofalora-gold: #B59460;
+  --color-sofalora-gold-soft: #D9C29A;
 }
 
 
 @layer base {
   :root {
-    --font-en-sans: 'Manrope', -apple-system, 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
-    --font-en-serif: 'Fraunces', Georgia, serif;
-    --font-ar-sans: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-en-sans: 'Sofalora Riyal', 'Figtree', -apple-system, 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+    --font-en-serif: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    --font-ar-sans: 'Sofalora Riyal', 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
 
     /* Design system semantic tokens (noon KSA) */
     --ds-text-primary: #404553;
@@ -62,14 +73,14 @@
     --ds-duration-instant: 200ms;
     --ds-duration-fast: 300ms;
 
-    --color-sand-50: #FAFAF8;
+    --color-sand-50: #FAF9F6;
     --color-sand-100: #F3F1EB;
     --color-sand-200: #E6E2D9;
     --color-sand-300: #D6D0C4;
-    --color-gold-400: #E3C98F;
-    --color-gold-500: #C6A15B;
+    --color-gold-400: #D9C29A;
+    --color-gold-500: #B59460;
     --color-gold-600: #8A6A2F;
-    --color-charcoal-900: #061C3F;
+    --color-charcoal-900: #071A35;
     --color-charcoal-800: #0E2A52;
     --color-charcoal-700: #344054;
   }
@@ -100,7 +111,7 @@
   }
 
   body {
-    background-color: #FAFAF8;
+    background-color: #FAF9F6;
     color: #212121;
     font-size: 15px;
     font-weight: 500;
@@ -111,7 +122,7 @@
 
   /* Accessibility: always-visible keyboard focus */
   :focus-visible {
-    outline: 2px solid #0A2A5E;
+    outline: 2px solid #0B2345;
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -132,14 +143,14 @@
    Sofalora design language
 ------------------------------------------------------------------ */
 .brand-gradient {
-  background-image: linear-gradient(120deg, #061C3F 0%, #0A2A5E 52%, #17498F 100%);
+  background-image: linear-gradient(120deg, #071A35 0%, #0B2345 52%, #1C3A66 100%);
 }
 
 .brand-gradient-dark {
   background-image:
     radial-gradient(circle at 12% 18%, rgba(200, 16, 46, 0.28) 0%, transparent 42%),
     radial-gradient(circle at 86% 82%, rgba(198, 161, 91, 0.2) 0%, transparent 48%),
-    linear-gradient(135deg, #061C3F 0%, #0A2A5E 58%, #0E2A52 100%);
+    linear-gradient(135deg, #071A35 0%, #0B2345 58%, #0E2A52 100%);
 }
 
 .brand-gradient-soft {
@@ -147,7 +158,7 @@
 }
 
 .text-gradient-brand {
-  background-image: linear-gradient(100deg, #0A2A5E 0%, #17498F 52%, #C8102E 100%);
+  background-image: linear-gradient(100deg, #0B2345 0%, #1C3A66 52%, #B59460 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -163,9 +174,9 @@
   display: inline-flex;
   align-items: baseline;
   font-family: var(--font-en-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-optical-sizing: auto;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.02em;
   line-height: 0.92;
   text-transform: uppercase;
   white-space: nowrap;
@@ -181,7 +192,7 @@
 }
 
 .brand-wordmark--light .brand-wordmark-accent {
-  color: #E3C98F;
+  color: #E0344D;
 }
 
 html[dir="rtl"] .brand-wordmark {
@@ -217,7 +228,7 @@ html[dir="rtl"] .brand-tagline {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  background-image: linear-gradient(120deg, #061C3F 0%, #0A2A5E 52%, #17498F 100%);
+  background-image: linear-gradient(120deg, #071A35 0%, #0B2345 52%, #1C3A66 100%);
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -242,7 +253,7 @@ html[dir="rtl"] .brand-tagline {
   gap: 0.5rem;
   border-radius: 9999px;
   border: 1px solid rgba(10, 42, 94, 0.3);
-  color: #0A2A5E;
+  color: #0B2345;
   font-weight: 700;
   transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
@@ -260,7 +271,7 @@ html[dir="rtl"] .brand-tagline {
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #C8102E;
+  color: #B59460;
 }
 
 .card-lift {
@@ -295,7 +306,7 @@ html[dir="rtl"] .brand-tagline {
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C8102E;
+  background: #B59460;
 }
 
 /* Hide scrollbar for category bars and carousels */
@@ -316,3 +327,109 @@ html[dir="rtl"] .brand-tagline {
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   Luxury redesign (2026): navy / warm white / champagne gold
+------------------------------------------------------------------ */
+:root {
+  --sf-navy: #0B2345;
+  --sf-navy-deep: #071A35;
+  --sf-warm: #FAF9F6;
+  --sf-gold: #B59460;
+  --sf-beige: #EFE8DC;
+  --sf-gray: #6B6F76;
+  --sf-header-h: 64px;
+}
+
+.font-serif-luxury, .font-serif { font-family: var(--font-en-sans) !important; font-weight: 700; letter-spacing: -0.01em; }
+html[dir="rtl"] .font-serif-luxury, html[dir="rtl"] .font-serif { font-family: var(--font-ar-sans) !important; letter-spacing: 0; }
+/* Serif display face, used only for the hero headline */
+.font-display-serif { font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: 0; }
+html[dir="rtl"] .font-display-serif { font-family: var(--font-ar-sans); font-weight: 700; }
+body { font-weight: 400; font-size: 14px; line-height: 1.5; }
+button, input, select, textarea { font-family: inherit; }
+
+/* Unified buttons */
+.btn-brand, .btn-brand-outline { border-radius: 10px !important; font-weight: 700; font-size: 14px; letter-spacing: 0; }
+.sf-btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; height: 42px; padding: 0 1.25rem; border-radius: 10px; font-size: 14px; font-weight: 700; transition: background-color .2s, color .2s, border-color .2s; }
+.sf-btn-primary { background: #0B2345; color: #fff; }
+.sf-btn-primary:hover { background: #163562; }
+.sf-btn-outline { border: 1.5px solid #0B2345; color: #0B2345; background: transparent; }
+.sf-btn-outline:hover { background: #0B2345; color: #fff; }
+.sf-btn-gold { background: #B59460; color: #fff; }
+.sf-btn-gold:hover { background: #9E7F4E; }
+@keyframes sf-none {}
+
+@keyframes sf-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sf-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sf-kenburns {
+  from { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+@keyframes sf-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes sf-drawer-ltr { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes sf-drawer-rtl { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes sf-pop { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+.sf-rise { animation: sf-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.sf-rise-1 { animation-delay: 120ms; }
+.sf-rise-2 { animation-delay: 240ms; }
+.sf-rise-3 { animation-delay: 360ms; }
+.sf-fade { animation: sf-fade 400ms ease both; }
+.sf-pop { animation: sf-pop 320ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.sf-kenburns { animation: sf-kenburns 7s ease-out both; }
+.sf-progress { transform-origin: left; animation: sf-progress linear both; }
+html[dir="rtl"] .sf-progress { transform-origin: right; }
+.sf-drawer { animation: sf-drawer-ltr 320ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+html[dir="rtl"] .sf-drawer { animation-name: sf-drawer-rtl; }
+
+.sf-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+html[dir="rtl"] .sf-eyebrow { letter-spacing: 0; font-size: 12px; }
+
+.sf-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #ECE6DA;
+  box-shadow: 0 1px 2px rgba(11, 35, 69, 0.04);
+}
+.sf-shadow { box-shadow: 0 24px 50px -32px rgba(11, 35, 69, 0.35); }
+
+.sf-round-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 9999px;
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms ease, border-color 220ms ease;
+}
+.sf-round-btn:hover { transform: translateY(-1px); }
+
+.sf-sidebar-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+.sf-sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sf-sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sf-sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); }
+
+/* Category row: clip marquee to its own box with soft edge fades */
+.sf-row-mask { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
+
+/* ---- Home layout rhythm: one container, one gutter, one vertical gap ---- */
+.sf-home { display: flex; flex-direction: column; gap: 20px; padding: 12px 12px 24px; }
+@media (min-width: 1024px) { .sf-home { padding: 12px 12px 32px 0; } }
+.sf-home [data-home-section] > * { margin-block: 0 !important; padding-inline: 0 !important; }
+.sf-home :is([data-home-section="category_rows"], [data-home-section="price_bands"], [data-home-section="deals_row"],
+  [data-home-section="category_grid"], [data-home-section="new_arrivals"], [data-home-section="hero"], [data-home-section="promo_grid"]) > * { padding-block: 0 !important; }
+/* Legacy sections: drop their own narrower max-width box and oversized vertical padding */
+.sf-home [data-home-section] .max-w-7xl { max-width: none; padding-inline: 0; }
+.sf-home [data-home-section] :is(.py-12, .py-14, .py-16) { padding-block: 12px; }
+@media (min-width: 640px) { .sf-home [data-home-section] :is(.sm\:py-16, .sm\:py-20, .sm\:py-24, .md\:py-20) { padding-block: 16px; } }
+@media (min-width: 768px) { .sf-home [data-home-section] .md\:py-20 { padding-block: 16px; } }
+.sf-home [data-home-section="promo_slider"] > section { background: transparent; border: 0; }
+.sf-home [data-home-section="newsletter"] > * > * , .sf-home [data-home-section="consultation_cta"] > * > * { border-radius: 16px; }
+/* Legacy full sections: their own vertical padding stacked on the 20px flex gap; strip it so every gap is 20px. */
+.sf-home :is([data-home-section="promo_banner"], [data-home-section="shop_by_room"], [data-home-section="inspiration_gallery"]) section { padding-block: 0 !important; }
+.sf-home [data-home-section="promo_banner"] #promotions > * { margin-block: 0 !important; padding-block: 0 !important; }

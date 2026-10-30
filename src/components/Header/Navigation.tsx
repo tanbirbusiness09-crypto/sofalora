@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
   const { t, openConsultation } = useShop();
 
   return (
-    <nav className="hidden lg:block bg-[#FAFAF8] border-b border-[#E5E1D8] relative z-30">
+    <nav className="hidden lg:block bg-[#FAF9F6] border-b border-[#E5E1D8] relative z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ul className="flex items-center justify-between gap-1 xl:gap-2 text-[13px] font-medium text-[#1F2937] py-0">
 
@@ -15,7 +15,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/"
-              className="inline-flex items-center py-3.5 px-2.5 text-[#0A2A5E] font-semibold border-b-2 border-[#C8102E] transition-colors"
+              className="inline-flex items-center py-3.5 px-2.5 text-[#0B2345] font-semibold border-b-2 border-[#B59460] transition-colors"
             >
               {t('navHome')}
             </Link>
@@ -25,7 +25,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/category/sofas"
-              className="inline-flex items-center py-3.5 px-2.5 hover:text-[#0A2A5E] transition-colors"
+              className="inline-flex items-center py-3.5 px-2.5 hover:text-[#0B2345] transition-colors"
             >
               {t('navSofas')}
             </Link>
@@ -35,7 +35,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/category/majlis-sofas"
-              className="py-3.5 px-2 hover:text-[#0A2A5E] transition-colors"
+              className="py-3.5 px-2 hover:text-[#0B2345] transition-colors"
             >
               {t('navMajlis')}
             </Link>
@@ -45,7 +45,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/category/curtains"
-              className="py-3.5 px-2.5 hover:text-[#0A2A5E] transition-colors"
+              className="py-3.5 px-2.5 hover:text-[#0B2345] transition-colors"
             >
               {t('navCurtains')}
             </Link>
@@ -55,7 +55,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/shop"
-              className="py-3.5 px-2 hover:text-[#0A2A5E] transition-colors"
+              className="py-3.5 px-2 hover:text-[#0B2345] transition-colors"
             >
               {t('navPairings')}
             </Link>
@@ -65,9 +65,9 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/category/custom-curtains"
-              className="inline-flex items-center gap-1.5 py-3.5 px-2.5 font-semibold text-[#101828] hover:text-[#0A2A5E] transition-colors"
+              className="inline-flex items-center gap-1.5 py-3.5 px-2.5 font-semibold text-[#101828] hover:text-[#0B2345] transition-colors"
             >
-              <Scissors className="w-3.5 h-3.5 text-[#C8102E]" />
+              <Scissors className="w-3.5 h-3.5 text-[#B59460]" />
               <span>{t('navCustom')}</span>
             </Link>
           </li>
@@ -76,7 +76,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/new-arrivals"
-              className="py-3.5 px-2 hover:text-[#0A2A5E] transition-colors"
+              className="py-3.5 px-2 hover:text-[#0B2345] transition-colors"
             >
               {t('navNewArrivals')}
             </Link>
@@ -86,7 +86,7 @@ export const Navigation: React.FC = () => {
           <li>
             <Link
               href="/offers"
-              className="inline-flex items-center gap-1 py-3.5 px-2 text-[#0A2A5E] font-semibold hover:text-[#C8102E] transition-colors"
+              className="inline-flex items-center gap-1 py-3.5 px-2 text-[#0B2345] font-semibold hover:text-[#B59460] transition-colors"
             >
               <Tag className="w-3.5 h-3.5" />
               <span>{t('navOffers')}</span>

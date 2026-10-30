@@ -23,7 +23,6 @@ import {
   ChevronRight,
   ChevronLeft
 } from 'lucide-react';
-import { VALID_DELIVERY_METHODS, PROMO_CODES } from '../data/promoCodes';
 import { DeliveryMethodId } from '../types';
 
 export const CartPage: React.FC = () => {
@@ -43,6 +42,8 @@ export const CartPage: React.FC = () => {
     vatRate,
     vatAmount,
     grandTotal,
+    freeShippingThreshold,
+    paymentMethods,
     language,
     direction,
     formatPrice,
@@ -57,24 +58,24 @@ export const CartPage: React.FC = () => {
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
   const ChevronIcon = direction === 'rtl' ? ChevronLeft : ChevronRight;
 
-  const FREE_SHIPPING_THRESHOLD = 500;
+  // Free-delivery meter only when the admin set a threshold and a delivery fee.
+  const FREE_SHIPPING_THRESHOLD = freeShippingThreshold;
+  const showFreeShippingMeter = FREE_SHIPPING_THRESHOLD > 0 && (shippingFee > 0 || cartSubtotal - promoDiscount >= FREE_SHIPPING_THRESHOLD);
+  const [couponBusy, setCouponBusy] = useState(false);
   const currentSubtotalAfterDiscount = Math.max(0, cartSubtotal - promoDiscount);
-  const progressPercent = Math.min(100, Math.round((currentSubtotalAfterDiscount / FREE_SHIPPING_THRESHOLD) * 100));
+  const progressPercent = FREE_SHIPPING_THRESHOLD > 0 ? Math.min(100, Math.round((currentSubtotalAfterDiscount / FREE_SHIPPING_THRESHOLD) * 100)) : 100;
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - currentSubtotalAfterDiscount);
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!couponInput.trim()) return;
-    const res = applyPromoCode(couponInput);
+    if (!couponInput.trim() || couponBusy) return;
+    setCouponBusy(true);
+    const res = await applyPromoCode(couponInput);
+    setCouponBusy(false);
     setCouponFeedback({ message: res.message, type: res.type });
     if (res.success) {
       setCouponInput('');
     }
-  };
-
-  const handleQuickApplyCode = (code: string) => {
-    const res = applyPromoCode(code);
-    setCouponFeedback({ message: res.message, type: res.type });
   };
 
   if (cart.length === 0) {
@@ -95,7 +96,7 @@ export const CartPage: React.FC = () => {
           <div className="space-y-2.5">
             <Link
               href="/shop"
-              className="w-full inline-flex items-center justify-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white py-3 px-6 rounded-lg font-bold text-xs tracking-wide transition-all shadow-xs"
+              className="w-full inline-flex items-center justify-center gap-2 bg-[#0B2345] hover:bg-[#071A35] text-white py-3 px-6 rounded-lg font-bold text-xs tracking-wide transition-all shadow-xs"
             >
               <span>{language === 'ar' ? 'ابدأ التسوق الآن' : 'START SHOPPING NOW'}</span>
               <ArrowIcon className="w-4 h-4" />
@@ -107,7 +108,6 @@ export const CartPage: React.FC = () => {
   }
 
   const totalItemsCount = cart.reduce((s, i) => s + i.quantity, 0);
-  const installmentAmount = Math.round((grandTotal / 4) * 100) / 100;
 
   return (
     <div className="bg-[#F7F7F5] min-h-screen py-6 sm:py-10">
@@ -119,7 +119,7 @@ export const CartPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-neutral-900">
               {language === 'ar' ? 'سلة التسوق' : 'Cart'}
             </h1>
-            <span className="text-xs font-bold bg-[#FAFAF8] text-[#0A2A5E] border border-[#E6E2D9] px-2.5 py-0.5 rounded-full">
+            <span className="text-xs font-bold bg-[#FAF9F6] text-[#0B2345] border border-[#E6E2D9] px-2.5 py-0.5 rounded-full">
               {totalItemsCount} {language === 'ar' ? 'منتجات' : 'items'}
             </span>
           </div>
@@ -134,7 +134,7 @@ export const CartPage: React.FC = () => {
             </button>
             <Link
               href="/shop"
-              className="text-xs font-bold text-[#0A2A5E] hover:text-[#061C3F] hover:underline hidden sm:inline-block"
+              className="text-xs font-bold text-[#0B2345] hover:text-[#071A35] hover:underline hidden sm:inline-block"
             >
               {language === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
             </Link>
@@ -142,6 +142,7 @@ export const CartPage: React.FC = () => {
         </div>
 
         {/* Free Delivery Meter Banner */}
+        {showFreeShippingMeter && (
         <div className="mb-6 p-4 rounded-xl bg-white border border-neutral-200 shadow-2xs">
           <div className="flex items-center justify-between gap-4 mb-2">
             <div className="flex items-center gap-2 text-xs font-bold text-neutral-900">
@@ -150,14 +151,14 @@ export const CartPage: React.FC = () => {
                 {currentSubtotalAfterDiscount >= FREE_SHIPPING_THRESHOLD ? (
                   <span className="text-emerald-700">
                     {language === 'ar'
-                      ? 'تهانينا! طلبيتك مؤهلة للشحن والتركيب المجاني في الرياض.'
-                      : 'Congratulations! You unlocked FREE Delivery & Laser Fitting across Riyadh.'}
+                      ? 'طلبك مؤهل للتوصيل المجاني.'
+                      : 'Your order qualifies for free delivery.'}
                   </span>
                 ) : (
                   <span>
                     {language === 'ar'
-                      ? `أضف بقيمة ${formatPrice(remainingForFreeShipping)} للحصول على توصيل وتركيب مجاني`
-                      : `Add ${formatPrice(remainingForFreeShipping)} more to unlock FREE Delivery & Installation`}
+                      ? `أضف ${formatPrice(remainingForFreeShipping)} للحصول على توصيل مجاني`
+                      : `Add ${formatPrice(remainingForFreeShipping)} more for free delivery`}
                   </span>
                 )}
               </span>
@@ -169,12 +170,13 @@ export const CartPage: React.FC = () => {
           <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
-                currentSubtotalAfterDiscount >= FREE_SHIPPING_THRESHOLD ? 'bg-emerald-600' : 'bg-[#0A2A5E]'
+                currentSubtotalAfterDiscount >= FREE_SHIPPING_THRESHOLD ? 'bg-emerald-600' : 'bg-[#0B2345]'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
+        )}
 
         {/* 2-Column Layout: Shipment / Items (8 cols) + Order Summary (4 cols) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -196,11 +198,8 @@ export const CartPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#0A2A5E] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
-                    {language === 'ar' ? 'توصيل وتركيب سريع' : 'EXPRESS ATELIER'}
-                  </span>
                   <span className="text-xs font-bold text-neutral-800">
-                    {language === 'ar' ? 'الاستلام غداً' : 'Get it by Tomorrow'}
+                    {language === 'ar' ? 'توصيل وتركيب داخل الرياض' : 'Delivery & installation in Riyadh'}
                   </span>
                 </div>
               </div>
@@ -210,7 +209,10 @@ export const CartPage: React.FC = () => {
                 {cart.map((item) => {
                   const isItemWishlisted = wishlist.includes(item.product.id);
                   const itemPrice = item.customDimensions?.estimatedTotal || (item.product.price + (item.selectedSize?.priceModifier || 0));
-                  const itemOriginal = Math.round(itemPrice * 1.25);
+                  // Real was-price only (admin sale price); custom-size quotes never show one.
+                  const itemOriginal = !item.customDimensions?.estimatedTotal && item.product.oldPrice
+                    ? item.product.oldPrice + (item.selectedSize?.priceModifier || 0)
+                    : itemPrice;
 
                   return (
                     <div key={item.id} className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start">
@@ -231,7 +233,7 @@ export const CartPage: React.FC = () => {
                         <div className="flex items-start justify-between gap-2">
                           <Link
                             href={`/product/${item.product.slug || item.product.id}`}
-                            className="text-sm font-bold text-neutral-900 hover:text-[#0A2A5E] transition-colors leading-snug line-clamp-2"
+                            className="text-sm font-bold text-neutral-900 hover:text-[#0B2345] transition-colors leading-snug line-clamp-2"
                           >
                             {item.product.name[language]}
                           </Link>
@@ -260,7 +262,7 @@ export const CartPage: React.FC = () => {
                           )}
 
                           {item.customDimensions ? (
-                            <span className="bg-[#FAFAF8] text-[#0A2A5E] px-2 py-0.5 rounded border border-[#E6E2D9] font-semibold">
+                            <span className="bg-[#FAF9F6] text-[#0B2345] px-2 py-0.5 rounded border border-[#E6E2D9] font-semibold">
                               {language === 'ar' ? 'تفصيل مخصص:' : 'Custom:'} {item.customDimensions.width}m × {item.customDimensions.height}m
                             </span>
                           ) : item.selectedSize ? (
@@ -268,10 +270,6 @@ export const CartPage: React.FC = () => {
                               {item.selectedSize.label[language]} ({item.selectedSize.dimensions})
                             </span>
                           ) : null}
-
-                          <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold text-[11px]">
-                            {language === 'ar' ? 'شامل التركيب الليزري' : 'Laser Fitting Included'}
-                          </span>
                         </div>
 
                         {/* Actions Row */}
@@ -333,16 +331,15 @@ export const CartPage: React.FC = () => {
                 </div>
                 <div>
                   <div className="font-bold text-neutral-900">
-                    {language === 'ar' ? 'ضمان المقاس والتفصيل المليمتري في الرياض' : 'Guaranteed Precision Fit in Riyadh'}
+                    {language === 'ar' ? 'خدمة القياس والتركيب في الرياض' : 'Measurement & Fitting Service in Riyadh'}
                   </div>
                   <div className="text-neutral-500 text-[11px]">
                     {language === 'ar'
-                      ? 'يقوم الفني بزيارة منزلك مع كتالوجات الأقمشة الحقيقية للتأكد من تناسق الألوان مع دهان الحائط.'
-                      : 'Our technician brings actual fabric swatches on delivery to verify paint matching before fixing.'}
+                      ? 'تواصل مع فريقنا لتنسيق القياس والتركيب بعد الطلب.'
+                      : 'Our team will coordinate measurement and installation after you order.'}
                   </div>
                 </div>
               </div>
-              <span className="text-emerald-700 font-bold shrink-0">{language === 'ar' ? 'مجاني' : 'FREE'}</span>
             </div>
           </div>
 
@@ -373,11 +370,10 @@ export const CartPage: React.FC = () => {
                 )}
 
                 <div className="flex justify-between text-neutral-600">
-                  <span>{language === 'ar' ? 'رسوم التوصيل والتركيب' : 'Shipping & Laser Fitting'}</span>
+                  <span>{language === 'ar' ? 'رسوم التوصيل والتركيب' : 'Delivery & Installation'}</span>
                   <span className="font-bold text-emerald-700">
                     {shippingFee === 0 ? (
                       <span className="flex items-center gap-1">
-                        <span className="line-through text-neutral-400 font-normal">SAR 45</span>
                         <span>{language === 'ar' ? 'مجاناً' : 'FREE'}</span>
                       </span>
                     ) : (
@@ -402,7 +398,7 @@ export const CartPage: React.FC = () => {
                     {formatPrice(grandTotal)}
                   </span>
                   <div className="text-[10px] text-neutral-400">
-                    {language === 'ar' ? 'شامل الضريبة والتركيب' : 'VAT & Laser Fitting Included'}
+                    {language === 'ar' ? 'شامل ضريبة القيمة المضافة' : 'VAT included'}
                   </div>
                 </div>
               </div>
@@ -414,12 +410,13 @@ export const CartPage: React.FC = () => {
                     type="text"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                    placeholder={language === 'ar' ? 'أدخل كود الخصم (مثال: WELCOME10)' : 'Coupon code (e.g. WELCOME10)'}
-                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs uppercase font-mono text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0A2A5E] focus:border-[#0A2A5E]"
+                    placeholder={language === 'ar' ? 'أدخل كود الخصم' : 'Coupon code'}
+                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs uppercase font-mono text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0B2345] focus:border-[#0B2345]"
                   />
                   <button
                     type="submit"
-                    className="px-3.5 py-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white rounded-lg text-xs font-bold transition-all"
+                    disabled={couponBusy}
+                    className="px-3.5 py-2 disabled:opacity-60 bg-[#0B2345] hover:bg-[#071A35] text-white rounded-lg text-xs font-bold transition-all"
                   >
                     {language === 'ar' ? 'تطبيق' : 'Apply'}
                   </button>
@@ -435,26 +432,6 @@ export const CartPage: React.FC = () => {
                   </div>
                 )}
 
-                {/* Quick promo code suggestion */}
-                {!appliedPromo && (
-                  <div className="mt-2 flex items-center gap-1.5 flex-wrap text-[11px]">
-                    <span className="text-neutral-500">{language === 'ar' ? 'جرب:' : 'Try:'}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickApplyCode('WELCOME10')}
-                      className="text-[#0A2A5E] hover:underline font-mono font-bold bg-[#FAFAF8] px-1.5 py-0.5 rounded border border-[#E6E2D9]"
-                    >
-                      WELCOME10 (-10%)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickApplyCode('SOFALORA20')}
-                      className="text-[#0A2A5E] hover:underline font-mono font-bold bg-[#FAFAF8] px-1.5 py-0.5 rounded border border-[#E6E2D9]"
-                    >
-                      SOFALORA20 (-20%)
-                    </button>
-                  </div>
-                )}
               </div>
 
               {/* Big High-Contrast Checkout CTA Button */}
@@ -462,36 +439,25 @@ export const CartPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/checkout')}
-                  className="w-full py-3.5 px-4 bg-[#0A2A5E] hover:bg-[#061C3F] active:bg-[#061C3F] text-white rounded-lg font-bold text-sm tracking-wide transition-all shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 bg-[#0B2345] hover:bg-[#071A35] active:bg-[#071A35] text-white rounded-lg font-bold text-sm tracking-wide transition-all shadow-sm flex items-center justify-center gap-2"
                 >
                   <Lock className="w-4 h-4" />
                   <span>{language === 'ar' ? 'إتمام الطلب بأمان' : 'CHECKOUT'}</span>
                 </button>
               </div>
 
-              {/* Tabby & Tamara Banner */}
-              <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200 text-center text-[11px] text-neutral-600">
-                <div className="font-semibold text-neutral-900 mb-0.5">
-                  {language === 'ar'
-                    ? `أو ٤ دفعات بدون فوائد بقيمة ${formatPrice(installmentAmount)} / شهر`
-                    : `Or 4 interest-free payments of ${formatPrice(installmentAmount)}`}
-                </div>
-                <div className="flex items-center justify-center gap-2 mt-1">
-                  <span className="font-mono font-black text-black bg-neutral-200 px-1.5 py-0.5 rounded text-[10px]">tabby</span>
-                  <span className="font-mono font-black text-black bg-amber-200 px-1.5 py-0.5 rounded text-[10px]">tamara</span>
-                  <span className="text-[10px] text-neutral-400">0% fees</span>
-                </div>
-              </div>
 
               {/* Assurances Checklist */}
               <div className="pt-2 border-t border-neutral-100 space-y-1.5 text-[11px] text-neutral-500">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5 text-neutral-700" />
-                  <span>{language === 'ar' ? 'ضمان ذهبي ٥ سنوات ضد عيوب الصناعة' : '5 Year Gold Warranty'}</span>
+                  <span>{language === 'ar' ? 'حرفية مفحوصة بعناية' : 'Quality-checked craftsmanship'}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Lock className="w-3.5 h-3.5 text-neutral-700" />
-                  <span>{language === 'ar' ? 'مدفوعات مشفرة ٢٥٦-بت عبر مدى وفيزا' : '256-Bit SSL Encrypted Checkout'}</span>
+                  <span>{paymentMethods.includes('cod')
+                    ? (language === 'ar' ? 'الدفع عند الاستلام' : 'Cash on Delivery available')
+                    : (language === 'ar' ? 'دفع آمن' : 'Secure checkout')}</span>
                 </div>
               </div>
             </div>

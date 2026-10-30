@@ -2,6 +2,7 @@ import React from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { useSectionCms, pickText, cmsImage } from '../../context/WebsiteContext';
 
 interface QuickCategoryItem {
   id: string;
@@ -26,6 +27,7 @@ interface QuickCategoryItem {
 
 export const QuickCategoryBar: React.FC = () => {
   const { language, t, openConsultation } = useShop();
+  const cms = useSectionCms('quick_category_bar');
 
   const ArrowIcon = language !== 'ar' ? ArrowRight : ArrowLeft;
 
@@ -87,7 +89,7 @@ export const QuickCategoryBar: React.FC = () => {
       image:
         'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=240&auto=format&fit=crop',
       href: '/category/blackout-curtains',
-      badgeKey: 'badge30Off',
+      badgeKey: 'badgePopular',
     },
     {
       id: 'sheer',
@@ -119,7 +121,7 @@ export const QuickCategoryBar: React.FC = () => {
       image:
         'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=240&auto=format&fit=crop',
       href: '/offers',
-      badgeKey: 'badge30Off',
+      badgeKey: 'badgePopular',
     },
   ];
 
@@ -132,11 +134,11 @@ export const QuickCategoryBar: React.FC = () => {
         {/* Heading Row (noon style: title left, VIEW ALL right) */}
         <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
           <h2 className="text-xl sm:text-2xl font-extrabold text-[#101828] tracking-tight">
-            {t('categoriesTitle')}
+            {cms.title(t('categoriesTitle'))}
           </h2>
           <Link
             href="/shop"
-            className="no-underline inline-flex items-center gap-1.5 bg-white border border-[#E5E1D8] rounded-lg px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wide text-[#101828] hover:bg-[#F3F1EB] hover:border-[#C6A15B] transition-colors shadow-sm"
+            className="no-underline inline-flex items-center gap-1.5 bg-white border border-[#E5E1D8] rounded-lg px-3.5 sm:px-4 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wide text-[#101828] hover:bg-[#F3F1EB] hover:border-[#B59460] transition-colors shadow-sm"
           >
             <span>{t('viewAll')}</span>
             <ArrowIcon size={14} strokeWidth={2.5} />
@@ -145,17 +147,25 @@ export const QuickCategoryBar: React.FC = () => {
 
         {/* Big Rounded-Square Category Tiles (noon style) */}
         <div className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-none snap-x">
-          {quickCategories.map((cat) => {
-            const isCustom = cat.isCustomAction;
+          {quickCategories.map((defaults, index) => {
+            // Admin item i (title/image/url) overrides the built-in tile i.
+            const o = cms.item(index);
+            const label = pickText(language, o.title_en, o.title_ar, t(defaults.nameKey));
+            const cat = {
+              ...defaults,
+              image: cmsImage(o.image, defaults.image),
+              href: (o.url ?? '').trim() || defaults.href,
+            };
+            const isCustom = cat.isCustomAction && !(o.url ?? '').trim();
 
             const content = (
               <div className="flex flex-col items-center gap-2.5 text-center group cursor-pointer shrink-0 w-[200px] sm:w-[224px] snap-start">
 
                 {/* Category Image Tile */}
-                <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-[#E5E1D8] group-hover:border-[#0A2A5E]/40 group-hover:shadow-lg transition-all duration-200 bg-[#F3F1EB]">
+                <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-[#E5E1D8] group-hover:border-[#0B2345]/40 group-hover:shadow-lg transition-all duration-200 bg-[#F3F1EB]">
                   <img
                     src={cat.image}
-                    alt={t(cat.nameKey)}
+                    alt={label}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
@@ -167,8 +177,8 @@ export const QuickCategoryBar: React.FC = () => {
                 </div>
 
                 {/* Category Name Label */}
-                <span className="text-sm sm:text-lg font-bold text-[#101828] group-hover:text-[#0A2A5E] transition-colors leading-tight line-clamp-1">
-                  {t(cat.nameKey)}
+                <span className="text-sm sm:text-lg font-bold text-[#101828] group-hover:text-[#0B2345] transition-colors leading-tight line-clamp-1">
+                  {label}
                 </span>
               </div>
             );

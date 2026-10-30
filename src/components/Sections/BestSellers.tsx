@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
-import { PRODUCTS } from '../../data/products';
+import { useSectionCms } from '../../context/WebsiteContext';
+import { useCatalog } from '../../context/CatalogContext';
+import { CatalogEmptyState } from '../UI/CatalogState';
 import { Link } from '../../context/RouterContext';
 import { Star, Heart, ShoppingBag } from 'lucide-react';
 
@@ -13,6 +15,8 @@ export const BestSellers: React.FC = () => {
     toggleWishlist,
     isInWishlist
   } = useShop();
+  const cms = useSectionCms();
+  const { products: PRODUCTS, status: catalogStatus } = useCatalog();
 
   const [activeFilter, setActiveFilter] = useState<'all' | 'curtains' | 'blinds' | 'blackout' | 'wave'>('all');
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
@@ -27,19 +31,19 @@ export const BestSellers: React.FC = () => {
   });
 
   return (
-    <section id="bestsellers" className="py-16 sm:py-24 bg-[#FAFAF8]">
+    <section id="bestsellers" className="py-16 sm:py-24 bg-[#FAF9F6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#071A35] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'تشكيلة النخبة في الرياض' : 'Riyadh Elite Curation'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
-            {t('bestSellersTitle')}
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2345] font-serif-luxury tracking-tight">
+            {cms.title(t('bestSellersTitle'))}
           </h2>
           <p className="text-sm sm:text-base text-[#667085] mt-2">
-            {t('bestSellersSubtitle')}
+            {cms.subtitle(t('bestSellersSubtitle'))}
           </p>
 
           {/* Interactive Filter Pills */}
@@ -48,7 +52,7 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('all')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'all'
-                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  ? 'bg-[#0B2345] text-white shadow-xs'
                   : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
@@ -58,7 +62,7 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('curtains')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'curtains'
-                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  ? 'bg-[#0B2345] text-white shadow-xs'
                   : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
@@ -68,7 +72,7 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('blinds')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'blinds'
-                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  ? 'bg-[#0B2345] text-white shadow-xs'
                   : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
@@ -78,7 +82,7 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('blackout')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'blackout'
-                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  ? 'bg-[#0B2345] text-white shadow-xs'
                   : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
@@ -88,7 +92,7 @@ export const BestSellers: React.FC = () => {
               onClick={() => setActiveFilter('wave')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeFilter === 'wave'
-                  ? 'bg-[#0A2A5E] text-white shadow-xs'
+                  ? 'bg-[#0B2345] text-white shadow-xs'
                   : 'bg-[#EEEAE2] text-[#4B5563] hover:bg-[#E3DED4]'
               }`}
             >
@@ -96,6 +100,8 @@ export const BestSellers: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {catalogStatus === 'ready' && PRODUCTS.length === 0 && <CatalogEmptyState compact />}
 
         {/* 8 Product Cards Grid (Responsive 2 cols on mobile, 3 on tablet, 4 on desktop) */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6">
@@ -135,7 +141,7 @@ export const BestSellers: React.FC = () => {
 
                   {/* Badge */}
                   {product.badge && (
-                    <span className="absolute top-2.5 start-2.5 bg-[#0A2A5E]/90 backdrop-blur-xs text-[#E8D9B6] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                    <span className="absolute top-2.5 start-2.5 bg-[#0B2345]/90 backdrop-blur-xs text-[#E8D9B6] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-xs">
                       {product.badge[language]}
                     </span>
                   )}
@@ -148,8 +154,8 @@ export const BestSellers: React.FC = () => {
                     }}
                     className={`absolute top-2.5 end-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                       isWishlisted
-                        ? 'bg-[#C8102E] text-white shadow-md'
-                        : 'bg-white/90 text-[#344054] hover:bg-white hover:text-[#C8102E] shadow-xs'
+                        ? 'bg-[#B59460] text-white shadow-md'
+                        : 'bg-white/90 text-[#344054] hover:bg-white hover:text-[#B59460] shadow-xs'
                     }`}
                     aria-label="Wishlist"
                   >
@@ -163,7 +169,7 @@ export const BestSellers: React.FC = () => {
                     {/* Category & Rating */}
                     <div className="flex items-center justify-between gap-1 text-[11px] text-[#667085] mb-1">
                       <span className="truncate">{product.category[language]}</span>
-                      <div className="flex items-center gap-0.5 text-[#C8102E] font-bold shrink-0">
+                      <div className="flex items-center gap-0.5 text-[#B59460] font-bold shrink-0">
                         <Star className="w-3 h-3 fill-current" />
                         <span>{product.rating}</span>
                         <span className="text-[#8A847B] font-normal">({product.reviews})</span>
@@ -172,7 +178,7 @@ export const BestSellers: React.FC = () => {
 
                     {/* Product Name */}
                     <Link href={productUrl}>
-                      <h3 className="text-xs sm:text-sm font-bold text-[#101828] hover:text-[#0A2A5E] transition-colors line-clamp-1">
+                      <h3 className="text-xs sm:text-sm font-bold text-[#101828] hover:text-[#0B2345] transition-colors line-clamp-1">
                         {product.name[language]}
                       </h3>
                     </Link>
@@ -198,7 +204,7 @@ export const BestSellers: React.FC = () => {
                   {/* Price & Add to Cart Button */}
                   <div className="mt-3.5 pt-3 border-t border-[#F0EDE6] flex items-center justify-between gap-2">
                     <div>
-                      <div className="text-sm sm:text-base font-extrabold text-[#0A2A5E]">
+                      <div className="text-sm sm:text-base font-extrabold text-[#0B2345]">
                         {formatPrice(product.price)}
                       </div>
                       {product.oldPrice && (
@@ -210,7 +216,7 @@ export const BestSellers: React.FC = () => {
 
                     <button
                       onClick={() => addToCart(product)}
-                      className="inline-flex items-center justify-center gap-1 bg-[#0A2A5E] hover:bg-[#C8102E] hover:text-[#101828] text-white p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0"
+                      className="inline-flex items-center justify-center gap-1 bg-[#0B2345] hover:bg-[#B59460] hover:text-[#101828] text-white p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-bold transition-all shadow-xs shrink-0"
                       title={t('addToCart')}
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />

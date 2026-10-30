@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
-import { INSPIRATION_ITEMS } from '../../data/products';
+import { useSectionCms } from '../../context/WebsiteContext';
+import { INSPIRATION_ITEMS } from '../../data/homeContent';
 import { InspirationItem } from '../../types';
 import { Eye, X, Sparkles, MapPin } from 'lucide-react';
 
 export const InspirationGallery: React.FC = () => {
   const { language, t } = useShop();
+  const cms = useSectionCms();
   const [selectedItem, setSelectedItem] = useState<InspirationItem | null>(null);
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FAFAF8]">
+    <section className="py-16 sm:py-24 bg-[#FAF9F6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#071A35] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'معرض المشاريع الواقعية بالرياض' : 'Riyadh Interior Lookbook'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
-            {t('inspirationTitle')}
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2345] font-serif-luxury tracking-tight">
+            {cms.title(t('inspirationTitle'))}
           </h2>
           <p className="text-sm sm:text-base text-[#667085] mt-2">
-            {t('inspirationSubtitle')}
+            {cms.subtitle(t('inspirationSubtitle'))}
           </p>
         </div>
 
@@ -61,7 +63,7 @@ export const InspirationGallery: React.FC = () => {
                 </p>
 
                 <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-white">
-                  <Eye className="w-3.5 h-3.5 text-[#C8102E]" />
+                  <Eye className="w-3.5 h-3.5 text-[#B59460]" />
                   <span>{t('viewInspiration')}</span>
                 </div>
               </div>
@@ -75,7 +77,7 @@ export const InspirationGallery: React.FC = () => {
       {/* Lightbox / Inspiration Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="relative max-w-3xl w-full bg-[#0A2A5E] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#344054]">
+          <div className="relative max-w-3xl w-full bg-[#0B2345] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#344054]">
             
             <button
               onClick={() => setSelectedItem(null)}
@@ -94,7 +96,7 @@ export const InspirationGallery: React.FC = () => {
             </div>
 
             <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-2 text-xs text-[#C8102E] font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-xs text-[#B59460] font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{selectedItem.room[language]} • {selectedItem.style[language]}</span>
               </div>
@@ -105,7 +107,7 @@ export const InspirationGallery: React.FC = () => {
 
               <div className="pt-2 border-t border-[#344054] flex flex-wrap items-center justify-between gap-4 text-xs text-[#B8B2A8]">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C8102E]" />
+                  <MapPin className="w-4 h-4 text-[#B59460]" />
                   <span>{language === 'ar' ? 'مشروع سكني منجز في مدينة الرياض' : 'Completed Residential Project in Riyadh'}</span>
                 </div>
 

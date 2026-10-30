@@ -1,7 +1,4 @@
 import { Product, BilingualText } from '../types';
-import { SOFA_PRODUCTS } from './catalogSofas';
-import { CURTAIN_PRODUCTS } from './catalogCurtains';
-import { MORE_PRODUCTS } from './catalogMoreProducts';
 
 export interface EditorialSubCategory {
   id: string;
@@ -21,13 +18,9 @@ export interface EditorialSectionData {
   lifestyleBadge?: BilingualText;
   lifestyleLink?: string;
   subcategories: EditorialSubCategory[];
+  /** Legacy static picks; the home page now fills top picks from the commerce API. */
   topPicks: Product[];
 }
-
-const curtainTopPicks = [
-  ...CURTAIN_PRODUCTS.slice(0, 4),
-  ...MORE_PRODUCTS.filter((p) => ['blackout-curtains', 'sheer-curtains', 'custom-curtains'].includes(p.categorySlug)).slice(0, 1)
-];
 
 // ----------------------------------------------------
 // SECTION 01: Sofas & Majlis Seating
@@ -82,13 +75,7 @@ export const WINDOW_DECOR_SECTION: EditorialSectionData = {
       tag: { en: 'Guest Ready', ar: 'جاهزة للضيوف' }
     }
   ],
-  topPicks: [
-    SOFA_PRODUCTS[0],
-    SOFA_PRODUCTS[3],
-    SOFA_PRODUCTS[5],
-    SOFA_PRODUCTS[7],
-    SOFA_PRODUCTS[2]
-  ]
+  topPicks: []
 };
 
 // ----------------------------------------------------
@@ -144,7 +131,7 @@ export const LIVING_ROOM_SECTION: EditorialSectionData = {
       tag: { en: 'Hang Today', ar: 'علّقها اليوم' }
     }
   ],
-  topPicks: curtainTopPicks
+  topPicks: []
 };
 
 // ----------------------------------------------------
@@ -200,13 +187,7 @@ export const BEDROOM_SECTION: EditorialSectionData = {
       tag: { en: 'Finishing Touch', ar: 'اللمسة الأخيرة' }
     }
   ],
-  topPicks: [
-    SOFA_PRODUCTS[1],
-    curtainTopPicks[1],
-    SOFA_PRODUCTS[6],
-    curtainTopPicks[0],
-    SOFA_PRODUCTS[8]
-  ]
+  topPicks: []
 };
 
 // ----------------------------------------------------
@@ -262,13 +243,7 @@ export const MODERN_BLINDS_SECTION: EditorialSectionData = {
       tag: { en: '120+ Weaves', ar: 'أكثر من ١٢٠ نسيج' }
     }
   ],
-  topPicks: [
-    SOFA_PRODUCTS[11],
-    SOFA_PRODUCTS[4],
-    curtainTopPicks[3],
-    SOFA_PRODUCTS[9],
-    curtainTopPicks[2]
-  ]
+  topPicks: []
 };
 
 // ----------------------------------------------------
@@ -297,21 +272,21 @@ export const CURATED_COLLECTION = {
       id: 'natural-1',
       title: { en: 'Ivory Bouclé & Linen Sheer', ar: 'بوكليه عاجي وشيفون كتاني' },
       tag: { en: 'Soft Neutrals', ar: 'درجات ناعمة' },
-      price: 'From SAR 3,890',
+      price: 'From ⃁ 3,890',
       image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=700&auto=format&fit=crop'
     },
     {
       id: 'natural-2',
       title: { en: 'Emerald Velvet & Bronze Track', ar: 'مخمل زمردي وسكة برونزية' },
       tag: { en: 'Majlis Heritage', ar: 'تراث المجالس' },
-      price: 'From SAR 5,450',
+      price: 'From ⃁ 5,450',
       image: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?q=80&w=700&auto=format&fit=crop'
     },
     {
       id: 'natural-3',
       title: { en: 'Camel Leather & Blackout Drape', ar: 'جلد جملي وستارة معتمة' },
       tag: { en: 'Warm Contrast', ar: 'تباين دافئ' },
-      price: 'From SAR 9,450',
+      price: 'From ⃁ 9,450',
       image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=80&w=700&auto=format&fit=crop'
     }
   ]
@@ -330,8 +305,8 @@ export const PROMOTIONAL_BANNER = {
     ar: 'زيّن منزلك مع سوفالورا'
   },
   subtitle: {
-    en: 'Save up to 20% when you pair a sofa with made-to-measure curtains. Complimentary in-home measurement and styling across Riyadh.',
-    ar: 'وفّر حتى ٢٠٪ عند تنسيق كنبة مع ستائر مفصلة على المقاس. قياس وتنسيق منزلي مجاني في الرياض.'
+    en: 'Pair a sofa with made-to-measure curtains for a coordinated room. Our team can help you match fabrics and colours across Riyadh.',
+    ar: 'نسّق كنبة مع ستائر مفصلة على المقاس لغرفة متناغمة. فريقنا يساعدك في اختيار الأقمشة والألوان في الرياض.'
   },
   cta: {
     en: 'Shop New Arrivals',

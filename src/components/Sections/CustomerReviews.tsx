@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
-import { TESTIMONIALS } from '../../data/products';
+import { useSectionCms } from '../../context/WebsiteContext';
+import { TESTIMONIALS } from '../../data/homeContent';
 import { Star, ChevronRight, ChevronLeft, Quote, BadgeCheck } from 'lucide-react';
 
 export const CustomerReviews: React.FC = () => {
   const { language, direction, t } = useShop();
+  const cms = useSectionCms();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -20,19 +22,19 @@ export const CustomerReviews: React.FC = () => {
   const PrevIcon = direction === 'rtl' ? ChevronRight : ChevronLeft;
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FAFAF8] relative overflow-hidden">
+    <section className="py-16 sm:py-24 bg-[#FAF9F6] relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
-          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#071A35] uppercase tracking-widest block mb-2">
             {language === 'ar' ? 'ثقة عملاؤنا في الرياض' : 'Riyadh Client Endorsements'}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
-            {t('reviewsTitle')}
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2345] font-serif-luxury tracking-tight">
+            {cms.title(t('reviewsTitle'))}
           </h2>
           <p className="text-sm sm:text-base text-[#667085] mt-2">
-            {t('reviewsSubtitle')}
+            {cms.subtitle(t('reviewsSubtitle'))}
           </p>
         </div>
 
@@ -49,15 +51,15 @@ export const CustomerReviews: React.FC = () => {
                 <img
                   src={currentTestimonial.avatar}
                   alt={currentTestimonial.name[language]}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-[#FAFAF8] shadow-md"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-[#FAF9F6] shadow-md"
                 />
-                <span className="absolute bottom-0 end-0 bg-[#C8102E] text-white p-1 rounded-full shadow-xs">
+                <span className="absolute bottom-0 end-0 bg-[#B59460] text-white p-1 rounded-full shadow-xs">
                   <BadgeCheck className="w-4 h-4" />
                 </span>
               </div>
 
               {/* Stars */}
-              <div className="flex items-center gap-1 text-[#C8102E] mt-3">
+              <div className="flex items-center gap-1 text-[#B59460] mt-3">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
@@ -81,7 +83,7 @@ export const CustomerReviews: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 text-xs text-[#0A2A5E] font-semibold bg-[#FAFAF8] px-3 py-1.5 rounded-full border border-[#E5E1D8] self-center sm:self-auto">
+                <div className="inline-flex items-center gap-1.5 text-xs text-[#0B2345] font-semibold bg-[#FAF9F6] px-3 py-1.5 rounded-full border border-[#E5E1D8] self-center sm:self-auto">
                   <span>{t('installedIn')}:</span>
                   <span className="font-bold">{currentTestimonial.curtainInstalled[language]}</span>
                 </div>
@@ -99,7 +101,7 @@ export const CustomerReviews: React.FC = () => {
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
                   className={`h-2 rounded-full transition-all ${
-                    currentIndex === idx ? 'w-8 bg-[#C8102E]' : 'w-2 bg-[#CFC8BA]'
+                    currentIndex === idx ? 'w-8 bg-[#B59460]' : 'w-2 bg-[#CFC8BA]'
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -109,14 +111,14 @@ export const CustomerReviews: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrev}
-                className="w-10 h-10 rounded-full border border-[#CFC8BA] hover:border-[#C8102E] hover:bg-[#FAFAF8] flex items-center justify-center text-[#101828] transition-all"
+                className="w-10 h-10 rounded-full border border-[#CFC8BA] hover:border-[#B59460] hover:bg-[#FAF9F6] flex items-center justify-center text-[#101828] transition-all"
                 aria-label="Previous Review"
               >
                 <PrevIcon className="w-5 h-5" />
               </button>
               <button
                 onClick={handleNext}
-                className="w-10 h-10 rounded-full border border-[#CFC8BA] hover:border-[#C8102E] hover:bg-[#FAFAF8] flex items-center justify-center text-[#101828] transition-all"
+                className="w-10 h-10 rounded-full border border-[#CFC8BA] hover:border-[#B59460] hover:bg-[#FAF9F6] flex items-center justify-center text-[#101828] transition-all"
                 aria-label="Next Review"
               >
                 <NextIcon className="w-5 h-5" />

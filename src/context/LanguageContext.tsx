@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import {
   Language,
   Direction,
@@ -7,11 +7,24 @@ import {
   Order,
   CreateOrderInput,
   DeliveryMethodId,
+  DeliveryMethodOption,
   PromoCode
 } from '../types';
 import { translations } from '../data/translations';
-import { DEMO_ORDERS } from '../data/demoOrders';
-import { PROMO_CODES, VALID_DELIVERY_METHODS } from '../data/promoCodes';
+import {
+  CommerceApiError,
+  fetchCheckoutSettings,
+  isCommerceApiConfigured,
+  placeOrder,
+  trackOrder,
+  validateCoupon,
+  type CheckoutSettings
+} from '../lib/api';
+import { apiOrderToOrder, deliveryClaimText, includedVat, shippingFor, standardDelivery, SAUDI_VAT_RATE } from '../lib/orders';
+import { getCustomerToken } from '../lib/customerAuth';
+import type { ApiOrder } from '../lib/api';
+
+type PromoResult = { success: boolean; message: string; type: 'success' | 'warning' | 'error' };
 
 export interface ToastInfo {
   id: string;
@@ -51,10 +64,20 @@ export interface ShopContextType {
   // Promo Code
   appliedPromo: PromoCode | null;
   promoDiscount: number;
-  applyPromoCode: (code: string) => { success: boolean; message: string; type: 'success' | 'warning' | 'error' };
+  /** Validates against POST /storefront/coupon/validate. */
+  applyPromoCode: (code: string) => Promise<PromoResult>;
   removePromoCode: () => void;
 
-  // Delivery & VAT
+  // Checkout settings (GET /storefront/checkout-settings)
+  checkoutSettings: CheckoutSettings | null;
+  checkoutSettingsStatus: 'loading' | 'ready' | 'error';
+  /** Payment method ids the API accepts (e.g. ['cod']). */
+  paymentMethods: string[];
+  deliveryMethods: DeliveryMethodOption[];
+  /** 0 = no free-shipping threshold. */
+  freeShippingThreshold: number;
+
+  // Delivery & VAT (prices are VAT-inclusive; vatAmount is the included share)
   selectedDeliveryMethod: DeliveryMethodId;
   setSelectedDeliveryMethod: (method: DeliveryMethodId) => void;
   shippingFee: number;
@@ -79,8 +102,19 @@ export interface ShopContextType {
 
   // Orders
   orders: Order[];
-  createOrder: (orderInput: CreateOrderInput) => Order;
+  /** Places the order via POST /storefront/checkout (guest, Idempotency-Key). */
+  createOrder: (orderInput: CreateOrderInput) => Promise<Order>;
   getOrderById: (orderId: string) => Order | undefined;
+  /** POST /storefront/orders/track; saves/updates the order in this browser. Null if not found. */
+  trackOrderByNumber: (orderNumber: string, phone: string) => Promise<Order | null>;
+  /** Refresh every saved order's status from the API. */
+  refreshOrders: () => Promise<void>;
+  /** Save orders loaded from the signed-in customer's account (GET /customer/orders). */
+  mergeAccountOrders: (apiOrders: ApiOrder[]) => void;
+  /** Remove account orders from this browser (on sign-out). */
+  forgetAccountOrders: () => void;
+  /** Honest delivery line from checkout settings (null when delivery is not free). */
+  deliveryClaim: string | null;
 
   // Consultation Modal
   isConsultationOpen: boolean;
@@ -150,9 +184,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Price formatting
   const formatPrice = (amount: number): string => {
     if (language === 'ar') {
-      return `${amount} ر.س`;
+      return `${amount} ⃁`;
     }
-    return `SAR ${amount}`;
+    return `⃁ ${amount}`;
   };
 
   // Cart State
@@ -184,7 +218,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // ignore
     }
-    return ['prod-1', 'prod-3']; // initial demo favorites
+    return [];
   });
 
   useEffect(() => {
@@ -315,80 +349,138 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [appliedPromo]);
 
-  // Delivery Method Selection
-  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<DeliveryMethodId>('standard');
+  // Checkout settings from the commerce API (shipping + accepted payment methods)
+  const [checkoutSettings, setCheckoutSettings] = useState<CheckoutSettings | null>(null);
+  const [checkoutSettingsStatus, setCheckoutSettingsStatus] = useState<'loading' | 'ready' | 'error'>(
+    isCommerceApiConfigured ? 'loading' : 'error'
+  );
 
-  // Calculations
+  useEffect(() => {
+    if (!isCommerceApiConfigured) return;
+    const ctrl = new AbortController();
+    fetchCheckoutSettings(ctrl.signal)
+      .then((data) => {
+        setCheckoutSettings(data);
+        setCheckoutSettingsStatus('ready');
+      })
+      .catch((err) => {
+        if ((err as Error)?.name === 'AbortError') return;
+        console.warn('[checkout] settings unavailable:', err);
+        setCheckoutSettingsStatus('error');
+      });
+    return () => ctrl.abort();
+  }, []);
+
+  const deliveryMethods: DeliveryMethodOption[] = [standardDelivery(checkoutSettings)];
+  const paymentMethods = checkoutSettings?.payment_methods ?? [];
+  const freeShippingThreshold = checkoutSettings?.free_shipping_threshold ?? 0;
+
+  // Only standard delivery exists on the API; keep the setter for compatibility.
+  const [selectedDeliveryMethod, setSelectedDeliveryMethodState] = useState<DeliveryMethodId>('standard');
+  const setSelectedDeliveryMethod = (method: DeliveryMethodId) =>
+    setSelectedDeliveryMethodState(deliveryMethods.some((m) => m.id === method) ? method : 'standard');
+
+  // Calculations (mirror the admin CheckoutService; the server total is authoritative)
+  const round2 = (n: number) => Math.round(n * 100) / 100;
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotal = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+  const cartSubtotal = round2(cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0));
 
-  const promoDiscount = appliedPromo
-    ? Math.round((cartSubtotal * appliedPromo.discountPercent) / 100)
-    : 0;
-
-  const subtotalAfterDiscount = Math.max(0, cartSubtotal - promoDiscount);
-
-  // Saudi shipping calculation
-  const shippingFee = (() => {
-    if (cart.length === 0) return 0;
-    if (selectedDeliveryMethod === 'pickup') return 0;
-    if (selectedDeliveryMethod === 'express') return 45;
-    // Standard: Free if subtotal >= 500 SAR, otherwise 25 SAR
-    return subtotalAfterDiscount >= 500 ? 0 : 25;
+  const promoDiscount = (() => {
+    if (!appliedPromo || cartSubtotal <= 0) return 0;
+    if (appliedPromo.validatedSubtotal === cartSubtotal && appliedPromo.discountAmount != null) {
+      return Math.min(cartSubtotal, appliedPromo.discountAmount);
+    }
+    const raw =
+      appliedPromo.discountType === 'fixed'
+        ? appliedPromo.discountValue ?? 0
+        : (cartSubtotal * (appliedPromo.discountValue ?? appliedPromo.discountPercent)) / 100;
+    return Math.max(0, Math.min(cartSubtotal, round2(raw)));
   })();
 
-  const vatRate = 0.15;
-  const vatAmount = Math.round((subtotalAfterDiscount + shippingFee) * vatRate * 100) / 100;
-  const grandTotal = Math.round((subtotalAfterDiscount + shippingFee + vatAmount) * 100) / 100;
+  const subtotalAfterDiscount = Math.max(0, round2(cartSubtotal - promoDiscount));
+  const shippingFee = shippingFor(checkoutSettings, subtotalAfterDiscount, cart.length > 0);
 
-  const applyPromoCode = (inputCode: string) => {
+  // Prices are VAT-inclusive (the API adds no tax); show the included 15% share.
+  const vatRate = SAUDI_VAT_RATE;
+  const grandTotal = round2(subtotalAfterDiscount + shippingFee);
+  const vatAmount = includedVat(grandTotal);
+
+  const promoFromValidation = (data: { code: string; discount_amount: number; discount_type: string; discount_value: number }, subtotal: number): PromoCode => {
+    const type = data.discount_type === 'fixed' ? 'fixed' : 'percentage';
+    const value = Number(data.discount_value) || 0;
+    return {
+      code: data.code,
+      discountPercent: type === 'percentage' ? value : 0,
+      discountType: type,
+      discountValue: value,
+      discountAmount: Number(data.discount_amount) || 0,
+      validatedSubtotal: subtotal,
+      description: type === 'percentage' ? { en: `${value}% off`, ar: `خصم ${value}٪` } : { en: `⃁ ${value} off`, ar: `خصم ${value} ⃁` }
+    };
+  };
+
+  const applyPromoCode = async (inputCode: string): Promise<PromoResult> => {
     const clean = inputCode.trim().toUpperCase();
     if (!clean) {
       return {
         success: false,
         message: language === 'ar' ? 'يرجى إدخال رمز الكوبون' : 'Please enter a promo code.',
-        type: 'warning' as const
+        type: 'warning'
       };
     }
-
-    const found = PROMO_CODES.find((p) => p.code.toUpperCase() === clean);
-    if (!found) {
+    if (cartSubtotal <= 0) {
       return {
         success: false,
-        message: language === 'ar' ? 'رمز القسيمة غير صالح' : 'Invalid promotional code.',
-        type: 'error' as const
+        message: language === 'ar' ? 'سلة التسوق فارغة' : 'Your bag is empty.',
+        type: 'warning'
       };
     }
-
-    if (found.isExpired) {
+    try {
+      const data = await validateCoupon(clean, cartSubtotal);
+      const promo = promoFromValidation(data, cartSubtotal);
+      setAppliedPromo(promo);
       return {
-        success: false,
-        message: language === 'ar' ? 'عذراً، هذا الكوبون منتهي الصلاحية' : 'This promo code has expired.',
-        type: 'warning' as const
-      };
-    }
-
-    if (found.minOrder && cartSubtotal < found.minOrder) {
-      return {
-        success: false,
+        success: true,
         message:
           language === 'ar'
-            ? `يتطلب هذا الكوبون طلباً بقيمة ${found.minOrder} ر.س كحد أدنى`
-            : `This coupon requires a minimum order of SAR ${found.minOrder}.`,
-        type: 'warning' as const
+            ? `تم تطبيق الكوبون ${promo.code}: ${promo.description.ar}`
+            : `Coupon ${promo.code} applied: ${promo.description.en}`,
+        type: 'success'
       };
+    } catch (err) {
+      const message =
+        err instanceof CommerceApiError && err.status !== 0 && err.status < 500
+          ? err.message
+          : language === 'ar'
+            ? 'تعذر التحقق من الكوبون الآن. حاول مرة أخرى.'
+            : 'Could not check the coupon right now. Please try again.';
+      return { success: false, message, type: 'error' };
     }
-
-    setAppliedPromo(found);
-    return {
-      success: true,
-      message:
-        language === 'ar'
-          ? `تم تطبيق الكوبون! خصم ${found.discountPercent}٪ (${found.description.ar})`
-          : `Coupon applied! ${found.discountPercent}% discount (${found.description.en})`,
-      type: 'success' as const
-    };
   };
+
+  // Re-validate an applied coupon when the bag total changes (minimums, caps).
+  useEffect(() => {
+    if (!appliedPromo || cartSubtotal <= 0 || appliedPromo.validatedSubtotal === cartSubtotal) return;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      validateCoupon(appliedPromo.code, cartSubtotal)
+        .then((data) => {
+          if (!cancelled) setAppliedPromo(promoFromValidation(data, cartSubtotal));
+        })
+        .catch((err) => {
+          if (cancelled) return;
+          if (err instanceof CommerceApiError && err.status === 422) {
+            setAppliedPromo(null);
+            showToast(err.message, 'warning');
+          }
+        });
+    }, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartSubtotal, appliedPromo?.code, appliedPromo?.validatedSubtotal]);
 
   const removePromoCode = () => {
     setAppliedPromo(null);
@@ -422,7 +514,7 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // ignore
     }
-    return ['curtain-1', 'curtain-2', 'curtain-3'];
+    return [];
   });
 
   const addRecentlyViewed = (productId: string) => {
@@ -437,18 +529,19 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  // Orders State
+  // Orders placed or tracked in this browser (order number + phone; details from the API)
   const [orders, setOrders] = useState<Order[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_ORDERS);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        // Drop legacy local/demo orders; only API orders are real.
+        if (Array.isArray(parsed)) return parsed.filter((o: Order) => o && o.source === 'api');
       }
     } catch {
       // ignore
     }
-    return DEMO_ORDERS;
+    return [];
   });
 
   useEffect(() => {
@@ -459,55 +552,110 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [orders]);
 
-  const createOrder = (orderInput: CreateOrderInput): Order => {
-    const now = new Date();
-    const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const newId = `SL-${dateStr}-${randomSuffix}`;
-    const estDate = new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString();
+  const ordersRef = useRef(orders);
+  ordersRef.current = orders;
 
-    const orderDeliveryMethod = typeof orderInput.deliveryMethod === 'object'
-      ? orderInput.deliveryMethod
-      : (VALID_DELIVERY_METHODS.find(
-          (m) => m.id === (orderInput.deliveryMethod || selectedDeliveryMethod)
-        ) || VALID_DELIVERY_METHODS[0]);
+  const upsertOrder = (order: Order) =>
+    setOrders((prev) => [order, ...prev.filter((o) => o.id.toLowerCase() !== order.id.toLowerCase())]
+      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)));
 
-    const orderSubtotal = orderInput.subtotal ?? cartSubtotal;
-    const orderDiscount = orderInput.discount ?? orderInput.promoDiscount ?? promoDiscount;
-    const orderShippingFee = orderInput.shippingFee ?? shippingFee;
-    const orderVat = orderInput.vatAmount ?? vatAmount;
-    const orderTotal = orderInput.total ?? orderInput.grandTotal ?? grandTotal;
+  const createOrder = async (orderInput: CreateOrderInput): Promise<Order> => {
+    const items = orderInput.items || [...cart];
+    if (items.length === 0) throw new Error(language === 'ar' ? 'سلة التسوق فارغة' : 'Your bag is empty.');
+    const deliveryMethod = deliveryMethods.find((m) => m.id === orderInput.deliveryMethod) ?? deliveryMethods[0];
+    const { customer, deliveryAddress } = orderInput;
+    const idempotencyKey = orderInput.idempotencyKey ||
+      (typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? crypto.randomUUID()
+        : `sofalora-${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
-    const newOrder: Order = {
-      id: newId,
-      createdAt: now.toISOString(),
-      estimatedDeliveryDate: estDate,
-      status: 'order_placed',
-      customer: orderInput.customer,
-      deliveryAddress: orderInput.deliveryAddress,
-      deliveryMethod: orderDeliveryMethod,
-      paymentMethod: orderInput.paymentMethod,
-      items: orderInput.items || [...cart],
-      subtotal: orderSubtotal,
-      discount: orderDiscount,
-      promoDiscount: orderDiscount,
-      promoCode: orderInput.promoCode || appliedPromo?.code,
-      appliedPromo: orderInput.appliedPromo || appliedPromo || undefined,
-      shippingFee: orderShippingFee,
-      vatAmount: orderVat,
-      total: orderTotal,
-      grandTotal: orderTotal,
+    const api = await placeOrder(
+      {
+        customer_name: `${customer.firstName} ${customer.lastName}`.trim(),
+        customer_phone: customer.phone,
+        customer_email: customer.email || undefined,
+        shipping_address: {
+          name: `${customer.firstName} ${customer.lastName}`.trim(),
+          phone: customer.phone,
+          building: deliveryAddress.building,
+          street: deliveryAddress.street,
+          district: deliveryAddress.district,
+          city: deliveryAddress.city,
+          ...(deliveryAddress.postalCode ? { postal_code: deliveryAddress.postalCode } : {}),
+          ...(deliveryAddress.additionalInstructions ? { notes: deliveryAddress.additionalInstructions } : {}),
+          country: 'SA'
+        },
+        payment_method: orderInput.paymentMethod,
+        coupon_code: orderInput.promoCode ?? appliedPromo?.code ?? undefined,
+        notes: orderInput.notes || undefined,
+        items: items.map((item) => ({
+          product_id: Number(item.productId),
+          quantity: item.quantity,
+          ...(item.selectedSize && item.selectedSize.id !== 'default'
+            ? { selected_size: item.customDimensions ? item.selectedSize.dimensions : item.selectedSize.label.en }
+            : {})
+        }))
+      },
+      idempotencyKey,
+      getCustomerToken()
+    );
+
+    const order = apiOrderToOrder(api, undefined, {
+      items,
+      customer,
+      deliveryAddress,
+      deliveryMethod,
       notes: orderInput.notes
-    };
-
-    setOrders((prev) => [newOrder, ...prev]);
+    });
+    if (getCustomerToken()) order.accountOrder = true;
+    upsertOrder(order);
     clearCart();
-    return newOrder;
+    return order;
   };
+
+  const mergeAccountOrders = useCallback((apiOrders: ApiOrder[]) => {
+    if (!apiOrders.length) return;
+    setOrders((prev) => {
+      const byId = new Map(prev.map((o) => [o.id.toLowerCase(), o] as const));
+      apiOrders.forEach((api) => {
+        const key = api.order_number.toLowerCase();
+        const order = apiOrderToOrder(api, byId.get(key));
+        order.accountOrder = true;
+        byId.set(key, order);
+      });
+      return [...byId.values()].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    });
+  }, []);
+
+  const forgetAccountOrders = useCallback(() => {
+    setOrders((prev) => prev.filter((o) => !o.accountOrder));
+  }, []);
+
+  const deliveryClaim = deliveryClaimText(checkoutSettings, language, formatPrice);
 
   const getOrderById = (orderId: string): Order | undefined => {
     return orders.find((o) => o.id.toLowerCase() === orderId.toLowerCase());
   };
+
+  const trackOrderByNumber = useCallback(async (orderNumber: string, phone: string): Promise<Order | null> => {
+    const api = await trackOrder(orderNumber.trim(), phone.trim());
+    if (!api) return null;
+    const previous = ordersRef.current.find((o) => o.id.toLowerCase() === api.order_number.toLowerCase());
+    const order = apiOrderToOrder(api, previous);
+    // Tracking does not echo the phone; keep the one the customer entered.
+    if (!order.customer.phone) order.customer = { ...order.customer, phone: phone.trim() };
+    upsertOrder(order);
+    return order;
+  }, []);
+
+  const refreshOrders = useCallback(async () => {
+    const list = ordersRef.current;
+    await Promise.all(
+      list
+        .filter((o) => o.customer?.phone)
+        .map((o) => trackOrderByNumber(o.orderNumber || o.id, o.customer.phone).catch(() => null))
+    );
+  }, [trackOrderByNumber]);
 
   const openConsultation = () => setIsConsultationOpen(true);
   const closeConsultation = () => setIsConsultationOpen(false);
@@ -538,6 +686,11 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         promoDiscount,
         applyPromoCode,
         removePromoCode,
+        checkoutSettings,
+        checkoutSettingsStatus,
+        paymentMethods,
+        deliveryMethods,
+        freeShippingThreshold,
         selectedDeliveryMethod,
         setSelectedDeliveryMethod,
         shippingFee,
@@ -558,6 +711,11 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
         orders,
         createOrder,
         getOrderById,
+        trackOrderByNumber,
+        refreshOrders,
+        mergeAccountOrders,
+        forgetAccountOrders,
+        deliveryClaim,
         isConsultationOpen,
         openConsultation,
         closeConsultation,

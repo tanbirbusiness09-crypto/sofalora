@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter, Link } from '../context/RouterContext';
-import { PRODUCTS } from '../data/products';
+import { useCatalog } from '../context/CatalogContext';
 import {
   Heart,
   ShoppingBag,
@@ -24,6 +24,7 @@ export const WishlistPage: React.FC = () => {
     formatPrice,
     t
   } = useShop();
+  const { products: PRODUCTS } = useCatalog();
   const { navigate } = useRouter();
 
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
@@ -32,7 +33,7 @@ export const WishlistPage: React.FC = () => {
     return wishlist
       .map((id) => PRODUCTS.find((p) => p.id === id))
       .filter(Boolean);
-  }, [wishlist]);
+  }, [PRODUCTS, wishlist]);
 
   const [copiedShare, setCopiedShare] = React.useState(false);
   const [addedAll, setAddedAll] = React.useState(false);
@@ -65,7 +66,7 @@ export const WishlistPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <span className="text-xs uppercase tracking-widest text-[#0A2A5E] font-semibold">
+            <span className="text-xs uppercase tracking-widest text-[#0B2345] font-semibold">
               {language === 'ar' ? 'المجموعات المحفوظة' : 'Curated Favorites'}
             </span>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#101828] flex items-center gap-3 mt-1">
@@ -83,7 +84,7 @@ export const WishlistPage: React.FC = () => {
                 onClick={handleShareWishlist}
                 className="inline-flex items-center gap-1.5 bg-white text-[#101828] hover:bg-[#FDFCFA] px-3.5 py-2 rounded-xl text-xs font-bold border border-[#CFC8BA] transition-all"
               >
-                <Share2 className="w-3.5 h-3.5 text-[#0A2A5E]" />
+                <Share2 className="w-3.5 h-3.5 text-[#0B2345]" />
                 <span>
                   {copiedShare
                     ? language === 'ar'
@@ -102,7 +103,7 @@ export const WishlistPage: React.FC = () => {
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
                   addedAll
                     ? 'bg-emerald-700 text-white'
-                    : 'bg-[#0A2A5E] hover:bg-[#061C3F] text-white'
+                    : 'bg-[#0B2345] hover:bg-[#071A35] text-white'
                 }`}
               >
                 {addedAll ? (
@@ -112,7 +113,7 @@ export const WishlistPage: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-3.5 h-3.5 text-[#E3C98F]" />
+                    <ShoppingBag className="w-3.5 h-3.5 text-[#D9C29A]" />
                     <span>{language === 'ar' ? 'إضافة الكل إلى السلة' : 'Add All to Bag'}</span>
                   </>
                 )}
@@ -124,7 +125,7 @@ export const WishlistPage: React.FC = () => {
         {/* Empty State */}
         {wishlistedProducts.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center border border-[#E8DEC\-D] max-w-lg mx-auto shadow-xs">
-            <div className="w-16 h-16 rounded-full bg-[#FDFCFA] text-[#0A2A5E] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#FDFCFA] text-[#0B2345] flex items-center justify-center mx-auto mb-4">
               <Heart className="w-8 h-8" />
             </div>
             <h2 className="text-xl font-bold font-serif text-[#101828] mb-2">
@@ -137,7 +138,7 @@ export const WishlistPage: React.FC = () => {
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-6 py-3 rounded-full text-xs font-bold transition-all shadow-sm"
+              className="inline-flex items-center gap-2 bg-[#0B2345] hover:bg-[#071A35] text-white px-6 py-3 rounded-full text-xs font-bold transition-all shadow-sm"
             >
               <span>{language === 'ar' ? 'استكشف الكنب والستائر' : 'Explore Sofas & Curtains'}</span>
               <ArrowIcon className="w-4 h-4" />

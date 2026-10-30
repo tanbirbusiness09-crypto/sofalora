@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter, Link } from '../context/RouterContext';
-import { PRODUCTS } from '../data/products';
+import { useCatalog, useCatalogProduct } from '../context/CatalogContext';
+import { CatalogErrorState } from '../components/UI/CatalogState';
 import { Product } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { ProductCard } from '../components/PLP/ProductCard';
@@ -23,7 +24,6 @@ import {
   Zap,
   Sliders,
   Info,
-  ChevronDown,
   ChevronUp,
   ChevronRight,
   ChevronLeft,
@@ -38,6 +38,27 @@ import {
   MessageCircle
 } from 'lucide-react';
 
+// Placeholder used only while the product is loading / not found, so hooks run unconditionally.
+const PLACEHOLDER_PRODUCT: Product = {
+  id: '',
+  slug: '',
+  name: { en: '', ar: '' },
+  category: { en: '', ar: '' },
+  categorySlug: '',
+  description: { en: '', ar: '' },
+  price: 0,
+  rating: 0,
+  reviews: 0,
+  image: '',
+  secondaryImage: '',
+  fabric: { en: '', ar: '' },
+  colors: [],
+  sizes: [],
+  room: { en: '', ar: '' },
+  features: [],
+  inStock: false
+};
+
 interface ProductDetailPageProps {
   productId?: string;
 }
@@ -51,20 +72,18 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
     toggleWishlist,
     formatPrice,
     recentlyViewed,
-    addRecentlyViewed
+    addRecentlyViewed,
+    deliveryClaim,
+    checkoutSettings
   } = useShop();
   const { route, navigate } = useRouter();
 
   const idOrSlug = propId || route.params.id;
 
-  // Find product by id or slug
-  const product: Product = useMemo(() => {
-    if (!idOrSlug) return PRODUCTS[0];
-    return (
-      PRODUCTS.find((p) => p.id === idOrSlug || p.slug === idOrSlug) ||
-      PRODUCTS[0]
-    );
-  }, [idOrSlug]);
+  // Find product by id or slug (catalog from the commerce API, or fetched by slug)
+  const { products: PRODUCTS } = useCatalog();
+  const { product: resolvedProduct, status: productStatus } = useCatalogProduct(idOrSlug);
+  const product: Product = resolvedProduct ?? PLACEHOLDER_PRODUCT;
 
   const [activeImage, setActiveImage] = useState<string>(product.image);
   const [selectedColorIdx, setSelectedColorIdx] = useState<number>(0);
@@ -74,8 +93,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
   // Accordion toggles matching Noon design
-  const [isBestPriceOpen, setIsBestPriceOpen] = useState<boolean>(false);
-  const [isDeliveryOptionsOpen, setIsDeliveryOptionsOpen] = useState<boolean>(false);
 
   // Custom sizing mode
   const [isCustomMode, setIsCustomMode] = useState<boolean>(false);
@@ -126,7 +143,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
     setQuantity(1);
     setIsAdded(false);
     setIsCustomMode(false);
-    addRecentlyViewed(product.id);
+    if (product.id) addRecentlyViewed(product.id);
   }, [product.id]);
 
   const isWishlisted = wishlist.includes(product.id);
@@ -138,12 +155,17 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
   const customEstimatedTotal = Math.round(customArea * pricePerSqm);
 
   const currentPrice = isCustomMode ? customEstimatedTotal : product.price + sizeModifier;
-  const originalPrice = product.oldPrice || product.comparePrice || Math.round(currentPrice * 1.25);
+  // Only show a was-price / % off when the product really has a sale price in the admin.
+  const originalPrice = Math.max(product.oldPrice || product.comparePrice || 0, currentPrice);
   const discountPercent = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 
   // Multi-image gallery for Noon vertical gallery
   const images = useMemo(() => {
-    const list = [product.image, product.secondaryImage].filter(Boolean) as string[];
+    const list = (
+      product.images && product.images.length > 0
+        ? [...product.images]
+        : [product.image, product.secondaryImage]
+    ).filter(Boolean) as string[];
     // Generate extra angles/thumbnails if only 1 or 2 images exist
     if (list.length === 1) {
       list.push(product.image);
@@ -156,7 +178,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
     return PRODUCTS.filter(
       (p) => p.id !== product.id && p.categorySlug === product.categorySlug
     ).slice(0, 4);
-  }, [product]);
+  }, [PRODUCTS, product]);
 
   const handleAddToCart = () => {
     const selectedColor = product.colors?.[selectedColorIdx];
@@ -210,16 +232,39 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
     }
   };
 
-  const installmentAmount = Math.round((currentPrice / 4) * 100) / 100;
   const ChevronIcon = direction === 'rtl' ? ChevronLeft : ChevronRight;
 
-  const isProductNotFound = Boolean(idOrSlug && !PRODUCTS.some((p) => p.id === idOrSlug || p.slug === idOrSlug));
+  if (productStatus === 'loading') {
+    return (
+      <div className="bg-[#F7F7F5] min-h-[70vh] py-10 px-4">
+        <div className="max-w-7xl mx-auto bg-white rounded-xl border border-neutral-200 p-6 grid grid-cols-1 md:grid-cols-2 gap-8 animate-pulse">
+          <div className="aspect-square bg-[#EBE7DE] rounded-lg" />
+          <div className="space-y-4">
+            <div className="h-4 bg-[#EBE7DE] rounded w-1/4" />
+            <div className="h-7 bg-[#EBE7DE] rounded w-3/4" />
+            <div className="h-5 bg-[#EBE7DE] rounded w-1/3" />
+            <div className="h-24 bg-[#EBE7DE] rounded w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (productStatus === 'error') {
+    return (
+      <div className="bg-[#FAF9F6] min-h-[70vh] flex items-center justify-center py-16 px-4">
+        <CatalogErrorState />
+      </div>
+    );
+  }
+
+  const isProductNotFound = productStatus === 'not-found' || !resolvedProduct;
 
   if (isProductNotFound) {
     return (
-      <div className="bg-[#FAFAF8] min-h-[70vh] flex items-center justify-center py-16 px-4">
+      <div className="bg-[#FAF9F6] min-h-[70vh] flex items-center justify-center py-16 px-4">
         <div className="max-w-lg w-full bg-white rounded-3xl border border-[#E5E1D8] p-8 sm:p-10 shadow-sm text-center">
-          <div className="w-16 h-16 rounded-full bg-[#FAF8F3] text-[#0A2A5E] flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-full bg-[#FAF8F3] text-[#0B2345] flex items-center justify-center mx-auto mb-4">
             <ShoppingBag className="w-8 h-8" />
           </div>
           <h1 className="text-xl sm:text-2xl font-serif font-bold text-[#101828] mb-2">
@@ -233,7 +278,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/shop"
-              className="px-6 py-2.5 rounded-xl bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-bold transition-all"
+              className="px-6 py-2.5 rounded-xl bg-[#0B2345] hover:bg-[#071A35] text-white text-xs font-bold transition-all"
             >
               {language === 'ar' ? 'تصفح الكنب والستائر' : 'Browse Sofas & Curtains'}
             </Link>
@@ -286,7 +331,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                     onClick={() => setActiveImage(img)}
                     className={`w-14 h-16 sm:w-16 sm:h-20 rounded-lg overflow-hidden border-2 transition-all shrink-0 bg-[#F3F1EB] ${
                       activeImage === img
-                        ? 'border-[#0A2A5E] ring-1 ring-[#0A2A5E]/30'
+                        ? 'border-[#0B2345] ring-1 ring-[#0B2345]/30'
                         : 'border-neutral-200 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -316,12 +361,12 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 {/* Floating Badges */}
                 <div className="absolute top-3 start-3 flex flex-col gap-1.5 z-10">
                   {product.badge && (
-                    <span className="px-2.5 py-1 bg-[#0A2A5E]/90 backdrop-blur-xs text-white text-[11px] font-bold rounded shadow-xs">
+                    <span className="px-2.5 py-1 bg-[#0B2345]/90 backdrop-blur-xs text-white text-[11px] font-bold rounded shadow-xs">
                       {product.badge[language]}
                     </span>
                   )}
                   {discountPercent > 0 && (
-                    <span className="px-2.5 py-1 bg-[#C8102E] text-white text-[11px] font-bold rounded shadow-xs">
+                    <span className="px-2.5 py-1 bg-[#B59460] text-white text-[11px] font-bold rounded shadow-xs">
                       {discountPercent}% OFF
                     </span>
                   )}
@@ -345,7 +390,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                     type="button"
                     onClick={handleShare}
                     aria-label="Share"
-                    className="w-9 h-9 rounded-full bg-white/95 text-neutral-600 hover:text-[#0A2A5E] flex items-center justify-center transition-all shadow-xs border border-neutral-200"
+                    className="w-9 h-9 rounded-full bg-white/95 text-neutral-600 hover:text-[#0B2345] flex items-center justify-center transition-all shadow-xs border border-neutral-200"
                   >
                     <Share2 className="w-4 h-4" />
                   </button>
@@ -365,7 +410,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
               <div className="flex items-center justify-between">
                 <Link
                   href="/shop"
-                  className="text-xs font-bold text-[#0A2A5E] hover:text-[#061C3F] hover:underline flex items-center gap-1 uppercase tracking-wide"
+                  className="text-xs font-bold text-[#0B2345] hover:text-[#071A35] hover:underline flex items-center gap-1 uppercase tracking-wide"
                 >
                   <span>{language === 'ar' ? 'سوفالورا - المشغل الفاخر' : 'SOFALORA ATELIER'}</span>
                   <ChevronIcon className="w-3.5 h-3.5" />
@@ -380,7 +425,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 {product.name[language]}
               </h1>
 
-              {/* Ratings */}
+              {/* Ratings (hidden until the product has real reviews) */}
+              {product.rating > 0 && (
               <div className="flex items-center gap-2 text-xs">
                 <span className="font-bold text-neutral-900">{product.rating.toFixed(1)}</span>
                 <div className="flex items-center gap-0.5 text-amber-500">
@@ -395,10 +441,11 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                     />
                   ))}
                 </div>
-                <span className="text-[#0A2A5E] hover:text-[#061C3F] hover:underline cursor-pointer">
+                <span className="text-[#0B2345] hover:text-[#071A35] hover:underline cursor-pointer">
                   {product.reviewCount || product.reviews || 31} {language === 'ar' ? 'تقييم' : 'Ratings'}
                 </span>
               </div>
+              )}
 
               {/* Noon Price Block */}
               <div className="pt-2 pb-1 border-y border-neutral-100">
@@ -411,44 +458,17 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                       {formatPrice(originalPrice)}
                     </span>
                   )}
-                  <span className="text-xs font-bold text-[#8A6A2F] bg-[#F9F2DF] px-2 py-0.5 rounded">
-                    {language === 'ar' ? 'توصيل مجاني' : 'Free Delivery'}
-                  </span>
-                </div>
-
-                {/* Best Price with offers accordion matching Noon */}
-                <div className="mt-2.5 border border-neutral-200 rounded-lg overflow-hidden text-xs">
-                  <button
-                    type="button"
-                    onClick={() => setIsBestPriceOpen(!isBestPriceOpen)}
-                    className="w-full px-3 py-2 bg-neutral-50 hover:bg-neutral-100 flex items-center justify-between font-semibold text-neutral-800"
-                  >
-                    <span className="flex items-center gap-1.5 text-[#0A2A5E]">
-                      <span className="w-4 h-4 rounded-full bg-[#C8102E] text-white flex items-center justify-center text-[10px] font-bold">
-                        %
-                      </span>
-                      <span>
-                        {language === 'ar' ? 'أفضل سعر مع العروض' : 'Best Price with offers'}
-                      </span>
+                  {deliveryClaim && (
+                    <span className="text-xs font-bold text-[#8A6A2F] bg-[#F9F2DF] px-2 py-0.5 rounded">
+                      {deliveryClaim}
                     </span>
-                    <ChevronDown className={`w-4 h-4 text-neutral-500 transition-transform ${isBestPriceOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {isBestPriceOpen && (
-                    <div className="p-3 bg-white space-y-1.5 text-neutral-600 border-t border-neutral-200 text-[11px]">
-                      <p>
-                        • <strong>15% OFF</strong> {language === 'ar' ? 'مع بطاقات الراجحي والإنماء' : 'with Al Rajhi & Alinma credit cards'}
-                      </p>
-                      <p>
-                        • <strong>WELCOME10</strong> {language === 'ar' ? 'خصم ١٠٪ على أول طلب منزلي' : 'extra 10% on your first sofa or curtain order'}
-                      </p>
-                    </div>
                   )}
                 </div>
 
                 {/* Explore other bestsellers */}
                 <Link
                   href="/shop"
-                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#0A2A5E] hover:text-[#061C3F] hover:underline"
+                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#0B2345] hover:text-[#071A35] hover:underline"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>{language === 'ar' ? 'استكشف الأكثر مبيعاً في الكنب والستائر' : 'Explore bestsellers in Sofas & Curtains'}</span>
@@ -462,64 +482,25 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                   {language === 'ar' ? 'معلومات التوصيل والتركيب' : 'DELIVERY INFORMATION'}
                 </div>
 
-                {/* Atelier Express Tag */}
-                <div className="p-3 bg-[#FAFAF8] border border-[#E6E2D9] rounded-lg">
+                <div id="pdp-delivery-info" className="p-3 bg-[#FAF9F6] border border-[#E6E2D9] rounded-lg">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="bg-[#0A2A5E] text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] tracking-wider uppercase shadow-2xs">
-                        {language === 'ar' ? 'توصيل وتركيب سريع' : 'EXPRESS ATELIER'}
-                      </span>
-                      <span className="font-bold text-neutral-900">
-                        {language === 'ar' ? 'استلمها غداً في الرياض' : 'Get it Tomorrow'}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-[#0A2A5E] font-semibold">
-                      {language === 'ar' ? 'اطلب خلال ١٦س ٧د' : 'Order in 16h 7m'}
+                    <span className="font-bold text-neutral-900">
+                      {language === 'ar' ? 'توصيل وتركيب داخل الرياض' : 'Delivery & installation in Riyadh'}
+                    </span>
+                    <span className="text-[11px] text-[#0B2345] font-semibold">
+                      {language === 'ar' ? 'خلال ٢-٤ أيام عمل' : '2-4 working days'}
                     </span>
                   </div>
                   <p className="text-[11px] text-neutral-600 mt-1">
-                    {language === 'ar'
-                      ? 'يشمل خدمة التركيب الليزري المجانية داخل جميع أحياء الرياض.'
-                      : 'Includes free laser precision in-home installation across all Riyadh districts.'}
+                    {deliveryClaim
+                      ?? (checkoutSettings && checkoutSettings.flat_shipping_rate > 0
+                        ? (language === 'ar'
+                          ? `رسوم التوصيل ${formatPrice(checkoutSettings.flat_shipping_rate)} وتظهر عند إتمام الطلب.`
+                          : `Delivery fee ${formatPrice(checkoutSettings.flat_shipping_rate)}, shown at checkout.`)
+                        : (language === 'ar' ? 'تظهر رسوم التوصيل، إن وجدت، عند إتمام الطلب.' : 'Delivery charges, if any, are shown at checkout.'))}
                   </p>
                 </div>
 
-                {/* Faster Delivery Options accordion */}
-                <div className="border border-neutral-200 rounded-lg overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setIsDeliveryOptionsOpen(!isDeliveryOptionsOpen)}
-                    className="w-full px-3 py-2 bg-white hover:bg-neutral-50 flex items-center justify-between text-neutral-700 font-medium"
-                  >
-                    <span>{language === 'ar' ? 'خيارات استلام إضافية' : 'Faster Delivery Options'}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 text-neutral-500 transition-transform ${isDeliveryOptionsOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {isDeliveryOptionsOpen && (
-                    <div className="p-3 bg-neutral-50 border-t border-neutral-200 space-y-2 text-[11px] text-neutral-600">
-                      <div className="flex justify-between">
-                        <span>{language === 'ar' ? 'استلام فوري من معرض طريق الملك فهد' : 'King Fahd Rd Flagship Pickup'}</span>
-                        <span className="font-bold text-[#8A6A2F]">{language === 'ar' ? 'مجاناً' : 'FREE'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{language === 'ar' ? 'توصيل مستعجل VIP في نفس اليوم' : 'Same-Day VIP Priority Courier'}</span>
-                        <span className="font-bold text-neutral-900">SAR 45</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Atelier VIP banner */}
-                <div className="p-2.5 bg-[#0A2A5E] text-white rounded-lg flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-[#0A2A5E] text-white font-bold text-[10px] px-2 py-0.5 rounded">
-                      VIP
-                    </span>
-                    <span className="text-[11px] font-semibold">
-                      {language === 'ar' ? 'توصيل وتركيب مجاني اليوم مع عضوية VIP' : 'Get Free delivery Today with VIP'}
-                    </span>
-                  </div>
-                  <ChevronIcon className="w-3.5 h-3.5 text-neutral-400" />
-                </div>
               </div>
 
               {/* Color Selection with swatches */}
@@ -541,7 +522,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                         onClick={() => setSelectedColorIdx(idx)}
                         className={`group relative p-1 rounded-full border-2 transition-all ${
                           selectedColorIdx === idx
-                            ? 'border-[#0A2A5E] ring-2 ring-[#0A2A5E]/20'
+                            ? 'border-[#0B2345] ring-2 ring-[#0B2345]/20'
                             : 'border-transparent hover:border-neutral-300'
                         }`}
                         title={color.name[language]}
@@ -565,7 +546,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                   <button
                     type="button"
                     onClick={() => setIsCustomMode(!isCustomMode)}
-                    className="text-[#0A2A5E] hover:text-[#061C3F] hover:underline font-semibold flex items-center gap-1"
+                    className="text-[#0B2345] hover:text-[#071A35] hover:underline font-semibold flex items-center gap-1"
                   >
                     <Ruler className="w-3.5 h-3.5" />
                     <span>
@@ -609,8 +590,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                       </div>
                     </div>
                     <div className="flex justify-between items-center text-[11px] pt-1 text-neutral-600 border-t border-neutral-200">
-                      <span>{customArea} m² ({pricePerSqm} SAR/m²)</span>
-                      <span className="font-bold text-[#0A2A5E]">{formatPrice(customEstimatedTotal)}</span>
+                      <span>{customArea} m² (⃁ {pricePerSqm}/m²)</span>
+                      <span className="font-bold text-[#0B2345]">{formatPrice(customEstimatedTotal)}</span>
                     </div>
                   </div>
                 ) : (
@@ -622,7 +603,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                         onClick={() => setSelectedSizeIdx(idx)}
                         className={`py-2 px-2.5 rounded-lg border text-center transition-all text-xs ${
                           selectedSizeIdx === idx
-                            ? 'border-[#0A2A5E] bg-[#FAFAF8] text-[#0A2A5E] font-bold ring-1 ring-[#0A2A5E]'
+                            ? 'border-[#0B2345] bg-[#FAF9F6] text-[#0B2345] font-bold ring-1 ring-[#0B2345]'
                             : 'border-neutral-200 bg-white hover:border-neutral-300 text-neutral-700'
                         }`}
                       >
@@ -636,25 +617,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 )}
               </div>
 
-              {/* PAYMENT DISCOUNT banner (Tabby / Tamara) */}
-              <div className="pt-2">
-                <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-lg flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-neutral-900 bg-neutral-200 px-1.5 py-0.5 rounded text-[10px]">
-                      tabby
-                    </span>
-                    <span className="font-mono font-bold text-neutral-900 bg-amber-200 px-1.5 py-0.5 rounded text-[10px]">
-                      tamara
-                    </span>
-                    <span className="text-neutral-700 font-medium">
-                      {language === 'ar'
-                        ? `قسّمها على ٤ دفعات بقيمة ${formatPrice(installmentAmount)}`
-                        : `Pay in 4 installments of ${formatPrice(installmentAmount)}`}
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-neutral-400">0% Interest</span>
-                </div>
-              </div>
             </div>
 
             {/* 3. RIGHT COLUMN: Buy Box & Seller Info (3 cols) */}
@@ -664,56 +626,38 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 <div className="pb-3 border-b border-neutral-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[#0A2A5E] text-[#E3C98F] flex items-center justify-center font-serif font-bold text-xs border border-[#0A2A5E]/30">
-                        MC
+                      <div className="w-8 h-8 rounded-full bg-[#0B2345] text-[#D9C29A] flex items-center justify-center font-serif font-bold text-xs border border-[#0B2345]/30">
+                        SF
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-neutral-900 hover:text-[#0A2A5E] flex items-center gap-1 cursor-pointer">
+                        <div className="text-xs font-bold text-neutral-900 hover:text-[#0B2345] flex items-center gap-1 cursor-pointer">
                           <span>{language === 'ar' ? 'المشغل الرئيسي' : 'Sold by Sofalora'}</span>
                           <ChevronIcon className="w-3 h-3 text-neutral-400" />
                         </div>
-                        <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-                          <span className="text-amber-500 font-bold">★ 4.9</span>
-                          <span>|</span>
-                          <span>98% {language === 'ar' ? 'تقييم إيجابي' : 'Positive'}</span>
-                        </div>
+
                       </div>
                     </div>
                   </div>
 
-                  {/* Seller Quality Metrics */}
-                  <div className="mt-3 grid grid-cols-3 gap-1.5 text-center text-[10px] bg-neutral-50 p-2 rounded-lg border border-neutral-100">
-                    <div>
-                      <div className="font-bold text-[#0A2A5E]">100%</div>
-                      <div className="text-neutral-500 leading-tight">{language === 'ar' ? 'تطابق الصور' : 'Item as shown'}</div>
-                    </div>
-                    <div>
-                      <div className="font-bold text-neutral-900">4+ Y</div>
-                      <div className="text-neutral-500 leading-tight">{language === 'ar' ? 'شريك معتمد' : 'Partner'}</div>
-                    </div>
-                    <div>
-                      <div className="font-bold text-[#0A2A5E]">&lt;1%</div>
-                      <div className="text-neutral-500 leading-tight">{language === 'ar' ? 'نسبة الإرجاع' : 'Low return'}</div>
-                    </div>
-                  </div>
+
                 </div>
 
                 {/* Guarantees checklist */}
                 <div className="space-y-2.5 text-xs text-neutral-700">
                   <div className="flex items-center gap-2.5">
-                    <ShieldCheck className="w-4 h-4 text-[#0A2A5E] shrink-0" />
-                    <span>{language === 'ar' ? 'ضمان ٥ سنوات على الأقمشة والإكسسوارات' : '5 year luxury drapery warranty'}</span>
+                    <ShieldCheck className="w-4 h-4 text-[#0B2345] shrink-0" />
+                    <span>{language === 'ar' ? 'حرفية مفحوصة بعناية' : 'Quality-checked craftsmanship'}</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <Truck className="w-4 h-4 text-[#0A2A5E] shrink-0" />
-                    <span>{language === 'ar' ? 'توصيل وتركيب مجاني في الرياض' : 'Free delivery & laser installation'}</span>
+                    <Truck className="w-4 h-4 text-[#0B2345] shrink-0" />
+                    <span>{deliveryClaim ?? (language === 'ar' ? 'توصيل وتركيب داخل الرياض' : 'Delivery & installation in Riyadh')}</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <RotateCcw className="w-4 h-4 text-[#0A2A5E] shrink-0" />
-                    <span>{language === 'ar' ? 'إمكانية التعديل خلال ١٤ يوماً' : 'Easy and Hassle Free Returns'}</span>
+                    <RotateCcw className="w-4 h-4 text-[#0B2345] shrink-0" />
+                    <span>{language === 'ar' ? 'دعم من فريقنا في الرياض' : 'Support from our Riyadh team'}</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <Lock className="w-4 h-4 text-[#0A2A5E] shrink-0" />
+                    <Lock className="w-4 h-4 text-[#0B2345] shrink-0" />
                     <span>{language === 'ar' ? 'مدفوعات مشفرة وآمنة ١٠٠٪' : 'Secure Payments'}</span>
                   </div>
                 </div>
@@ -753,7 +697,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                     className={`w-full py-3 px-4 rounded-lg font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm ${
                       isAdded
                         ? 'bg-emerald-600 text-white'
-                        : 'bg-[#0A2A5E] hover:bg-[#061C3F] active:bg-[#061C3F] text-white'
+                        : 'bg-[#0B2345] hover:bg-[#071A35] active:bg-[#071A35] text-white'
                     }`}
                   >
                     {isAdded ? (
@@ -773,7 +717,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                   <button
                     type="button"
                     onClick={handleBuyNow}
-                    className="w-full py-3 px-4 rounded-lg font-bold text-sm tracking-wide bg-white hover:bg-[#FAFAF8] border-2 border-[#0A2A5E] text-[#0A2A5E] hover:text-[#061C3F] transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 px-4 rounded-lg font-bold text-sm tracking-wide bg-white hover:bg-[#FAF9F6] border-2 border-[#0B2345] text-[#0B2345] hover:text-[#071A35] transition-all flex items-center justify-center gap-2"
                   >
                     <span>{language === 'ar' ? 'شراء الآن (دفع سريع)' : 'BUY NOW'}</span>
                   </button>
@@ -826,9 +770,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
               </div>
             </div>
 
-            <div className="space-y-3 bg-[#FAFAF8] p-5 rounded-xl border border-neutral-200">
+            <div className="space-y-3 bg-[#FAF9F6] p-5 rounded-xl border border-neutral-200">
               <h3 className="font-bold text-neutral-900 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#0A2A5E]" />
+                <ShieldCheck className="w-4 h-4 text-[#0B2345]" />
                 <span>{language === 'ar' ? 'خدمة التركيب الليزري الشاملة' : 'Complimentary White-Glove Installation'}</span>
               </h3>
               <p className="text-neutral-600 leading-relaxed text-[11px]">
@@ -847,7 +791,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 </span>
                 <span className="flex items-center gap-1">
                   <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  {language === 'ar' ? 'ضمان شامل' : 'Full Warranty'}
+                  {language === 'ar' ? 'فحص الجودة' : 'Quality Checked'}
                 </span>
               </div>
             </div>
@@ -861,7 +805,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
               <h2 className="text-lg font-bold text-neutral-900">
                 {language === 'ar' ? 'قطع مشابهة قد تنال إعجابك' : 'Similar Pieces You May Love'}
               </h2>
-              <Link href="/shop" className="text-xs font-bold text-[#0A2A5E] hover:text-[#061C3F] hover:underline flex items-center gap-1">
+              <Link href="/shop" className="text-xs font-bold text-[#0B2345] hover:text-[#071A35] hover:underline flex items-center gap-1">
                 <span>{language === 'ar' ? 'عرض الكل' : 'View All'}</span>
                 <ChevronIcon className="w-3.5 h-3.5" />
               </Link>
@@ -916,7 +860,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
             <div className="text-xs font-bold text-neutral-900 truncate">
               {product.name[language]}
             </div>
-            <div className="text-sm font-black text-[#0A2A5E] font-serif">
+            <div className="text-sm font-black text-[#0B2345] font-serif">
               {formatPrice(currentPrice)}
             </div>
           </div>
@@ -925,7 +869,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
               type="button"
               onClick={handleAddToCart}
               className={`min-h-[44px] px-4 py-2 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-colors active:scale-95 ${
-                isAdded ? 'bg-emerald-700 text-white' : 'bg-[#0A2A5E] text-white hover:bg-[#061C3F]'
+                isAdded ? 'bg-emerald-700 text-white' : 'bg-[#0B2345] text-white hover:bg-[#071A35]'
               }`}
             >
               {isAdded ? (
@@ -935,7 +879,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-4 h-4 text-[#E3C98F]" />
+                  <ShoppingBag className="w-4 h-4 text-[#D9C29A]" />
                   <span>{language === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</span>
                 </>
               )}
@@ -943,7 +887,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId:
             <button
               type="button"
               onClick={handleBuyNow}
-              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0A2A5E] text-white hover:bg-[#061C3F] shadow-xs active:scale-95 transition-colors"
+              className="min-h-[44px] px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0B2345] text-white hover:bg-[#071A35] shadow-xs active:scale-95 transition-colors"
             >
               {language === 'ar' ? 'شراء' : 'Buy'}
             </button>

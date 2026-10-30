@@ -1,9 +1,22 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { EditorialSectionData } from '../../data/editorialData';
 import { useShop } from '../../context/LanguageContext';
 import { EditorialProductCard } from './EditorialProductCard';
+import { useCatalog } from '../../context/CatalogContext';
+import { CatalogEmptyState, CatalogErrorState } from '../UI/CatalogState';
+import { useSectionCms, useWebsite, cmsImage } from '../../context/WebsiteContext';
+import { useRouter } from '../../context/RouterContext';
+import type { BilingualText } from '../../types';
+
+/** Override a bilingual value with admin EN/AR text (each falls back to the other, then the default). */
+const override = (base: BilingualText, en?: string, ar?: string): BilingualText => {
+  const e = (en ?? '').trim();
+  const a = (ar ?? '').trim();
+  if (!e && !a) return base;
+  return { en: e || a, ar: a || e };
+};
 
 interface EditorialCategorySectionProps {
   section: EditorialSectionData;
@@ -12,13 +25,55 @@ interface EditorialCategorySectionProps {
 }
 
 export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> = ({
-  section,
+  section: baseSection,
   onExploreCategory
 }) => {
+  // Admin overrides: section title/subtitle + items (sub-category tiles) from
+  // homeSections[key], lifestyle image/heading/subtitle/link from pageBanners[key].
+  const cms = useSectionCms();
+  const { card } = useWebsite();
+  const { navigate } = useRouter();
+  const cmsCard = (cms.key ? card(cms.key) : undefined) ?? {};
+  const cmsSection = cms.section;
+  const ctaHref = (cmsCard.btn_url ?? '').trim();
+  const section = useMemo(
+    () => ({
+      ...baseSection,
+      title: override(baseSection.title, cmsSection?.title_en, cmsSection?.title_ar),
+      lifestyleImage: cmsImage(cmsCard.image, baseSection.lifestyleImage),
+      lifestyleHeading: override(baseSection.lifestyleHeading, cmsCard.title_en, cmsCard.title_ar),
+      lifestyleSubtitle: override(
+        override(baseSection.lifestyleSubtitle, cmsSection?.subtitle_en, cmsSection?.subtitle_ar),
+        cmsCard.subtitle_en,
+        cmsCard.subtitle_ar
+      ),
+      subcategories: baseSection.subcategories.map((sub, i) => {
+        const o = cmsSection?.items?.[i] || {};
+        return {
+          ...sub,
+          name: override(sub.name, o.title_en, o.title_ar),
+          image: cmsImage(o.image, sub.image),
+          link: (o.url ?? '').trim() || sub.link,
+        };
+      }),
+    }),
+    [baseSection, cmsSection, cmsCard]
+  );
   const { language, direction, t, openConsultation } = useShop();
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(true);
+  const catalog = useCatalog();
+
+  // Top picks come from the commerce API: products in this section's category
+  // (from lifestyleLink "/category/<slug>"), otherwise featured/newest products.
+  const topPicks = useMemo(() => {
+    const match = section.lifestyleLink?.match(/^\/category\/([^/?#]+)/);
+    const pool = match ? catalog.productsInCategory(match[1]) : catalog.products;
+    return [...pool]
+      .sort((a, b) => Number(Boolean(b.isBestSeller)) - Number(Boolean(a.isBestSeller)))
+      .slice(0, 10);
+  }, [section.lifestyleLink, catalog.products, catalog.productsInCategory]);
 
   // Check scroll boundaries
   const updateScrollButtons = () => {
@@ -47,7 +102,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
       if (node) node.removeEventListener('scroll', updateScrollButtons);
       window.removeEventListener('resize', updateScrollButtons);
     };
-  }, [direction]);
+  }, [direction, topPicks.length]);
 
   const handleScroll = (scrollDirection: 'prev' | 'next') => {
     if (!carouselRef.current) return;
@@ -125,7 +180,9 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
             </p>
             <button
               onClick={() => {
-                if (onExploreCategory) {
+                if (ctaHref) {
+                  navigate(ctaHref);
+                } else if (onExploreCategory) {
                   onExploreCategory(section.id);
                 } else {
                   openConsultation();
@@ -135,9 +192,9 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
             >
               <span>{section.lifestyleCta[language]}</span>
               {isRTL ? (
-                <ArrowLeft className="w-4 h-4 text-[#0A2A5E] transition-transform duration-300 group-hover/btn:-translate-x-1" />
+                <ArrowLeft className="w-4 h-4 text-[#0B2345] transition-transform duration-300 group-hover/btn:-translate-x-1" />
               ) : (
-                <ArrowRight className="w-4 h-4 text-[#0A2A5E] transition-transform duration-300 group-hover/btn:translate-x-1" />
+                <ArrowRight className="w-4 h-4 text-[#0B2345] transition-transform duration-300 group-hover/btn:translate-x-1" />
               )}
             </button>
           </motion.div>
@@ -178,11 +235,11 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
 
               {/* Sub-Category Title with Hover Reaction */}
               <div className="mt-2.5 flex items-center justify-between text-[#101828] px-0.5">
-                <span className="text-xs sm:text-sm font-medium tracking-tight group-hover:text-[#0A2A5E] transition-colors duration-300 line-clamp-1">
+                <span className="text-xs sm:text-sm font-medium tracking-tight group-hover:text-[#0B2345] transition-colors duration-300 line-clamp-1">
                   {subcat.name[language]}
                 </span>
                 {/* Subtle animated arrow */}
-                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 text-[#C8102E]">
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 text-[#B59460]">
                   {isRTL ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                 </span>
               </div>
@@ -201,7 +258,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
           <span className="text-[#B8B2A8]">|</span>
           <button
             onClick={() => onExploreCategory && onExploreCategory(section.id)}
-            className="text-xs sm:text-sm text-[#667085] hover:text-[#0A2A5E] font-medium transition-colors inline-flex items-center gap-1 group"
+            className="text-xs sm:text-sm text-[#667085] hover:text-[#0B2345] font-medium transition-colors inline-flex items-center gap-1 group"
           >
             <span>{t('viewAll')}</span>
             {isRTL ? (
@@ -219,7 +276,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
             disabled={!canScrollPrev}
             className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#CFC8BA] flex items-center justify-center transition-all ${
               canScrollPrev
-                ? 'text-[#101828] hover:bg-[#061C3F] hover:text-[#E8D9B6] hover:border-[#0A2A5E] shadow-2xs'
+                ? 'text-[#101828] hover:bg-[#071A35] hover:text-[#E8D9B6] hover:border-[#0B2345] shadow-2xs'
                 : 'text-[#CEC7B9] border-[#E3DED4] cursor-not-allowed opacity-50'
             }`}
             aria-label="Previous products"
@@ -231,7 +288,7 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
             disabled={!canScrollNext}
             className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#CFC8BA] flex items-center justify-center transition-all ${
               canScrollNext
-                ? 'text-[#101828] hover:bg-[#061C3F] hover:text-[#E8D9B6] hover:border-[#0A2A5E] shadow-2xs'
+                ? 'text-[#101828] hover:bg-[#071A35] hover:text-[#E8D9B6] hover:border-[#0B2345] shadow-2xs'
                 : 'text-[#CEC7B9] border-[#E3DED4] cursor-not-allowed opacity-50'
             }`}
             aria-label="Next products"
@@ -242,13 +299,29 @@ export const EditorialCategorySection: React.FC<EditorialCategorySectionProps> =
       </div>
 
       {/* 5. Product Carousel (5 visible on desktop, 3 tablet, 2 mobile) */}
+      {catalog.status === 'error' && <CatalogErrorState compact className="mt-5" />}
+      {catalog.status === 'ready' && topPicks.length === 0 && <CatalogEmptyState compact className="mt-5" />}
+      {catalog.isLoading && (
+        <div className="mt-5 flex gap-3 sm:gap-4 overflow-hidden">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-[calc(50%-6px)] sm:w-[calc(33.333%-11px)] lg:w-[calc(20%-12.8px)] shrink-0 rounded-xl bg-white border border-[#EAE6DE] p-3 animate-pulse space-y-3"
+            >
+              <div className="aspect-[3/4] bg-[#EBE7DE] rounded-lg" />
+              <div className="h-3 bg-[#EBE7DE] rounded w-3/4" />
+              <div className="h-3 bg-[#EBE7DE] rounded w-1/3" />
+            </div>
+          ))}
+        </div>
+      )}
       <div className="relative mt-5">
         <div
           ref={carouselRef}
           className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto scrollbar-none scroll-smooth pb-4 pt-1 snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {section.topPicks.map((product, pIdx) => (
+          {topPicks.map((product, pIdx) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 15 }}

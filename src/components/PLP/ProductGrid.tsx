@@ -4,6 +4,8 @@ import { Product } from '../../types';
 import { ProductCard } from './ProductCard';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
+import { useCatalog } from '../../context/CatalogContext';
+import { CatalogEmptyState, CatalogErrorState } from '../UI/CatalogState';
 
 interface ProductGridProps {
   products: Product[];
@@ -19,14 +21,23 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   onResetFilters
 }) => {
   const { language } = useShop();
+  const catalog = useCatalog();
+
+  // Catalog-level states (API unreachable / store has no products yet)
+  if (catalog.status === 'error') {
+    return <CatalogErrorState />;
+  }
+  if (catalog.status === 'ready' && catalog.products.length === 0) {
+    return <CatalogEmptyState />;
+  }
 
   // Loading skeleton
-  if (isLoading) {
+  if (isLoading || catalog.isLoading) {
     return (
       <div
         className={
           viewMode === 'grid'
-            ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'
+            ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6'
             : 'space-y-4'
         }
       >
@@ -50,7 +61,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   if (products.length === 0) {
     return (
       <div className="bg-white rounded-2xl border border-[#EAE6DE] p-10 sm:p-16 text-center max-w-2xl mx-auto my-8">
-        <div className="w-16 h-16 rounded-full bg-[#FAF8F3] text-[#0A2A5E] flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-full bg-[#FAF8F3] text-[#0B2345] flex items-center justify-center mx-auto mb-4">
           <SearchX className="w-8 h-8" />
         </div>
 
@@ -69,7 +80,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
             <button
               type="button"
               onClick={onResetFilters}
-              className="px-5 py-2.5 bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-semibold rounded-xl transition-colors inline-flex items-center gap-2 shadow-sm"
+              className="px-5 py-2.5 bg-[#0B2345] hover:bg-[#071A35] text-white text-xs font-semibold rounded-xl transition-colors inline-flex items-center gap-2 shadow-sm"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{language === 'ar' ? 'إعادة ضبط كل الفلاتر' : 'Reset All Filters'}</span>
@@ -92,25 +103,25 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Link
               href="/category/sofas"
-              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white transition-colors text-[#475467]"
+              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#071A35] hover:text-white transition-colors text-[#475467]"
             >
               {language === 'ar' ? 'الكنب' : 'Sofas'}
             </Link>
             <Link
               href="/category/majlis-sofas"
-              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white transition-colors text-[#475467]"
+              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#071A35] hover:text-white transition-colors text-[#475467]"
             >
               {language === 'ar' ? 'المجالس' : 'Majlis'}
             </Link>
             <Link
               href="/category/blackout-curtains"
-              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white transition-colors text-[#475467]"
+              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#071A35] hover:text-white transition-colors text-[#475467]"
             >
               {language === 'ar' ? 'الستائر المعتمة' : 'Blackout Curtains'}
             </Link>
             <Link
               href="/category/custom-curtains"
-              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#061C3F] hover:text-white transition-colors text-[#475467]"
+              className="text-xs px-3 py-1 rounded-full bg-[#F7F5F0] hover:bg-[#071A35] hover:text-white transition-colors text-[#475467]"
             >
               {language === 'ar' ? 'ستائر حسب الطلب' : 'Custom Curtains'}
             </Link>
@@ -124,7 +135,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     <div
       className={
         viewMode === 'grid'
-          ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6'
+          ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-6'
           : 'space-y-4'
       }
     >

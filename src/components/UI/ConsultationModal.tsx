@@ -52,15 +52,15 @@ export const ConsultationModal: React.FC = () => {
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 end-4 z-20 w-8 h-8 rounded-full bg-[#FAFAF8] text-[#344054] hover:bg-[#E5E1D8] flex items-center justify-center transition-colors"
+          className="absolute top-4 end-4 z-20 w-8 h-8 rounded-full bg-[#FAF9F6] text-[#344054] hover:bg-[#E5E1D8] flex items-center justify-center transition-colors"
           aria-label={t('closeModal')}
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
-        <div className="p-6 bg-[#0A2A5E] text-white">
-          <div className="inline-flex items-center gap-1.5 text-xs text-[#C8102E] font-bold uppercase tracking-wider mb-2">
+        <div className="p-6 bg-[#0B2345] text-white">
+          <div className="inline-flex items-center gap-1.5 text-xs text-[#B59460] font-bold uppercase tracking-wider mb-2">
             <Scissors className="w-3.5 h-3.5" />
             <span>{t('customEyebrow')}</span>
           </div>
@@ -91,7 +91,7 @@ export const ConsultationModal: React.FC = () => {
               </p>
               <button
                 onClick={handleClose}
-                className="mt-4 bg-[#0A2A5E] text-white px-8 py-3 rounded-full text-xs font-bold"
+                className="mt-4 bg-[#0B2345] text-white px-8 py-3 rounded-full text-xs font-bold"
               >
                 {t('closeModal')}
               </button>
@@ -111,7 +111,7 @@ export const ConsultationModal: React.FC = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder={language === 'ar' ? 'مثال: محمد السبيعي' : 'e.g., Faisal Alqahtani'}
-                    className="w-full bg-[#FAFAF8] text-sm rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#C8102E]"
+                    className="w-full bg-[#FAF9F6] text-sm rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#B59460]"
                   />
                   <User className="w-4 h-4 text-[#667085] absolute start-3 top-3 pointer-events-none" />
                 </div>
@@ -130,7 +130,7 @@ export const ConsultationModal: React.FC = () => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="05XXXXXXXX"
-                    className="w-full bg-[#FAFAF8] text-sm rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#C8102E]"
+                    className="w-full bg-[#FAF9F6] text-sm rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#B59460]"
                   />
                   <Phone className="w-4 h-4 text-[#667085] absolute start-3 top-3 pointer-events-none" />
                 </div>
@@ -147,7 +147,7 @@ export const ConsultationModal: React.FC = () => {
                     <select
                       value={district}
                       onChange={(e) => setDistrict(e.target.value)}
-                      className="w-full bg-[#FAFAF8] text-xs rounded-xl py-2.5 ps-9 pe-3 border border-[#CFC8BA] focus:outline-hidden focus:border-[#C8102E] appearance-none"
+                      className="w-full bg-[#FAF9F6] text-xs rounded-xl py-2.5 ps-9 pe-3 border border-[#CFC8BA] focus:outline-hidden focus:border-[#B59460] appearance-none"
                     >
                       <option value="Al Malqa">{language === 'ar' ? 'حي الملقا' : 'Al Malqa'}</option>
                       <option value="Hittin">{language === 'ar' ? 'حي حطين' : 'Hittin'}</option>
@@ -169,7 +169,7 @@ export const ConsultationModal: React.FC = () => {
                   <select
                     value={serviceType}
                     onChange={(e) => setServiceType(e.target.value)}
-                    className="w-full bg-[#FAFAF8] text-xs rounded-xl py-2.5 px-3 border border-[#CFC8BA] focus:outline-hidden focus:border-[#C8102E]"
+                    className="w-full bg-[#FAF9F6] text-xs rounded-xl py-2.5 px-3 border border-[#CFC8BA] focus:outline-hidden focus:border-[#B59460]"
                   >
                     <option value="full-home">{language === 'ar' ? 'منزل كامل — كنب وستائر' : 'Full Home — Sofas & Curtains'}</option>
                     <option value="majlis">{language === 'ar' ? 'مجلس وصالة ضيوف' : 'Majlis & Living Room'}</option>
@@ -191,7 +191,7 @@ export const ConsultationModal: React.FC = () => {
                     type="date"
                     value={preferredDate}
                     onChange={(e) => setPreferredDate(e.target.value)}
-                    className="w-full bg-[#FAFAF8] text-xs rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#C8102E]"
+                    className="w-full bg-[#FAF9F6] text-xs rounded-xl py-2.5 ps-10 pe-4 border border-[#CFC8BA] focus:outline-hidden focus:border-[#B59460]"
                   />
                   <Calendar className="w-4 h-4 text-[#667085] absolute start-3 top-2.5 pointer-events-none" />
                 </div>
@@ -201,7 +201,7 @@ export const ConsultationModal: React.FC = () => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full bg-[#C8102E] hover:bg-[#E3C98F] text-[#0A2A5E] py-3.5 px-6 rounded-full text-xs sm:text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-[#B59460] hover:bg-[#D9C29A] text-[#0B2345] py-3.5 px-6 rounded-full text-xs sm:text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{language === 'ar' ? 'تأكيد طلب الزيارة المجانية' : 'Confirm Free Measurement Visit'}</span>

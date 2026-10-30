@@ -14,6 +14,11 @@ export const CartDrawer: React.FC = () => {
     removeFromCart,
     cartSubtotal,
     formatPrice,
+    shippingFee,
+    grandTotal,
+    freeShippingThreshold,
+    paymentMethods,
+    deliveryClaim,
     t
   } = useShop();
   const { navigate } = useRouter();
@@ -39,9 +44,10 @@ export const CartDrawer: React.FC = () => {
 
   if (!isCartOpen) return null;
 
-  const FREE_SHIPPING_THRESHOLD = 500;
-  const shippingProgress = Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100);
-  const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
+  // Same shipping rule as checkout (admin flat rate + free-shipping threshold).
+  const hasThreshold = freeShippingThreshold > 0;
+  const shippingProgress = hasThreshold ? Math.min(100, (cartSubtotal / freeShippingThreshold) * 100) : 100;
+  const remainingForFreeShipping = hasThreshold ? Math.max(0, freeShippingThreshold - cartSubtotal) : 0;
 
   const handleGoToCheckout = () => {
     closeCart();
@@ -68,14 +74,14 @@ export const CartDrawer: React.FC = () => {
       <div
         className={`fixed inset-y-0 ${
           isRtl ? 'start-0' : 'end-0'
-        } max-w-md w-full bg-[#FAFAF8] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
+        } max-w-md w-full bg-[#FAF9F6] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
           isRtl ? 'slide-in-from-left' : 'slide-in-from-right'
         }`}
       >
         {/* Drawer Header */}
         <div className="p-4 sm:p-5 border-b border-[#E2DDD2] flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-[#0A2A5E]" />
+            <ShoppingBag className="w-5 h-5 text-[#0B2345]" />
             <h3 className="text-base font-bold text-[#101828] font-serif-luxury">
               {t('cartTitle')}
             </h3>
@@ -94,38 +100,38 @@ export const CartDrawer: React.FC = () => {
           </button>
         </div>
 
-        {/* Free Shipping Riyadh Meter */}
+        {/* Free delivery meter (only when the admin set a free-shipping threshold) */}
+        {(hasThreshold || deliveryClaim) && (
         <div className="bg-[#F8F6F1] border-b border-[#E8E3DA] p-3.5 text-xs text-[#475467] shrink-0">
-          {cartSubtotal >= FREE_SHIPPING_THRESHOLD ? (
+          {!hasThreshold || remainingForFreeShipping <= 0 ? (
             <div className="flex items-center gap-2 text-[#2A7531] font-bold">
               <ShieldCheck className="w-4 h-4 text-[#2A7531]" />
-              <span>{t('freeShippingBanner')}</span>
+              <span>{language === 'ar' ? 'طلبك مؤهل للتوصيل المجاني.' : 'Your order qualifies for free delivery.'}</span>
             </div>
           ) : (
             <div>
               <span className="leading-relaxed">
                 {language === 'ar' ? 'أضف منتجات بقيمة ' : 'Add '}
                 <strong className="text-[#101828]">{formatPrice(remainingForFreeShipping)}</strong>
-                {language === 'ar'
-                  ? ' إضافية للحصول على توصيل وتركيب مجاني بالرياض!'
-                  : ' more for Free White-Glove Installation in Riyadh!'}
+                {language === 'ar' ? ' إضافية للحصول على توصيل مجاني.' : ' more for free delivery.'}
               </span>
               <div className="w-full bg-[#E3DED4] h-1.5 rounded-full mt-2 overflow-hidden">
                 <div
-                  className="bg-[#0A2A5E] h-full transition-all duration-500 rounded-full"
+                  className="bg-[#0B2345] h-full transition-all duration-500 rounded-full"
                   style={{ width: `${shippingProgress}%` }}
                 />
               </div>
             </div>
           )}
         </div>
+        )}
 
         {/* Cart Items List */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
           {cart.length === 0 ? (
             <div className="text-center py-16 space-y-4">
               <div className="w-16 h-16 rounded-full bg-[#E5E1D8] text-[#667085] flex items-center justify-center mx-auto">
-                <ShoppingBag className="w-8 h-8 text-[#0A2A5E]" />
+                <ShoppingBag className="w-8 h-8 text-[#0B2345]" />
               </div>
               <h4 className="text-sm font-bold text-[#101828]">
                 {t('emptyCart')}
@@ -136,7 +142,7 @@ export const CartDrawer: React.FC = () => {
               <button
                 type="button"
                 onClick={closeCart}
-                className="inline-flex items-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-6 py-3 rounded-full text-xs font-bold transition-colors active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-2 bg-[#0B2345] hover:bg-[#071A35] text-white px-6 py-3 rounded-full text-xs font-bold transition-colors active:scale-95 shadow-sm"
               >
                 <span>{t('heroShopCurtains')}</span>
               </button>
@@ -179,14 +185,14 @@ export const CartDrawer: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="text-xs font-bold text-[#0A2A5E] font-serif mt-1">
+                    <div className="text-xs font-bold text-[#0B2345] font-serif mt-1">
                       {formatPrice(item.unitPrice * item.quantity)}
                     </div>
                   </div>
 
                   {/* Quantity & Delete Controls */}
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#F2EFE9]">
-                    <div className="flex items-center border border-[#CFC8BA] rounded-full p-0.5 bg-[#FAFAF8]">
+                    <div className="flex items-center border border-[#CFC8BA] rounded-full p-0.5 bg-[#FAF9F6]">
                       <button
                         type="button"
                         onClick={() => updateCartQuantity(item.id, Math.max(1, item.quantity - 1))}
@@ -235,16 +241,16 @@ export const CartDrawer: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between text-[11px] text-[#667085]">
-              <span>{language === 'ar' ? 'التوصيل والتركيب في الرياض' : 'Riyadh White-Glove Installation'}</span>
-              <span className="font-bold text-[#2A7531]">
-                {cartSubtotal >= FREE_SHIPPING_THRESHOLD ? (language === 'ar' ? 'مجاني' : 'FREE') : formatPrice(25)}
+              <span>{language === 'ar' ? 'التوصيل والتركيب في الرياض' : 'Delivery & installation (Riyadh)'}</span>
+              <span className={`font-bold ${shippingFee === 0 ? 'text-[#2A7531]' : 'text-[#101828]'}`}>
+                {shippingFee === 0 ? (language === 'ar' ? 'مجاني' : 'FREE') : formatPrice(shippingFee)}
               </span>
             </div>
 
             <div className="pt-2 border-t border-[#F0EDE6] flex items-center justify-between text-sm font-black text-[#101828]">
               <span>{language === 'ar' ? 'الإجمالي التقديري' : 'Estimated Total'}</span>
-              <span className="text-base text-[#0A2A5E] font-serif">
-                {formatPrice(cartSubtotal >= FREE_SHIPPING_THRESHOLD ? cartSubtotal : cartSubtotal + 25)}
+              <span className="text-base text-[#0B2345] font-serif">
+                {formatPrice(grandTotal)}
               </span>
             </div>
 
@@ -259,17 +265,17 @@ export const CartDrawer: React.FC = () => {
               <button
                 type="button"
                 onClick={handleGoToCheckout}
-                className="w-full min-h-[44px] bg-[#0A2A5E] hover:bg-[#061C3F] text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95"
+                className="w-full min-h-[44px] bg-[#0B2345] hover:bg-[#071A35] text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95"
               >
                 <span>{language === 'ar' ? 'متابعة الشراء' : 'Checkout'}</span>
-                <ArrowIcon className="w-3.5 h-3.5 text-[#E3C98F]" />
+                <ArrowIcon className="w-3.5 h-3.5 text-[#D9C29A]" />
               </button>
             </div>
 
             <div className="text-center text-[10px] text-[#8A847B]">
-              {language === 'ar'
-                ? 'دفع آمن 100% عبر مدى والبطاقات الائتمانية وApple Pay'
-                : '100% Secure Checkout via Mada, Credit Card & Apple Pay'}
+              {paymentMethods.includes('cod')
+                ? (language === 'ar' ? 'الدفع عند الاستلام متاح' : 'Cash on delivery available')
+                : (language === 'ar' ? 'تظهر طرق الدفع المتاحة عند إتمام الطلب' : 'Available payment methods are shown at checkout')}
             </div>
           </div>
         )}

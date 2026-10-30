@@ -1,9 +1,11 @@
 import React from 'react';
 import { useShop } from '../../context/LanguageContext';
+import { useSectionCms } from '../../context/WebsiteContext';
 import { Scissors, Palette, Ruler, CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export const CustomCurtainService: React.FC = () => {
   const { language, direction, t, openConsultation } = useShop();
+  const cms = useSectionCms();
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   const steps = [
@@ -34,19 +36,19 @@ export const CustomCurtainService: React.FC = () => {
   ];
 
   return (
-    <section id="custom-service" className="py-16 sm:py-24 bg-[#FAFAF8] relative">
+    <section id="custom-service" className="py-16 sm:py-24 bg-[#FAF9F6] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#061C3F] uppercase tracking-widest block mb-2">
+          <span className="text-xs font-bold text-[#071A35] uppercase tracking-widest block mb-2">
             {t('customEyebrow')}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A2A5E] font-serif-luxury tracking-tight">
-            {t('customTitle')}
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2345] font-serif-luxury tracking-tight">
+            {cms.title(t('customTitle'))}
           </h2>
           <p className="text-sm sm:text-base text-[#667085] mt-3 leading-relaxed">
-            {t('customDescription')}
+            {cms.subtitle(t('customDescription'))}
           </p>
         </div>
 
@@ -63,15 +65,15 @@ export const CustomCurtainService: React.FC = () => {
                 {/* Step Number & Icon */}
                 <div>
                   <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-[#FAFAF8] group-hover:bg-[#C8102E] group-hover:text-white text-[#0A2A5E] border border-[#E5E1D8] flex items-center justify-center transition-colors duration-300">
+                    <div className="w-12 h-12 rounded-2xl bg-[#FAF9F6] group-hover:bg-[#B59460] group-hover:text-white text-[#0B2345] border border-[#E5E1D8] flex items-center justify-center transition-colors duration-300">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className="text-2xl font-black text-[#E2DDD2] font-mono group-hover:text-[#C8102E]/40 transition-colors">
+                    <span className="text-2xl font-black text-[#E2DDD2] font-mono group-hover:text-[#B59460]/40 transition-colors">
                       {step.num}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#101828] mb-2 group-hover:text-[#0A2A5E] transition-colors">
+                  <h3 className="text-base font-bold text-[#101828] mb-2 group-hover:text-[#0B2345] transition-colors">
                     {step.title}
                   </h3>
 
@@ -92,11 +94,11 @@ export const CustomCurtainService: React.FC = () => {
         <div className="mt-12 text-center">
           <button
             onClick={openConsultation}
-            className="inline-flex items-center gap-2.5 bg-[#0A2A5E] hover:bg-[#061C3F] text-[#FAFAF8] px-8 py-4 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 group"
+            className="inline-flex items-center gap-2.5 bg-[#0B2345] hover:bg-[#071A35] text-[#FAF9F6] px-8 py-4 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 group"
           >
-            <Scissors className="w-4 h-4 text-[#C8102E]" />
+            <Scissors className="w-4 h-4 text-[#B59460]" />
             <span>{t('requestCustomCTA')}</span>
-            <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform text-[#C8102E]" />
+            <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform text-[#B59460]" />
           </button>
           
           <p className="text-xs text-[#667085] mt-3">

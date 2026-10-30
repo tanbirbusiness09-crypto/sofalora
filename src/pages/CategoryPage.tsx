@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter } from '../context/RouterContext';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { useCatalog } from '../context/CatalogContext';
 import { FilterState, SortOption, Category } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { CategoryHero } from '../components/PLP/CategoryHero';
@@ -9,59 +9,6 @@ import { ProductFilters } from '../components/PLP/ProductFilters';
 import { ProductSortToolbar } from '../components/PLP/ProductSortToolbar';
 import { ProductGrid } from '../components/PLP/ProductGrid';
 import { Calendar, Phone } from 'lucide-react';
-
-// Category-specific subcategories for interactive hero pills
-const CATEGORY_SUBCATEGORIES: Record<string, { slug: string; name: { en: string; ar: string } }[]> = {
-  'sofas': [
-    { slug: 'three-seater', name: { en: 'Three-Seater', ar: 'ثلاثة مقاعد' } },
-    { slug: 'two-seater', name: { en: 'Two-Seater', ar: 'مقعدان' } },
-    { slug: 'l-shape', name: { en: 'L-Shape', ar: 'تصميم L' } },
-    { slug: 'modular', name: { en: 'Modular', ar: 'وحدات مرنة' } },
-    { slug: 'arabic-majlis', name: { en: 'Majlis', ar: 'مجلس' } },
-    { slug: 'accent-chair', name: { en: 'Accent Chairs', ar: 'كراسي مميزة' } },
-    { slug: 'pull-out', name: { en: 'Sofa Beds', ar: 'كنب سرير' } }
-  ],
-  'sectional-sofas': [
-    { slug: 'l-shape', name: { en: 'L-Shape', ar: 'تصميم L' } },
-    { slug: 'u-shape', name: { en: 'U-Shape', ar: 'تصميم U' } },
-    { slug: 'modular', name: { en: 'Modular', ar: 'وحدات مرنة' } }
-  ],
-  'majlis-sofas': [
-    { slug: 'arabic-majlis', name: { en: 'Arabic Majlis', ar: 'مجلس عربي' } },
-    { slug: 'floor-majlis', name: { en: 'Floor Seating', ar: 'جلسات أرضية' } }
-  ],
-  'accent-chairs': [
-    { slug: 'accent-chair', name: { en: 'Accent Chair', ar: 'كرسي مميز' } },
-    { slug: 'lounge-chair', name: { en: 'Lounge Chair', ar: 'كرسي استرخاء' } },
-    { slug: 'recliner', name: { en: 'Recliner', ar: 'كرسي مريح' } }
-  ],
-  'sofa-beds': [
-    { slug: 'pull-out', name: { en: 'Pull-Out', ar: 'قابل للسحب' } },
-    { slug: 'storage-sofa', name: { en: 'Storage Sofa', ar: 'كنبة بتخزين' } }
-  ],
-  'blackout-curtains': [
-    { slug: 'triple-weave', name: { en: 'Triple Weave', ar: 'نسيج ثلاثي' } },
-    { slug: 'thermal-blackout', name: { en: 'Thermal Velvet', ar: 'مخمل حراري' } },
-    { slug: 'linen-blackout', name: { en: 'Linen Blackout', ar: 'كتان معتم' } }
-  ],
-  'curtains': [
-    { slug: 'velvet', name: { en: 'Heritage Velvet', ar: 'مخمل ملكي' } },
-    { slug: 'linen', name: { en: 'Belgian Linen', ar: 'كتان بلجيكي' } },
-    { slug: 'jacquard', name: { en: 'Royal Jacquard', ar: 'جاكار مطرز' } }
-  ],
-  'sheer-curtains': [
-    { slug: 'organza', name: { en: 'Italian Organza', ar: 'أورجانزا إيطالي' } },
-    { slug: 'linen-sheer', name: { en: 'Linen Texture', ar: 'شيفون كتاني' } },
-    { slug: 'lace', name: { en: 'Lace Detail', ar: 'تفاصيل دانتيل' } }
-  ],
-  'custom-curtains': [
-    { slug: 's-wave', name: { en: 'Bespoke S-Wave', ar: 'انسيابية ويف' } },
-    { slug: 'couture', name: { en: 'Couture Tailoring', ar: 'خياطة كوتور' } }
-  ],
-  'ready-made-curtains': [
-    { slug: 'eyelet', name: { en: 'Eyelet Panels', ar: 'ستائر حلقات جاهزة' } }
-  ]
-};
 
 const INITIAL_FILTERS: FilterState = {
   categories: [],
@@ -84,6 +31,7 @@ interface CategoryPageProps {
 export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) => {
   const { language } = useShop();
   const { route } = useRouter();
+  const { categories: CATEGORIES, productsInCategory, subcategoriesOf, products: PRODUCTS } = useCatalog();
 
   // Determine current category slug from props or router
   const categorySlug = propSlug || route.params.slug || 'sofas';
@@ -96,11 +44,11 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
         slug: categorySlug,
         title: { en: 'Sofas & Curtains', ar: 'الكنب والستائر' },
         subtitle: { en: 'Explore tailored seating and window couture', ar: 'تصفح الكنب والستائر المفصلة' },
-        itemCount: 20,
+        itemCount: 0,
         image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop'
       }
     );
-  }, [categorySlug]);
+  }, [categorySlug, CATEGORIES]);
 
   const [activeSubcategory, setActiveSubcategory] = useState<string>('all');
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -109,24 +57,14 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   // Available subcategories for this category
-  const subcategories = CATEGORY_SUBCATEGORIES[categorySlug] || [];
+  // Sub-category pills come from the admin category tree (children of this category).
+  const subcategories = subcategoriesOf(categorySlug);
 
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
     // 1. Must match current category
-    let result = PRODUCTS.filter((p) => {
-      // If product categorySlug equals this category
-      if (p.categorySlug === categorySlug) return true;
-      // Aggregation pages: all sofas
-      if (categorySlug === 'sofas') {
-        return ['sofas', 'sectional-sofas', 'majlis-sofas', 'accent-chairs', 'sofa-beds'].includes(p.categorySlug);
-      }
-      // Or if this category is 'curtains', also include other curtain sub-types
-      if (categorySlug === 'curtains') {
-        return ['curtains', 'blackout-curtains', 'sheer-curtains', 'custom-curtains', 'ready-made-curtains'].includes(p.categorySlug);
-      }
-      return false;
-    });
+    // (includes products from its admin sub-categories)
+    let result = productsInCategory(categorySlug);
 
     // 1b. Sidebar category filter
     if (filters.categories.length > 0) {
@@ -230,7 +168,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
     }
 
     return result;
-  }, [categorySlug, activeSubcategory, filters, sortOption]);
+  }, [PRODUCTS, productsInCategory, categorySlug, activeSubcategory, filters, sortOption]);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);
@@ -301,7 +239,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
             {/* Installation & Guarantee Banner */}
             <div className="mt-12 bg-white rounded-2xl border border-[#E7E2D8] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div className="space-y-1 text-center sm:text-start">
-                <span className="text-xs uppercase font-semibold text-[#0A2A5E] tracking-wider">
+                <span className="text-xs uppercase font-semibold text-[#0B2345] tracking-wider">
                   {language === 'ar' ? 'تفصيل وتركيب دقيق' : 'Custom Sizing & Precision Fitting'}
                 </span>
                 <h3 className="text-lg sm:text-xl font-serif font-bold text-[#101828]">
@@ -318,7 +256,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug: propSlug }) =>
 
               <a
                 href="tel:+966500000000"
-                className="px-5 py-3 rounded-xl bg-[#0A2A5E] hover:bg-[#061C3F] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
+                className="px-5 py-3 rounded-xl bg-[#0B2345] hover:bg-[#071A35] text-white text-xs font-semibold transition-colors flex items-center gap-2 shrink-0 shadow-sm"
               >
                 <Calendar className="w-4 h-4" />
                 <span>{language === 'ar' ? 'طلب زيارة فني مقاسات' : 'Book Measurement Visit'}</span>

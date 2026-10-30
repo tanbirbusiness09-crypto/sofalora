@@ -51,11 +51,11 @@ const ROOMS = [
 ];
 
 const PRICE_BRACKETS = [
-  { label: { en: 'Under 750 SAR', ar: 'أقل من ٧٥٠ ر.س' }, min: 0, max: 750 },
-  { label: { en: '750 – 1,500 SAR', ar: '٧٥٠ – ١,٥٠٠ ر.س' }, min: 750, max: 1500 },
-  { label: { en: '1,500 – 3,000 SAR', ar: '١,٥٠٠ – ٣,٠٠٠ ر.س' }, min: 1500, max: 3000 },
-  { label: { en: '3,000 – 5,000 SAR', ar: '٣,٠٠٠ – ٥,٠٠٠ ر.س' }, min: 3000, max: 5000 },
-  { label: { en: '5,000+ SAR', ar: 'أكثر من ٥,٠٠٠ ر.س' }, min: 5000, max: 25000 }
+  { label: { en: 'Under ⃁ 750', ar: 'أقل من ٧٥٠ ⃁' }, min: 0, max: 750 },
+  { label: { en: '⃁ 750 – 1,500', ar: '٧٥٠ – ١,٥٠٠ ⃁' }, min: 750, max: 1500 },
+  { label: { en: '⃁ 1,500 – 3,000', ar: '١,٥٠٠ – ٣,٠٠٠ ⃁' }, min: 1500, max: 3000 },
+  { label: { en: '⃁ 3,000 – 5,000', ar: '٣,٠٠٠ – ٥,٠٠٠ ⃁' }, min: 3000, max: 5000 },
+  { label: { en: '⃁ 5,000+', ar: 'أكثر من ٥,٠٠٠ ⃁' }, min: 5000, max: 25000 }
 ];
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -146,7 +146,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             {language === 'ar' ? 'تصفية المنتجات' : 'Filters'}
           </span>
           {activeFiltersCount > 0 && (
-            <span className="px-2 py-0.5 rounded-full bg-[#0A2A5E] text-white text-xs font-semibold">
+            <span className="px-2 py-0.5 rounded-full bg-[#0B2345] text-white text-xs font-semibold">
               {activeFiltersCount}
             </span>
           )}
@@ -156,7 +156,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={onResetFilters}
-            className="text-xs text-[#667085] hover:text-[#0A2A5E] flex items-center gap-1 transition-colors"
+            className="text-xs text-[#667085] hover:text-[#0B2345] flex items-center gap-1 transition-colors"
           >
             <RotateCcw className="w-3 h-3" />
             <span>{language === 'ar' ? 'إعادة ضبط' : 'Reset All'}</span>
@@ -179,27 +179,27 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
         {/* Quick Toggles: In Stock & On Sale */}
         <div className="pt-2 space-y-2.5">
           <label className="flex items-center justify-between text-xs text-[#344054] cursor-pointer group">
-            <span className="group-hover:text-[#0A2A5E] transition-colors">
+            <span className="group-hover:text-[#0B2345] transition-colors">
               {language === 'ar' ? 'المتوفر في المخزون فقط' : 'In Stock Only'}
             </span>
             <input
               type="checkbox"
               checked={filters.inStockOnly}
               onChange={(e) => onFilterChange({ ...filters, inStockOnly: e.target.checked })}
-              className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+              className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
             />
           </label>
 
           <label className="flex items-center justify-between text-xs text-[#344054] cursor-pointer group">
-            <span className="flex items-center gap-1.5 group-hover:text-[#0A2A5E] transition-colors">
-              <Sparkles className="w-3 h-3 text-[#0A2A5E]" />
+            <span className="flex items-center gap-1.5 group-hover:text-[#0B2345] transition-colors">
+              <Sparkles className="w-3 h-3 text-[#0B2345]" />
               {language === 'ar' ? 'العروض والتخفيضات فقط' : 'On Sale Items Only'}
             </span>
             <input
               type="checkbox"
               checked={filters.onSaleOnly}
               onChange={(e) => onFilterChange({ ...filters, onSaleOnly: e.target.checked })}
-              className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+              className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
             />
           </label>
         </div>
@@ -229,7 +229,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => handleCategoryToggle(cat.slug)}
-                        className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+                        className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
                       />
                       <span>{cat.title[language]}</span>
                     </div>
@@ -248,7 +248,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             onClick={() => toggleSection('price')}
             className="w-full flex items-center justify-between text-sm font-bold text-[#101828] mb-3"
           >
-            <span>{language === 'ar' ? 'نطاق السعر (ر.س)' : 'Price Range (SAR)'}</span>
+            <span>{language === 'ar' ? 'نطاق السعر (⃁)' : 'Price Range (⃁)'}</span>
             {openSections.price ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
 
@@ -263,8 +263,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     onClick={() => handlePriceBracketClick(b.min, b.max)}
                     className={`px-2.5 py-1.5 text-[11px] rounded-lg border transition-all truncate ${
                       filters.priceRange[0] === b.min && filters.priceRange[1] === b.max
-                        ? 'bg-[#0A2A5E] text-white border-[#0A2A5E] font-semibold'
-                        : 'border-[#E1DCD2] text-[#475467] hover:border-[#0A2A5E]'
+                        ? 'bg-[#0B2345] text-white border-[#0B2345] font-semibold'
+                        : 'border-[#E1DCD2] text-[#475467] hover:border-[#0B2345]'
                     }`}
                   >
                     {b.label[language]}
@@ -274,8 +274,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
               {/* Slider / Range Labels */}
               <div className="flex items-center justify-between text-xs text-[#667085] pt-1">
-                <span>{filters.priceRange[0]} SAR</span>
-                <span>{filters.priceRange[1]} SAR</span>
+                <span>⃁ {filters.priceRange[0]}</span>
+                <span>⃁ {filters.priceRange[1]}</span>
               </div>
               <input
                 type="range"
@@ -289,7 +289,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     priceRange: [filters.priceRange[0], Number(e.target.value)]
                   })
                 }
-                className="w-full h-1.5 bg-[#E1DCD2] rounded-lg appearance-none cursor-pointer accent-[#0A2A5E] mt-2"
+                className="w-full h-1.5 bg-[#E1DCD2] rounded-lg appearance-none cursor-pointer accent-[#0B2345] mt-2"
               />
             </div>
           )}
@@ -319,7 +319,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleLightControlToggle(lc.id)}
-                      className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
                     />
                     <span>{lc.label[language]}</span>
                   </label>
@@ -352,7 +352,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     title={col.name[language]}
                     className={`flex flex-col items-center gap-1 p-2 rounded-lg border transition-all ${
                       isSelected
-                        ? 'border-[#0A2A5E] bg-[#F7F5F0] shadow-sm'
+                        ? 'border-[#0B2345] bg-[#F7F5F0] shadow-sm'
                         : 'border-[#E5E1D8] hover:border-[#B8B2A8]'
                     }`}
                   >
@@ -400,7 +400,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleFabricToggle(fab.id)}
-                      className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
                     />
                     <span>{fab.label[language]}</span>
                   </label>
@@ -434,7 +434,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleRoomToggle(rm.id)}
-                      className="w-4 h-4 rounded text-[#0A2A5E] focus:ring-[#0A2A5E] accent-[#0A2A5E] cursor-pointer"
+                      className="w-4 h-4 rounded text-[#0B2345] focus:ring-[#0B2345] accent-[#0B2345] cursor-pointer"
                     />
                     <span>{rm.label[language]}</span>
                   </label>
@@ -451,7 +451,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <button
             type="button"
             onClick={onCloseMobileDrawer}
-            className="w-full py-3.5 bg-[#0A2A5E] hover:bg-[#061C3F] text-white font-semibold text-sm rounded-xl transition-colors shadow-md"
+            className="w-full py-3.5 bg-[#0B2345] hover:bg-[#071A35] text-white font-semibold text-sm rounded-xl transition-colors shadow-md"
           >
             {language === 'ar'
               ? `عرض النتائج (${totalResultsCount})`

@@ -3,9 +3,11 @@ import { motion } from 'motion/react';
 import { ArrowRight, ArrowLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import { CURATED_COLLECTION } from '../../data/editorialData';
 import { useShop } from '../../context/LanguageContext';
+import { useSectionCms } from '../../context/WebsiteContext';
 
 export const CuratedCollectionSection: React.FC = () => {
   const { language, direction, openConsultation } = useShop();
+  const cms = useSectionCms();
   const isRTL = direction === 'rtl';
 
   return (
@@ -22,7 +24,7 @@ export const CuratedCollectionSection: React.FC = () => {
             <span className="h-px w-10 sm:w-20 bg-[#D0C9BC]/80" aria-hidden="true" />
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#101828] font-normal tracking-tight">
-            {CURATED_COLLECTION.title[language]}
+            {cms.title(CURATED_COLLECTION.title[language])}
           </h2>
           <p className="mt-2 text-xs sm:text-sm md:text-base text-[#475467] max-w-xl mx-auto font-light">
             {CURATED_COLLECTION.description[language]}
@@ -65,7 +67,7 @@ export const CuratedCollectionSection: React.FC = () => {
 
               <button
                 onClick={openConsultation}
-                className="shrink-0 px-4 py-2 rounded-lg bg-[#0A2A5E] hover:bg-[#061C3F] text-[#E8D9B6] hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
+                className="shrink-0 px-4 py-2 rounded-lg bg-[#0B2345] hover:bg-[#071A35] text-[#E8D9B6] hover:text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
               >
                 <span>{CURATED_COLLECTION.cta[language]}</span>
                 {isRTL ? <ArrowLeft className="w-3 h-3" /> : <ArrowRight className="w-3 h-3" />}
@@ -102,14 +104,14 @@ export const CuratedCollectionSection: React.FC = () => {
                   <span className="text-[10px] sm:text-xs font-semibold text-[#8A6A2F] tracking-wider uppercase">
                     {item.tag[language]}
                   </span>
-                  <h4 className="text-xs sm:text-sm font-semibold text-[#101828] group-hover:text-[#0A2A5E] transition-colors truncate mt-0.5">
+                  <h4 className="text-xs sm:text-sm font-semibold text-[#101828] group-hover:text-[#0B2345] transition-colors truncate mt-0.5">
                     {item.title[language]}
                   </h4>
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#F1EDE5]">
                     <span className="text-xs font-bold text-[#101828]">
                       {item.price}
                     </span>
-                    <span className="text-xs text-[#667085] group-hover:text-[#0A2A5E] font-medium flex items-center gap-1 transition-colors">
+                    <span className="text-xs text-[#667085] group-hover:text-[#0B2345] font-medium flex items-center gap-1 transition-colors">
                       <span>{language === 'ar' ? 'عرض النمط' : 'View Style'}</span>
                       {isRTL ? (
                         <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useShop } from '../context/LanguageContext';
 import { useRouter } from '../context/RouterContext';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { useCatalog } from '../context/CatalogContext';
 import { FilterState, SortOption, Product } from '../types';
 import { Breadcrumbs } from '../components/PLP/Breadcrumbs';
 import { CategoryHero } from '../components/PLP/CategoryHero';
@@ -37,6 +37,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
 }) => {
   const { language } = useShop();
   const { route } = useRouter();
+  const { products: PRODUCTS, categories: CATEGORIES } = useCatalog();
 
   const collectionSlug = propCollectionSlug || route.params.slug;
 
@@ -64,10 +65,10 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
         };
       case 'offers':
         return {
-          title: { en: 'Special Offers & Seasonal Sales', ar: 'عروض حصرية وتخفيضات موسمية' },
+          title: { en: 'Current Offers', ar: 'العروض الحالية' },
           subtitle: {
-            en: 'Enjoy up to 20% off selected sofas, majlis seating, and tailored curtains for a limited period.',
-            ar: 'تمتع بخصومات حصرية تصل إلى ٢٠٪ على نخبة مختارة من الكنب والمجالس والستائر المفصلة لفترة محدودة.'
+            en: 'Pieces currently reduced in our catalogue. Prices shown are the prices you pay.',
+            ar: 'قطع مخفّضة حالياً في الكتالوج. الأسعار المعروضة هي الأسعار النهائية.'
           },
           image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop',
           breadcrumb: { en: 'Special Offers', ar: 'العروض الحصرية' }
@@ -209,7 +210,7 @@ export const SpecialListingPage: React.FC<SpecialListingPageProps> = ({
     }
 
     return baseList;
-  }, [type, collectionSlug, filters, sortOption]);
+  }, [PRODUCTS, type, collectionSlug, filters, sortOption]);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);

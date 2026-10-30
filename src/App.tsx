@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import { LanguageProvider } from './context/LanguageContext';
 import { RouterProvider, useRouter } from './context/RouterContext';
+import { CatalogProvider } from './context/CatalogContext';
+import { WebsiteProvider } from './context/WebsiteContext';
+import { AuthProvider } from './context/AuthContext';
 import { MainHeader } from './components/Header/MainHeader';
-import { Navigation } from './components/Header/Navigation';
-import { MobileDrawer } from './components/Header/MobileDrawer';
+import { SidebarNav, SidebarDrawer } from './components/Layout/SidebarNav';
 import { Footer } from './components/Footer/Footer';
 
 // Pages
@@ -21,6 +23,8 @@ import { OrdersPage } from './pages/OrdersPage';
 import { OrderDetailsPage } from './pages/OrderDetailsPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { AccountPage } from './pages/AccountPage';
+import { AuthPage } from './pages/AuthPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 // Modals & Overlays
@@ -121,26 +125,43 @@ const MainLayout: React.FC = () => {
     return <NotFoundPage />;
   };
 
+  // Sign-in, register and forgot-password use their own focused layout (no site header/footer).
+  const authPath = route.path.toLowerCase().replace(/\/+$/, '');
+  if (authPath === '/login' || authPath === '/register' || authPath === '/forgot-password') {
+    return (
+      <div className="selection:bg-[#B59460]/25 selection:text-[#101828]">
+        {authPath === '/forgot-password' ? (
+          <ForgotPasswordPage />
+        ) : (
+          <AuthPage mode={authPath === '/register' ? 'register' : 'login'} />
+        )}
+        <ToastContainer />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF8] text-[#101828] selection:bg-[#C8102E]/25 selection:text-[#101828] antialiased">
+    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#0B2345] selection:bg-[#B59460]/25 selection:text-[#101828] antialiased">
       {/* 1. Header Area (Main Header, Mega Menu, Mobile Drawer) */}
-      <header className="sticky top-0 z-40 bg-[#FAFAF8]/95 backdrop-blur-md shadow-xs transition-shadow">
+      <header className="sticky top-0 z-40 bg-gradient-to-r from-[#0B2345] via-[#0C264B] to-[#0E2A52] border-b border-[#B59460]/55">
         <MainHeader onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
-        <Navigation />
       </header>
 
-      {/* Mobile Drawer */}
-      <MobileDrawer
+      {/* Mobile/tablet: the sidebar becomes a slide-out drawer */}
+      <SidebarDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* Main Content Area: Routed Page with transition */}
-      <main className="flex-1">
-        <div key={route.path} className="animate-in fade-in duration-200">
-          {renderCurrentPage()}
-        </div>
-      </main>
+      {/* Desktop: dark-navy sidebar + routed page */}
+      <div className="flex flex-1 items-start">
+        <SidebarNav />
+        <main className="flex-1 min-w-0 overflow-x-clip lg:ps-4">
+          <div key={route.path} className="sf-fade">
+            {renderCurrentPage()}
+          </div>
+        </main>
+      </div>
 
       {/* Footer */}
       <Footer />
@@ -163,7 +184,13 @@ export default function App() {
   return (
     <RouterProvider>
       <LanguageProvider>
-        <MainLayout />
+        <AuthProvider>
+          <CatalogProvider>
+            <WebsiteProvider>
+              <MainLayout />
+            </WebsiteProvider>
+          </CatalogProvider>
+        </AuthProvider>
       </LanguageProvider>
     </RouterProvider>
   );

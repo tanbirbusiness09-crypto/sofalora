@@ -24,7 +24,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
     >
       <Link
         href="/"
-        className="flex items-center gap-1 text-[#475467] hover:text-[#0A2A5E] transition-colors"
+        className="flex items-center gap-1 text-[#475467] hover:text-[#0B2345] transition-colors"
       >
         <Home className="w-3.5 h-3.5" />
         <span>{language === 'ar' ? 'الرئيسية' : 'Home'}</span>
@@ -38,7 +38,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' 
             {item.href && !isLast ? (
               <Link
                 href={item.href}
-                className="text-[#475467] hover:text-[#0A2A5E] transition-colors truncate max-w-[160px] sm:max-w-none"
+                className="text-[#475467] hover:text-[#0B2345] transition-colors truncate max-w-[160px] sm:max-w-none"
               >
                 {item.label[language]}
               </Link>

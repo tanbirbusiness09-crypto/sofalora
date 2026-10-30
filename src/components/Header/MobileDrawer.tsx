@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/LanguageContext';
+import { useAccountLink } from '../../context/AuthContext';
 import {
   X,
   Globe,
@@ -15,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Link } from '../../context/RouterContext';
 import { BrandLogo } from '../UI/BrandLogo';
-import { CATEGORIES } from '../../data/products';
+import { useCatalog } from '../../context/CatalogContext';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -24,6 +25,8 @@ interface MobileDrawerProps {
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) => {
   const { language, direction, setLanguage, t, openConsultation, wishlistCount } = useShop();
+  const { categories: CATEGORIES } = useCatalog();
+  const accountLink = useAccountLink(language);
 
   const [expandedSection, setExpandedSection] = useState<string | null>('sofas');
 
@@ -65,7 +68,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
       <div
         className={`fixed inset-y-0 ${
           isRtl ? 'end-0' : 'start-0'
-        } max-w-sm w-full bg-[#FAFAF8] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
+        } max-w-sm w-full bg-[#FAF9F6] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
           isRtl ? 'slide-in-from-right' : 'slide-in-from-left'
         }`}
       >
@@ -85,9 +88,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
         </div>
 
         {/* Language Bar */}
-        <div className="brand-gradient-dark text-[#FAFAF8] px-4 py-2.5 flex items-center justify-between shrink-0">
+        <div className="brand-gradient-dark text-[#FAF9F6] px-4 py-2.5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2 text-xs font-medium">
-            <Globe className="w-4 h-4 text-[#C6A15B]" />
+            <Globe className="w-4 h-4 text-[#B59460]" />
             <span>{isAr ? 'اللغة / Language' : 'Language / اللغة'}</span>
           </div>
           <div className="flex items-center gap-1 bg-white/10 p-0.5 rounded-full border border-white/15">
@@ -95,7 +98,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               type="button"
               onClick={() => setLanguage('en')}
               className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                language === 'en' ? 'bg-[#C6A15B] text-[#061C3F] font-bold shadow-xs' : 'text-[#D3CCC0]'
+                language === 'en' ? 'bg-[#B59460] text-[#071A35] font-bold shadow-xs' : 'text-[#D3CCC0]'
               }`}
             >
               EN
@@ -104,7 +107,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               type="button"
               onClick={() => setLanguage('ar')}
               className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                language === 'ar' ? 'bg-[#C6A15B] text-[#061C3F] font-bold shadow-xs' : 'text-[#D3CCC0]'
+                language === 'ar' ? 'bg-[#B59460] text-[#071A35] font-bold shadow-xs' : 'text-[#D3CCC0]'
               }`}
             >
               عربي
@@ -118,30 +121,30 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
           {/* Quick Direct Links */}
           <div className="grid grid-cols-2 gap-2 pb-2">
             <Link
-              href="/account"
+              href={accountLink.href}
               onClick={onClose}
-              className="min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0A2A5E] transition-colors shadow-2xs"
+              className="min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0B2345] transition-colors shadow-2xs"
             >
-              <User className="w-4 h-4 text-[#0A2A5E]" />
-              <span>{isAr ? 'حسابي' : 'My Account'}</span>
+              <User className="w-4 h-4 text-[#0B2345]" />
+              <span className="truncate">{accountLink.signedIn ? accountLink.label : accountLink.href.startsWith('/login') ? (isAr ? 'تسجيل الدخول' : 'Sign in') : (isAr ? 'حسابي' : 'My Account')}</span>
             </Link>
 
             <Link
               href="/orders"
               onClick={onClose}
-              className="min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0A2A5E] transition-colors shadow-2xs"
+              className="min-h-[44px] flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0B2345] transition-colors shadow-2xs"
             >
-              <PackageCheck className="w-4 h-4 text-[#0A2A5E]" />
+              <PackageCheck className="w-4 h-4 text-[#0B2345]" />
               <span>{isAr ? 'طلباتي' : 'My Orders'}</span>
             </Link>
 
             <Link
               href="/wishlist"
               onClick={onClose}
-              className="min-h-[44px] flex items-center justify-between px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0A2A5E] transition-colors shadow-2xs"
+              className="min-h-[44px] flex items-center justify-between px-3 py-2.5 rounded-xl bg-white border border-[#E5E1D8] text-xs font-bold text-[#101828] hover:border-[#0B2345] transition-colors shadow-2xs"
             >
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-[#0A2A5E]" />
+                <Heart className="w-4 h-4 text-[#0B2345]" />
                 <span>{isAr ? 'المفضلة' : 'Wishlist'}</span>
               </div>
               {wishlistCount > 0 && (
@@ -175,7 +178,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               className="w-full min-h-[48px] px-4 py-3 flex items-center justify-between text-start font-bold text-sm text-[#101828]"
             >
               <div className="flex items-center gap-2.5">
-                <Armchair className="w-4 h-4 text-[#0A2A5E]" />
+                <Armchair className="w-4 h-4 text-[#0B2345]" />
                 <span>{t('navSofas')}</span>
               </div>
               <ChevronDown
@@ -192,13 +195,17 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
+                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF9F6] border border-[#E6E1D6] hover:border-[#0B2345] hover:shadow-xs transition-all"
                   >
-                    <img
-                      src={getCategoryImage(item.slug)}
-                      alt={item.label}
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
-                    />
+                    {getCategoryImage(item.slug) ? (
+                      <img
+                        src={getCategoryImage(item.slug)}
+                        alt={item.label}
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                      />
+                    ) : (
+                      <span aria-hidden="true" className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 border border-[#E5E1D8] bg-[#EFEBE3]" />
+                    )}
                     <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
                       {item.label}
                     </span>
@@ -216,7 +223,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               className="w-full min-h-[48px] px-4 py-3 flex items-center justify-between text-start font-bold text-sm text-[#101828]"
             >
               <div className="flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 text-[#0A2A5E]" />
+                <Sparkles className="w-4 h-4 text-[#0B2345]" />
                 <span>{t('navCurtains')}</span>
               </div>
               <ChevronDown
@@ -233,13 +240,17 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAFAF8] border border-[#E6E1D6] hover:border-[#0A2A5E] hover:shadow-xs transition-all"
+                    className="flex items-center gap-2.5 p-2 rounded-xl bg-[#FAF9F6] border border-[#E6E1D6] hover:border-[#0B2345] hover:shadow-xs transition-all"
                   >
-                    <img
-                      src={getCategoryImage(item.slug)}
-                      alt={item.label}
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
-                    />
+                    {getCategoryImage(item.slug) ? (
+                      <img
+                        src={getCategoryImage(item.slug)}
+                        alt={item.label}
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-[#E5E1D8]"
+                      />
+                    ) : (
+                      <span aria-hidden="true" className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 border border-[#E5E1D8] bg-[#EFEBE3]" />
+                    )}
                     <span className="text-[11px] font-semibold text-[#101828] leading-tight line-clamp-2">
                       {item.label}
                     </span>
@@ -251,7 +262,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
 
           {/* Atelier CTA Card */}
           <div className="brand-gradient-soft border border-[#E6E1D6] rounded-2xl p-4 text-start">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#0A2A5E] uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#0B2345] uppercase tracking-wider mb-1">
               <Scissors className="w-4 h-4" />
               <span>{isAr ? 'أتيليه سوفالورا' : 'Sofalora Atelier'}</span>
             </div>

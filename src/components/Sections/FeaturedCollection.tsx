@@ -1,16 +1,18 @@
 import React from 'react';
 import { useShop } from '../../context/LanguageContext';
+import { useSectionCms } from '../../context/WebsiteContext';
 import { ArrowRight, ArrowLeft, CheckCircle2, Sparkles, Scissors, Wrench } from 'lucide-react';
 
 export const FeaturedCollection: React.FC = () => {
   const { language, direction, t, openConsultation } = useShop();
+  const cms = useSectionCms();
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <section className="py-16 sm:py-24 bg-[#0A2A5E] text-[#FAFAF8] relative overflow-hidden">
+    <section className="py-16 sm:py-24 bg-[#0B2345] text-[#FAF9F6] relative overflow-hidden">
       {/* Warm Ambient Gold Glow in Background */}
-      <div className="absolute -top-32 end-0 w-[500px] h-[500px] bg-[#C8102E]/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-32 start-0 w-[500px] h-[500px] bg-[#C8102E]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -top-32 end-0 w-[500px] h-[500px] bg-[#B59460]/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-32 start-0 w-[500px] h-[500px] bg-[#B59460]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -31,14 +33,14 @@ export const FeaturedCollection: React.FC = () => {
               {/* Floating Material Spec Pill */}
               <div className="absolute bottom-5 start-5 end-5 bg-black/60 backdrop-blur-md border border-white/15 p-3.5 rounded-2xl flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[#C8102E] font-bold block text-[11px] uppercase tracking-wider">
+                  <span className="text-[#B59460] font-bold block text-[11px] uppercase tracking-wider">
                     {language === 'ar' ? 'أقمشة مختارة خصيصاً للمملكة' : 'Specially Curated For Saudi Climate'}
                   </span>
                   <span className="text-white/90 text-xs">
                     {language === 'ar' ? 'حرير، مخمل معزول، وكتان نقي فائق الجودة' : 'Cashmere Silks, Thermal Velvets & Pure Linen'}
                   </span>
                 </div>
-                <span className="w-8 h-8 rounded-full bg-[#C8102E] text-[#0A2A5E] flex items-center justify-center font-bold shrink-0 ms-2">
+                <span className="w-8 h-8 rounded-full bg-[#B59460] text-[#0B2345] flex items-center justify-center font-bold shrink-0 ms-2">
                   ✦
                 </span>
               </div>
@@ -49,30 +51,30 @@ export const FeaturedCollection: React.FC = () => {
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-start">
             
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F2937] border border-[#4B5563] text-[#E3C98F] text-xs font-bold tracking-widest uppercase">
-              <Sparkles className="w-3 h-3 text-[#C8102E]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F2937] border border-[#4B5563] text-[#D9C29A] text-xs font-bold tracking-widest uppercase">
+              <Sparkles className="w-3 h-3 text-[#B59460]" />
               <span>{t('featuredEyebrow')}</span>
             </div>
 
             {/* Titles */}
             <div className="space-y-2">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-serif-luxury tracking-tight leading-tight">
-                {t('featuredTitle')}
+                {cms.title(t('featuredTitle'))}
               </h2>
-              <p className="text-lg sm:text-xl font-medium text-[#C8102E]">
+              <p className="text-lg sm:text-xl font-medium text-[#B59460]">
                 {t('featuredCollectionName')}
               </p>
             </div>
 
             {/* Description */}
             <p className="text-[#A8A29A] text-sm sm:text-base leading-relaxed">
-              {t('featuredDescription')}
+              {cms.subtitle(t('featuredDescription'))}
             </p>
 
             {/* 3 Pillars */}
             <div className="space-y-4 pt-2">
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#C8102E] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#B59460] shrink-0 mt-0.5">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
@@ -86,7 +88,7 @@ export const FeaturedCollection: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#C8102E] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#B59460] shrink-0 mt-0.5">
                   <Scissors className="w-4 h-4" />
                 </div>
                 <div>
@@ -100,7 +102,7 @@ export const FeaturedCollection: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#C8102E] shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-xl bg-[#10294A] border border-[#344054] flex items-center justify-center text-[#B59460] shrink-0 mt-0.5">
                   <Wrench className="w-4 h-4" />
                 </div>
                 <div>
@@ -118,7 +120,7 @@ export const FeaturedCollection: React.FC = () => {
             <div className="pt-3 flex flex-wrap items-center gap-4">
               <a
                 href="#bestsellers"
-                className="inline-flex items-center gap-2 bg-[#C8102E] hover:bg-[#E3C98F] text-[#0A2A5E] px-7 py-3.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                className="inline-flex items-center gap-2 bg-[#B59460] hover:bg-[#D9C29A] text-[#0B2345] px-7 py-3.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 <span>{t('featuredCTA')}</span>
                 <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />

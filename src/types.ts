@@ -165,6 +165,17 @@ export interface Order {
   total: number;
   grandTotal?: number;
   notes?: string;
+  /** Admin order number (same as id for API orders). */
+  orderNumber?: string;
+  /** Raw admin status, payment status and currency (API orders). */
+  serverStatus?: string;
+  paymentStatus?: string;
+  currency?: string;
+  /** 'api' = placed/tracked against the commerce API. */
+  source?: 'api';
+  updatedAt?: string;
+  /** Placed by / loaded from a signed-in customer account (removed from this browser on sign-out). */
+  accountOrder?: boolean;
 }
 
 export interface CreateOrderInput {
@@ -183,11 +194,19 @@ export interface CreateOrderInput {
   total?: number;
   grandTotal?: number;
   notes?: string;
+  /** Reused on retries so the API never creates a duplicate order. */
+  idempotencyKey?: string;
 }
 
 export interface PromoCode {
   code: string;
   discountPercent: number;
+  /** From POST /storefront/coupon/validate. */
+  discountType?: 'percentage' | 'fixed';
+  discountValue?: number;
+  /** Discount the server returned for `validatedSubtotal`. */
+  discountAmount?: number;
+  validatedSubtotal?: number;
   description: BilingualText;
   minOrder?: number;
   isExpired?: boolean;

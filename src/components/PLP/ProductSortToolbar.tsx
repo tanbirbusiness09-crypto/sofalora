@@ -91,10 +91,10 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
             onClick={onOpenMobileFilters}
             className="lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F7F5F0] border border-[#D8D2C6] text-xs font-semibold text-[#101828] hover:bg-[#F2EEE7] transition-colors"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#0A2A5E]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#0B2345]" />
             <span>{language === 'ar' ? 'تصفية المنتجات' : 'Filters'}</span>
             {activeFiltersCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#0A2A5E] text-white text-[11px] flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-[#0B2345] text-white text-[11px] flex items-center justify-center">
                 {activeFiltersCount}
               </span>
             )}
@@ -124,7 +124,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
               id="sort-select"
               value={sortOption}
               onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="bg-[#FDFCFA] border border-[#D8D2C6] text-[#101828] text-xs rounded-lg px-2.5 py-2 font-medium focus:ring-[#0A2A5E] focus:border-[#0A2A5E] cursor-pointer outline-none"
+              className="bg-[#FDFCFA] border border-[#D8D2C6] text-[#101828] text-xs rounded-lg px-2.5 py-2 font-medium focus:ring-[#0B2345] focus:border-[#0B2345] cursor-pointer outline-none"
             >
               <option value="featured">
                 {language === 'ar' ? 'المقترح والمميز' : 'Featured & Recommended'}
@@ -155,7 +155,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
               title={language === 'ar' ? 'عرض شبكي' : 'Grid View'}
               className={`p-1.5 transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-[#0A2A5E] text-white'
+                  ? 'bg-[#0B2345] text-white'
                   : 'text-[#475467] hover:text-black hover:bg-[#EFEBE3]'
               }`}
             >
@@ -167,7 +167,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
               title={language === 'ar' ? 'عرض قائمة' : 'List View'}
               className={`p-1.5 transition-colors ${
                 viewMode === 'list'
-                  ? 'bg-[#0A2A5E] text-white'
+                  ? 'bg-[#0B2345] text-white'
                   : 'text-[#475467] hover:text-black hover:bg-[#EFEBE3]'
               }`}
             >
@@ -301,7 +301,7 @@ export const ProductSortToolbar: React.FC<ProductSortToolbarProps> = ({
           <button
             type="button"
             onClick={onResetFilters}
-            className="text-xs text-[#0A2A5E] hover:underline font-semibold ms-2"
+            className="text-xs text-[#0B2345] hover:underline font-semibold ms-2"
           >
             {language === 'ar' ? 'مسح الكل' : 'Clear All'}
           </button>

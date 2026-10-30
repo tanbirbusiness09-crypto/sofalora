@@ -2,10 +2,12 @@ import React from 'react';
 import { Home, LayoutGrid, Heart, ShoppingBag, User } from 'lucide-react';
 import { Link, useRouter } from '../../context/RouterContext';
 import { useShop } from '../../context/LanguageContext';
+import { useAccountLink } from '../../context/AuthContext';
 
 export const BottomTabBar: React.FC = () => {
   const { language, t, cartCount, wishlistCount, openCart } = useShop();
   const { pathname } = useRouter();
+  const accountLink = useAccountLink(language);
   const p = pathname.toLowerCase();
   const isAr = language === 'ar';
 
@@ -29,7 +31,7 @@ export const BottomTabBar: React.FC = () => {
         ? 'wishlist'
         : p === '/cart'
           ? 'cart'
-          : p === '/account' || p === '/orders' || p.startsWith('/orders/')
+          : p === '/account' || p === '/login' || p === '/register' || p === '/orders' || p.startsWith('/orders/')
             ? 'account'
             : null;
 
@@ -39,15 +41,15 @@ export const BottomTabBar: React.FC = () => {
 
   const badge = (count: number) =>
     count > 0 ? (
-      <span className="absolute -top-1.5 -end-2 min-w-[16px] h-4 px-1 rounded-full bg-[#C8102E] text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
+      <span className="absolute -top-1.5 -end-2 min-w-[16px] h-4 px-1 rounded-full bg-[#B59460] text-white text-[9px] font-extrabold flex items-center justify-center shadow-sm">
         {count > 99 ? '99+' : count}
       </span>
     ) : null;
 
   const tabClass = (key: string) => {
     const active = activeKey === key;
-    const color = active ? 'text-[#0A2A5E]' : 'text-[#98A2B3]';
-    return `relative flex-1 flex flex-col items-center gap-1 py-2 ${color} active:text-[#0A2A5E] transition-colors`;
+    const color = active ? 'text-[#0B2345]' : 'text-[#98A2B3]';
+    return `relative flex-1 flex flex-col items-center gap-1 py-2 ${color} active:text-[#0B2345] transition-colors`;
   };
   const tabLabel = (label: string, active: boolean) => (
     <span className={`text-[10px] leading-none font-semibold ${active ? 'font-bold' : ''}`}>
@@ -66,31 +68,31 @@ export const BottomTabBar: React.FC = () => {
         aria-label={isAr ? 'التنقل السفلي' : 'Bottom navigation'}
       >
         {/* Top accent line */}
-        <span className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C8102E]/60 to-transparent" />
+        <span className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#B59460]/60 to-transparent" />
 
         <div className="flex items-stretch px-1 max-w-lg mx-auto">
           {/* Home */}
           <Link href="/" className={tabClass('home')} aria-label={t('navHome')} aria-current={activeKey === 'home' ? 'page' : undefined}>
             <Home className={`w-5 h-5 ${activeKey === 'home' ? 'stroke-[2]' : 'stroke-[1.8]'}`} />
             {tabLabel(t('navHome'), activeKey === 'home')}
-            {activeKey === 'home' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
+            {activeKey === 'home' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#B59460]" />}
           </Link>
 
           {/* Shop */}
           <Link href="/shop" className={tabClass('shop')} aria-label={isAr ? 'تسوق' : 'Shop'} aria-current={activeKey === 'shop' ? 'page' : undefined}>
             <LayoutGrid className={`w-5 h-5 ${activeKey === 'shop' ? 'stroke-[2]' : 'stroke-[1.8]'}`} />
             {tabLabel(isAr ? 'تسوق' : 'Shop', activeKey === 'shop')}
-            {activeKey === 'shop' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
+            {activeKey === 'shop' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#B59460]" />}
           </Link>
 
           {/* Wishlist */}
           <Link href="/wishlist" className={tabClass('wishlist')} aria-label={t('wishlist')} aria-current={activeKey === 'wishlist' ? 'page' : undefined}>
             <span className="relative">
-              <Heart className={`w-5 h-5 ${activeKey === 'wishlist' ? 'stroke-[2] fill-[#0A2A5E]/10' : 'stroke-[1.8]'}`} />
+              <Heart className={`w-5 h-5 ${activeKey === 'wishlist' ? 'stroke-[2] fill-[#0B2345]/10' : 'stroke-[1.8]'}`} />
               {badge(wishlistCount)}
             </span>
             {tabLabel(t('wishlist'), activeKey === 'wishlist')}
-            {activeKey === 'wishlist' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
+            {activeKey === 'wishlist' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#B59460]" />}
           </Link>
 
           {/* Cart (opens drawer) */}
@@ -105,14 +107,14 @@ export const BottomTabBar: React.FC = () => {
               {badge(cartCount)}
             </span>
             {tabLabel(t('cart'), activeKey === 'cart')}
-            {activeKey === 'cart' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
+            {activeKey === 'cart' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#B59460]" />}
           </button>
 
       {/* Account / Orders */}
-      <Link href="/account" className={tabClass('account')} aria-label={t('account')} aria-current={activeKey === 'account' ? 'page' : undefined}>
+      <Link id="tabbar-account-link" href={accountLink.href} className={tabClass('account')} aria-label={accountLink.label} aria-current={activeKey === 'account' ? 'page' : undefined}>
             <User className={`w-5 h-5 ${activeKey === 'account' ? 'stroke-[2]' : 'stroke-[1.8]'}`} />
             {tabLabel(t('account'), activeKey === 'account')}
-            {activeKey === 'account' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#C8102E]" />}
+            {activeKey === 'account' && <span className="absolute bottom-0.5 w-4 h-0.5 rounded-full bg-[#B59460]" />}
           </Link>
         </div>
       </nav>

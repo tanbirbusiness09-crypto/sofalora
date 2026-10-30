@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
+import { useWebsite, cmsImage } from '../../context/WebsiteContext';
+import type { CmsBanner } from '../../lib/api';
 
 interface PromoSlide {
   id: string;
@@ -11,14 +13,15 @@ interface PromoSlide {
   href: string;
   image: string;
   theme: 'red' | 'navy' | 'gold';
+  showText?: boolean;
 }
 
 const PROMO_SLIDES: PromoSlide[] = [
   {
     id: 'sofa-sale',
-    eyebrow: { en: 'LIMITED TIME OFFER', ar: 'عرض لفترة محدودة' },
-    title: { en: 'Sofa Sale', ar: 'عرض الكنب' },
-    subtitle: { en: 'Up to 40% off premium sofas', ar: 'خصم يصل إلى ٤٠٪ على الكنب الفاخرة' },
+    eyebrow: { en: 'SOFA COLLECTION', ar: 'تشكيلة الكنب' },
+    title: { en: 'Sofas for Every Room', ar: 'كنب لكل غرفة' },
+    subtitle: { en: 'Premium sofas and sectionals for living and majlis', ar: 'كنب وزوايا فاخرة للمعيشة والمجالس' },
     cta: { en: 'Shop Now', ar: 'اشتر الآن' },
     href: '/category/sofas',
     image:
@@ -28,8 +31,8 @@ const PROMO_SLIDES: PromoSlide[] = [
   {
     id: 'blackout-curtains',
     eyebrow: { en: 'CUSTOM TAILORING', ar: 'خياطة بالمقاس' },
-    title: { en: '30% Off Blackout Curtains', ar: '٣٠٪ خصم على الستائر المعتمة' },
-    subtitle: { en: 'Free measurement at your home in Riyadh', ar: 'قياس مجاني في منزل بالرياض' },
+    title: { en: 'Blackout Curtains', ar: 'الستائر المعتمة' },
+    subtitle: { en: 'Made to measure for your windows in Riyadh', ar: 'مفصلة على مقاس نوافذك في الرياض' },
     cta: { en: 'Get Yours', ar: 'اطلب الآن' },
     href: '/category/blackout-curtains',
     image:
@@ -50,35 +53,54 @@ const PROMO_SLIDES: PromoSlide[] = [
 ];
 
 const themeStyles: Record<PromoSlide['theme'], string> = {
-  red: 'from-[#C8102E] via-[#a30c24] to-[#5c0714]',
-  navy: 'from-[#0A2A5E] via-[#061C3F] to-[#040F22]',
+  red: 'from-[#B59460] via-[#a30c24] to-[#5c0714]',
+  navy: 'from-[#0B2345] via-[#071A35] to-[#040F22]',
   gold: 'from-[#8A6A2F] via-[#6E5222] to-[#3d2d13]',
 };
 
 const imgFadeFrom: Record<PromoSlide['theme'], string> = {
-  red: 'from-[#C8102E]',
-  navy: 'from-[#0A2A5E]',
+  red: 'from-[#B59460]',
+  navy: 'from-[#0B2345]',
   gold: 'from-[#8A6A2F]',
 };
 
 const PROMO_INTERVAL = 5000;
+const THEMES: PromoSlide['theme'][] = ['red', 'navy', 'gold'];
+
+/** Admin "Hero Slides" (website.banners) -> promo slides. */
+function bannerToSlide(b: CmsBanner, i: number): PromoSlide {
+  const en = (v?: string) => (v ?? '').trim();
+  const both = (e?: string, a?: string) => ({ en: en(e) || en(a), ar: en(a) || en(e) });
+  return {
+    id: `cms-${i}`,
+    eyebrow: { en: '', ar: '' },
+    title: both(b.title_en, b.title_ar),
+    subtitle: both(b.sub_en, b.sub_ar),
+    cta: both(b.btn_text, b.btn_text_ar),
+    href: en(b.btn_url) || '/shop',
+    image: cmsImage(b.image),
+    theme: THEMES[i % THEMES.length],
+    showText: b.show_text !== false,
+  };
+}
 
 export const PromoSlider: React.FC = () => {
   const { language, direction } = useShop();
+  const { banners } = useWebsite();
+  const slides: PromoSlide[] = banners.length ? banners.map(bannerToSlide) : PROMO_SLIDES;
+  const count = slides.length;
   const [idx, setIdx] = useState(0);
   const [touchX, setTouchX] = useState<number | null>(null);
   const isRTL = direction === 'rtl';
 
   useEffect(() => {
-    const id = setInterval(
-      () => setIdx((i) => (i + 1) % PROMO_SLIDES.length),
-      PROMO_INTERVAL
-    );
+    setIdx((i) => (i < count ? i : 0));
+    if (count < 2) return;
+    const id = setInterval(() => setIdx((i) => (i + 1) % count), PROMO_INTERVAL);
     return () => clearInterval(id);
-  }, []);
+  }, [count]);
 
-  const go = (d: number) =>
-    setIdx((i) => (i + d + PROMO_SLIDES.length) % PROMO_SLIDES.length);
+  const go = (d: number) => setIdx((i) => (i + d + count) % count);
 
   return (
     <section
@@ -97,7 +119,7 @@ export const PromoSlider: React.FC = () => {
             setTouchX(null);
           }}
         >
-          {PROMO_SLIDES.map((slide, i) => {
+          {slides.map((slide, i) => {
             const active = i === idx;
             return (
               <div
@@ -109,10 +131,13 @@ export const PromoSlider: React.FC = () => {
                 }`}
               >
                 {/* Copy Block */}
+                {slide.showText !== false && (
                 <div className="relative z-10 flex-1 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-5">
-                  <span className="text-[10px] sm:text-xs font-extrabold tracking-[0.2em] uppercase text-white/85">
-                    {slide.eyebrow[language]}
-                  </span>
+                  {slide.eyebrow[language] && (
+                    <span className="text-[10px] sm:text-xs font-extrabold tracking-[0.2em] uppercase text-white/85">
+                      {slide.eyebrow[language]}
+                    </span>
+                  )}
 
                   <h2 className="mt-1.5 text-xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight">
                     {slide.title[language]}
@@ -122,6 +147,7 @@ export const PromoSlider: React.FC = () => {
                     {slide.subtitle[language]}
                   </p>
 
+                  {slide.cta[language] && (
                   <a
                     href={slide.href}
                     tabIndex={active ? 0 : -1}
@@ -134,10 +160,18 @@ export const PromoSlider: React.FC = () => {
                       <ArrowRight className="w-4 h-4" />
                     )}
                   </a>
+                  )}
                 </div>
+                )}
 
                 {/* Animated Poster Image (Ken Burns) */}
-                <div className="hidden sm:block w-[36%] lg:w-[32%] relative overflow-hidden">
+                <div
+                  className={
+                    slide.showText === false
+                      ? 'block w-full relative overflow-hidden'
+                      : 'hidden sm:block w-[36%] lg:w-[32%] relative overflow-hidden'
+                  }
+                >
                   <img
                     src={slide.image}
                     alt={slide.title[language]}
@@ -146,15 +180,16 @@ export const PromoSlider: React.FC = () => {
                     }`}
                     loading="lazy"
                   />
-                  <div
+                  {slide.showText !== false && <div
                     className={`absolute inset-y-0 start-0 w-24 sm:w-28 bg-gradient-to-r ${imgFadeFrom[slide.theme]} to-transparent`}
-                  />
+                  />}
                 </div>
               </div>
             );
           })}
 
           {/* Prev / Next Arrows */}
+          {count > 1 && (<>
           <button
             type="button"
             onClick={() => go(-1)}
@@ -174,7 +209,7 @@ export const PromoSlider: React.FC = () => {
 
           {/* Dots */}
           <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 z-20" dir="ltr">
-            {PROMO_SLIDES.map((s, i) => (
+            {slides.map((s, i) => (
               <button
                 key={s.id}
                 type="button"
@@ -186,6 +221,7 @@ export const PromoSlider: React.FC = () => {
               />
             ))}
           </div>
+          </>)}
         </div>
       </div>
     </section>

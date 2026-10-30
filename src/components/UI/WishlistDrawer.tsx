@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useShop } from '../../context/LanguageContext';
 import { useRouter } from '../../context/RouterContext';
 import { X, Trash2, ShoppingBag, Heart, ArrowRight, ArrowLeft } from 'lucide-react';
-import { PRODUCTS } from '../../data/products';
+import { useCatalog } from '../../context/CatalogContext';
 
 export const WishlistDrawer: React.FC = () => {
   const {
@@ -16,6 +16,7 @@ export const WishlistDrawer: React.FC = () => {
     formatPrice,
     t
   } = useShop();
+  const { products: PRODUCTS } = useCatalog();
   const { navigate } = useRouter();
 
   // Keyboard accessibility: ESC to close
@@ -60,14 +61,14 @@ export const WishlistDrawer: React.FC = () => {
       <div
         className={`fixed inset-y-0 ${
           isRtl ? 'start-0' : 'end-0'
-        } max-w-md w-full bg-[#FAFAF8] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
+        } max-w-md w-full bg-[#FAF9F6] shadow-2xl flex flex-col z-50 transform transition-transform duration-300 animate-in ${
           isRtl ? 'slide-in-from-left' : 'slide-in-from-right'
         }`}
       >
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-[#E2DDD2] flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-[#0A2A5E] fill-current" />
+            <Heart className="w-5 h-5 text-[#0B2345] fill-current" />
             <h3 className="text-base font-bold text-[#101828] font-serif-luxury">
               {t('wishlistTitle')}
             </h3>
@@ -91,7 +92,7 @@ export const WishlistDrawer: React.FC = () => {
           {wishlistedProducts.length === 0 ? (
             <div className="text-center py-16 space-y-4">
               <div className="w-16 h-16 rounded-full bg-[#E5E1D8] text-[#667085] flex items-center justify-center mx-auto">
-                <Heart className="w-8 h-8 text-[#0A2A5E]" />
+                <Heart className="w-8 h-8 text-[#0B2345]" />
               </div>
               <h4 className="text-sm font-bold text-[#101828]">
                 {t('emptyWishlist')}
@@ -102,7 +103,7 @@ export const WishlistDrawer: React.FC = () => {
               <button
                 type="button"
                 onClick={closeWishlist}
-                className="inline-flex items-center gap-2 bg-[#0A2A5E] hover:bg-[#061C3F] text-white px-6 py-3 rounded-full text-xs font-bold transition-colors active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-2 bg-[#0B2345] hover:bg-[#071A35] text-white px-6 py-3 rounded-full text-xs font-bold transition-colors active:scale-95 shadow-sm"
               >
                 <span>{t('heroShopCurtains')}</span>
               </button>
@@ -131,7 +132,7 @@ export const WishlistDrawer: React.FC = () => {
                     <span className="text-[11px] text-[#667085] block mt-0.5 truncate">
                       {product.category[language]}
                     </span>
-                    <div className="text-xs font-bold text-[#0A2A5E] font-serif mt-1">
+                    <div className="text-xs font-bold text-[#0B2345] font-serif mt-1">
                       {formatPrice(product.price)}
                     </div>
                   </div>
@@ -143,7 +144,7 @@ export const WishlistDrawer: React.FC = () => {
                         addToCart(product);
                         toggleWishlist(product.id);
                       }}
-                      className="min-h-[36px] inline-flex items-center gap-1.5 text-xs font-bold text-[#0A2A5E] hover:text-[#061C3F] transition-colors active:scale-95"
+                      className="min-h-[36px] inline-flex items-center gap-1.5 text-xs font-bold text-[#0B2345] hover:text-[#071A35] transition-colors active:scale-95"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>{language === 'ar' ? 'نقل إلى السلة' : 'Move to Cart'}</span>
@@ -171,10 +172,10 @@ export const WishlistDrawer: React.FC = () => {
             <button
               type="button"
               onClick={handleGoToWishlist}
-              className="w-full min-h-[44px] bg-[#0A2A5E] hover:bg-[#061C3F] text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
+              className="w-full min-h-[44px] bg-[#0B2345] hover:bg-[#071A35] text-white py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
             >
               <span>{language === 'ar' ? 'عرض الصفحة الكاملة للمفضلة' : 'View Full Wishlist Page'}</span>
-              <ArrowIcon className="w-3.5 h-3.5 text-[#E3C98F]" />
+              <ArrowIcon className="w-3.5 h-3.5 text-[#D9C29A]" />
             </button>
           </div>
         )}

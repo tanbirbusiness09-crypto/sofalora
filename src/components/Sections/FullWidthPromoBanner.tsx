@@ -3,10 +3,24 @@ import { motion } from 'motion/react';
 import { ArrowRight, ArrowLeft, Ruler, ShieldCheck, Truck } from 'lucide-react';
 import { PROMOTIONAL_BANNER } from '../../data/editorialData';
 import { useShop } from '../../context/LanguageContext';
+import { useRouter } from '../../context/RouterContext';
+import { useSectionCms, useWebsite, pickText, cmsImage } from '../../context/WebsiteContext';
 
 export const FullWidthPromoBanner: React.FC = () => {
-  const { language, direction, openConsultation } = useShop();
+  const { language, direction, openConsultation, deliveryClaim } = useShop();
   const isRTL = direction === 'rtl';
+  const { navigate } = useRouter();
+  const cms = useSectionCms('promo_banner');
+  const card = useWebsite().card('promo_banner') ?? {};
+
+  // Admin: section title/subtitle (or the "promo_banner" card) override the copy;
+  // the card supplies the background image and the primary button link.
+  const title = cms.title(pickText(language, card.title_en, card.title_ar, PROMOTIONAL_BANNER.title[language]));
+  const subtitle = cms.subtitle(
+    pickText(language, card.subtitle_en, card.subtitle_ar, PROMOTIONAL_BANNER.subtitle[language])
+  );
+  const image = cmsImage(card.image, PROMOTIONAL_BANNER.image);
+  const primaryHref = (card.btn_url ?? '').trim();
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -24,8 +38,8 @@ export const FullWidthPromoBanner: React.FC = () => {
           {/* Panoramic Background Image */}
           <div className="absolute inset-0">
             <img
-              src={PROMOTIONAL_BANNER.image}
-              alt={PROMOTIONAL_BANNER.title[language]}
+              src={image}
+              alt={title}
               loading="lazy"
               className="w-full h-full object-cover object-center brightness-60 sm:brightness-70"
             />
@@ -41,7 +55,7 @@ export const FullWidthPromoBanner: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#C8102E]/25 backdrop-blur-xs border border-[#C8102E]/40 text-[#E8D9B6] text-[10px] sm:text-xs font-semibold tracking-widest uppercase"
+              className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#B59460]/25 backdrop-blur-xs border border-[#B59460]/40 text-[#E8D9B6] text-[10px] sm:text-xs font-semibold tracking-widest uppercase"
             >
               <span>{PROMOTIONAL_BANNER.badge[language]}</span>
             </motion.div>
@@ -54,7 +68,7 @@ export const FullWidthPromoBanner: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white font-normal leading-tight drop-shadow-md mb-3 sm:mb-4"
             >
-              {PROMOTIONAL_BANNER.title[language]}
+              {title}
             </motion.h2>
 
             {/* Subtitle */}
@@ -65,7 +79,7 @@ export const FullWidthPromoBanner: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xs sm:text-sm md:text-base text-[#DAD5CA] font-light leading-relaxed mb-6 sm:mb-8"
             >
-              {PROMOTIONAL_BANNER.subtitle[language]}
+              {subtitle}
             </motion.p>
 
             {/* CTAs */}
@@ -77,14 +91,14 @@ export const FullWidthPromoBanner: React.FC = () => {
               className="flex flex-wrap items-center gap-3 sm:gap-4"
             >
               <button
-                onClick={() => scrollToSection('window-decor')}
+                onClick={() => (primaryHref ? navigate(primaryHref) : scrollToSection('window-decor'))}
                 className="px-6 py-3 rounded-full bg-white hover:bg-[#F0EDE6] text-[#101828] text-xs sm:text-sm font-semibold tracking-wide shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
               >
                 <span>{PROMOTIONAL_BANNER.cta[language]}</span>
                 {isRTL ? (
-                  <ArrowLeft className="w-4 h-4 text-[#0A2A5E] transition-transform duration-300 group-hover:-translate-x-1" />
+                  <ArrowLeft className="w-4 h-4 text-[#0B2345] transition-transform duration-300 group-hover:-translate-x-1" />
                 ) : (
-                  <ArrowRight className="w-4 h-4 text-[#0A2A5E] transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 text-[#0B2345] transition-transform duration-300 group-hover:translate-x-1" />
                 )}
               </button>
 
@@ -99,16 +113,16 @@ export const FullWidthPromoBanner: React.FC = () => {
             {/* Micro Feature Highlights Strip */}
             <div className="mt-8 sm:mt-10 pt-6 border-t border-white/15 grid grid-cols-3 gap-3 sm:gap-6 text-white/90">
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <Ruler className="w-4 h-4 text-[#C8102E] shrink-0" />
-                <span className="line-clamp-1">{language === 'ar' ? 'قياس ليزري مجاني' : 'Laser Measurement'}</span>
+                <Ruler className="w-4 h-4 text-[#B59460] shrink-0" />
+                <span className="line-clamp-1">{language === 'ar' ? 'قياس ليزري' : 'Laser Measurement'}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <Truck className="w-4 h-4 text-[#C8102E] shrink-0" />
-                <span className="line-clamp-1">{language === 'ar' ? 'توصيل داخل الرياض' : 'Free Delivery in Riyadh'}</span>
+                <Truck className="w-4 h-4 text-[#B59460] shrink-0" />
+                <span className="line-clamp-1">{deliveryClaim ?? (language === 'ar' ? 'توصيل داخل الرياض' : 'Delivery in Riyadh')}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] sm:text-xs">
-                <ShieldCheck className="w-4 h-4 text-[#C8102E] shrink-0" />
-                <span className="line-clamp-1">{language === 'ar' ? 'ضمان ١٠ سنوات' : '10-Year Guarantee'}</span>
+                <ShieldCheck className="w-4 h-4 text-[#B59460] shrink-0" />
+                <span className="line-clamp-1">{language === 'ar' ? 'حرفية عالية' : 'Quality Craftsmanship'}</span>
               </div>
             </div>
           </div>
