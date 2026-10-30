@@ -8,7 +8,7 @@ import { Link } from '../../context/RouterContext';
  * noon-style promo grid above the hero (home section key `promo_grid`).
  * Admin items carry slot = main | side_top | side_bottom (style "luxury" = navy price card).
  * Main slot items slide as a looping track (3 visible); each side slot crossfades its own items.
- * Section settings intervalMain / intervalTop / intervalBottom (ms). value = background colour.
+ * Section setting intervalStagger (ms, default 2500): columns change in rotation. value = background colour.
  */
 type Slot = 'main' | 'side_top' | 'side_bottom';
 type Def = { t: [string, string]; s: [string, string]; img: string; url: string; bg: string; slot: Slot; style?: 'luxury' };
@@ -107,16 +107,31 @@ export const PromoGrid: React.FC = () => {
   const tops = cards.filter((c) => c.slot === 'side_top');
   const bottoms = cards.filter((c) => c.slot === 'side_bottom');
   const num = (k: string, d: number) => { const n = Number(sec?.[k]); return Number.isFinite(n) && n >= 1000 ? n : d; };
-  const msMain = num('intervalMain', 4000), msTop = num('intervalTop', 5000), msBottom = num('intervalBottom', 6000);
+  // One staggered clock: every beat the next column moves (main track -> side top -> side bottom -> ...),
+  // so something is always sliding or changing. Section setting intervalStagger (ms), default 2500.
+  const msStagger = num('intervalStagger', 2500);
 
   const isDesktop = useIsDesktop();
   const [hover, setHover] = useState(false);
   const loop = isDesktop && mains.length > 3;
-  const [step, setStep] = useTicker(loop ? mains.length : 0, msMain, hover);
+  const cols = useMemo(
+    () => [loop ? 'main' : '', tops.length > 1 ? 'top' : '', bottoms.length > 1 ? 'bot' : ''].filter(Boolean),
+    [loop, tops.length, bottoms.length]
+  );
+  const [beat] = useTicker(cols.length ? 2 : 0, msStagger, hover);
+  const [step, setStep] = useState(0);
+  const [topI, setTopI] = useState(0);
+  const [botI, setBotI] = useState(0);
+  useEffect(() => {
+    if (!beat || !cols.length) return;
+    const col = cols[(beat - 1) % cols.length];
+    if (col === 'main') setStep((x) => x + 1);
+    else if (col === 'top') setTopI((x) => x + 1);
+    else setBotI((x) => x + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [beat]);
   const [snap, setSnap] = useState(false); // true while jumping back from the clones without a transition
   useEffect(() => { if (!snap) return; const r = requestAnimationFrame(() => setSnap(false)); return () => cancelAnimationFrame(r); }, [snap]);
-  const [topI] = useTicker(tops.length, msTop, hover, 900);
-  const [botI] = useTicker(bottoms.length, msBottom, hover, 2100);
 
   // Real lowest selling price from the catalog; hidden when there are no products.
   const minPrice = useMemo(() => {
@@ -193,8 +208,8 @@ export const PromoGrid: React.FC = () => {
             className="absolute inset-0"
             style={{
               opacity: k === active ? 1 : 0,
-              transform: k === active ? 'translateY(0)' : 'translateY(10px)',
-              transition: `opacity 700ms ${EASE}, transform 700ms ${EASE}`,
+              transform: k === active ? 'translateY(0) scale(1)' : 'translateY(14px) scale(1.02)',
+              transition: `opacity 1000ms ${EASE}, transform 1000ms ${EASE}`,
               zIndex: k === active ? 1 : 0,
               pointerEvents: k === active ? 'auto' : 'none',
             }}
@@ -230,7 +245,7 @@ export const PromoGrid: React.FC = () => {
               onTransitionEnd={(e) => { if (e.target === e.currentTarget) onEnd(); }}
               style={{
                 transform: `translateX(calc(${sign * pos} * (100% + 12px) / 3))`,
-                transition: snap || !loop ? 'none' : `transform 800ms ${EASE}`,
+                transition: snap || !loop ? 'none' : `transform 1100ms ${EASE}`,
               }}
             >
               {track.map((c, k) => (

@@ -4,6 +4,7 @@ import { useShop } from '../../context/LanguageContext';
 import { useCatalog } from '../../context/CatalogContext';
 import { useSectionCms, pickText, cmsImage } from '../../context/WebsiteContext';
 import { Link } from '../../context/RouterContext';
+import { NoonProductCard } from '../UI/NoonProductCard';
 import { RiyalSign } from '../UI/RiyalSign';
 import type { Product } from '../../types';
 
@@ -75,37 +76,11 @@ export const DealsRow: React.FC = () => {
               </div>
             </Link>
           </li>
-          {deals.map((p) => {
-            const orig = originalPrice(p)!;
-            const pct = Math.round((1 - p.price / orig) * 100);
-            const href = `/product/${p.slug || p.id}`;
-            return (
-              <li key={p.id} className={cell}>
-                <div className="relative">
-                  <span className="absolute start-2 top-2 z-10 rounded-full bg-[#C8102E] px-2.5 py-0.5 text-[11.5px] font-bold text-white">-{pct}%</span>
-                  <Link href={href} className="block aspect-square bg-[#F7F3EC]">
-                    <img src={p.image} alt={p.name[language]} loading="lazy" decoding="async" className="h-full w-full object-cover" />
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => addToCart(p)}
-                    aria-label={isAr ? 'أضف إلى السلة' : 'Add to cart'}
-                    className="absolute bottom-2 end-2 flex h-8 w-8 items-center justify-center rounded-full border border-[#E4DED3] bg-white text-[#0B2345] shadow-sm transition-colors hover:bg-[#0B2345] hover:text-white"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="px-3 pb-3 pt-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8A7350] rtl:tracking-normal">{p.category[language]}</p>
-                  <Link href={href} className="line-clamp-2 text-[14px] font-semibold leading-[1.3] text-[#0B2345] hover:text-[#8A7350]">{p.name[language]}</Link>
-                  <p dir="ltr" className={`mt-1 flex items-baseline gap-1.5 ${isAr ? 'justify-end' : ''}`}>
-                    <span className="flex items-center gap-1 text-[18px] font-extrabold text-[#0B2345]"><RiyalSign />{fmt(p.price)}</span>
-                    <span className="text-[12px] text-[#6B6F76] line-through">{fmt(orig)}</span>
-                  </p>
-                </div>
-              </li>
-            );
-          })}
+          {deals.map((p, i) => (
+            <li key={p.id} className="snap-start">
+              <NoonProductCard product={p} index={i} showCategory />
+            </li>
+          ))}
           {tiles.map((t) => (
             <li key={t.url} className={cell}>
               <Link href={t.url} className="group block">

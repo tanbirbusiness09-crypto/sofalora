@@ -23,7 +23,7 @@ const PROMO_SLIDES: PromoSlide[] = [
     title: { en: 'Sofas for Every Room', ar: 'كنب لكل غرفة' },
     subtitle: { en: 'Premium sofas and sectionals for living and majlis', ar: 'كنب وزوايا فاخرة للمعيشة والمجالس' },
     cta: { en: 'Shop Now', ar: 'اشتر الآن' },
-    href: '/category/sofas',
+    href: '/shop?category=sofas',
     image:
       'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop',
     theme: 'red',
@@ -34,7 +34,7 @@ const PROMO_SLIDES: PromoSlide[] = [
     title: { en: 'Blackout Curtains', ar: 'الستائر المعتمة' },
     subtitle: { en: 'Made to measure for your windows in Riyadh', ar: 'مفصلة على مقاس نوافذك في الرياض' },
     cta: { en: 'Get Yours', ar: 'اطلب الآن' },
-    href: '/category/blackout-curtains',
+    href: '/shop?category=curtains',
     image:
       'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200&auto=format&fit=crop',
     theme: 'navy',
@@ -43,26 +43,14 @@ const PROMO_SLIDES: PromoSlide[] = [
     id: 'majlis-drop',
     eyebrow: { en: 'NEW COLLECTION', ar: 'تشكيلة جديدة' },
     title: { en: 'Majlis Floor Seating', ar: 'جلسة المجالس' },
-    subtitle: { en: 'Authentic Saudi majlis, made to order', ar: 'مجالس سعودية أصيلة مصنوعة بالطلب' },
+    subtitle: { en: 'Floor seating sets for traditional gatherings', ar: 'جلسات أرضية للتجمعات التقليدية' },
     cta: { en: 'Explore', ar: 'تصفح الآن' },
-    href: '/category/majlis-sofas',
+    href: '/shop?category=sofas',
     image:
       'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop',
     theme: 'gold',
   },
 ];
-
-const themeStyles: Record<PromoSlide['theme'], string> = {
-  red: 'from-[#B59460] via-[#a30c24] to-[#5c0714]',
-  navy: 'from-[#0B2345] via-[#071A35] to-[#040F22]',
-  gold: 'from-[#8A6A2F] via-[#6E5222] to-[#3d2d13]',
-};
-
-const imgFadeFrom: Record<PromoSlide['theme'], string> = {
-  red: 'from-[#B59460]',
-  navy: 'from-[#0B2345]',
-  gold: 'from-[#8A6A2F]',
-};
 
 const PROMO_INTERVAL = 5000;
 const THEMES: PromoSlide['theme'][] = ['red', 'navy', 'gold'];
@@ -102,127 +90,84 @@ export const PromoSlider: React.FC = () => {
 
   const go = (d: number) => setIdx((i) => (i + d + count) % count);
 
+  const Arrow = isRTL ? ArrowLeft : ArrowRight;
   return (
-    <section
-      className="bg-white border-b border-[#E5E1D8]"
-      aria-label={language === 'ar' ? 'عروض حصرية' : 'Featured Offers'}
-    >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
-        <div
-          dir="ltr"
-          className="relative h-[170px] sm:h-[230px] lg:h-[280px] rounded-2xl overflow-hidden border border-[#E5E1D8] shadow-sm"
-          onTouchStart={(e) => setTouchX(e.touches[0].clientX)}
-          onTouchEnd={(e) => {
-            if (touchX == null) return;
-            const dx = e.changedTouches[0].clientX - touchX;
-            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-            setTouchX(null);
-          }}
-        >
-          {slides.map((slide, i) => {
-            const active = i === idx;
-            return (
-              <div
-                key={slide.id}
-                dir={isRTL ? 'rtl' : 'ltr'}
-                aria-hidden={!active}
-                className={`absolute inset-0 bg-gradient-to-br ${themeStyles[slide.theme]} flex transition-opacity duration-500 ease-out ${
-                  active ? 'opacity-100 z-10' : 'opacity-0 pointer-events-none'
-                }`}
-              >
-                {/* Copy Block */}
-                {slide.showText !== false && (
-                <div className="relative z-10 flex-1 flex flex-col justify-center px-5 sm:px-10 lg:px-14 py-5">
-                  {slide.eyebrow[language] && (
-                    <span className="text-[10px] sm:text-xs font-extrabold tracking-[0.2em] uppercase text-white/85">
-                      {slide.eyebrow[language]}
-                    </span>
-                  )}
-
-                  <h2 className="mt-1.5 text-xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight">
-                    {slide.title[language]}
-                  </h2>
-
-                  <p className="mt-1.5 text-xs sm:text-sm lg:text-base text-white/85 font-medium">
-                    {slide.subtitle[language]}
-                  </p>
-
-                  {slide.cta[language] && (
-                  <a
-                    href={slide.href}
-                    tabIndex={active ? 0 : -1}
-                    className="mt-4 sm:mt-5 inline-flex items-center justify-center gap-1.5 w-fit px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-[#101828] hover:bg-[#F3F1EB] text-xs sm:text-sm font-extrabold uppercase tracking-wide shadow-md transition-colors"
-                  >
-                    <span>{slide.cta[language]}</span>
-                    {isRTL ? (
-                      <ArrowLeft className="w-4 h-4" />
-                    ) : (
-                      <ArrowRight className="w-4 h-4" />
-                    )}
-                  </a>
-                  )}
-                </div>
-                )}
-
-                {/* Animated Poster Image (Ken Burns) */}
-                <div
-                  className={
-                    slide.showText === false
-                      ? 'block w-full relative overflow-hidden'
-                      : 'hidden sm:block w-[36%] lg:w-[32%] relative overflow-hidden'
-                  }
-                >
-                  <img
-                    src={slide.image}
-                    alt={slide.title[language]}
-                    className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[4000ms] ease-out ${
-                      active ? 'scale-100' : 'scale-110'
-                    }`}
-                    loading="lazy"
-                  />
-                  {slide.showText !== false && <div
-                    className={`absolute inset-y-0 start-0 w-24 sm:w-28 bg-gradient-to-r ${imgFadeFrom[slide.theme]} to-transparent`}
-                  />}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Prev / Next Arrows */}
-          {count > 1 && (<>
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label="Previous offer"
-            className="hidden sm:flex absolute top-1/2 -translate-y-1/2 start-2.5 z-20 w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-xs items-center justify-center text-[#101828] shadow-md transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label="Next offer"
-            className="hidden sm:flex absolute top-1/2 -translate-y-1/2 end-2.5 z-20 w-9 h-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-xs items-center justify-center text-[#101828] shadow-md transition-colors"
-          >
-            <ArrowRight className="w-4 h-4" />
-          </button>
-
-          {/* Dots */}
-          <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 z-20" dir="ltr">
-            {slides.map((s, i) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setIdx(i)}
-                aria-label={`Offer ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === idx ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'
-                }`}
+    <section aria-label={language === 'ar' ? 'عروض مميزة' : 'Featured collections'}>
+      <div
+        dir="ltr"
+        className="group/promo relative h-[220px] overflow-hidden rounded-[20px] bg-[#0B2345] shadow-[0_18px_40px_-26px_rgba(11,35,69,0.6)] sm:h-[280px] lg:h-[320px]"
+        onTouchStart={(e) => setTouchX(e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          if (touchX == null) return;
+          const dx = e.changedTouches[0].clientX - touchX;
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+          setTouchX(null);
+        }}
+      >
+        {slides.map((slide, i) => {
+          const active = i === idx;
+          return (
+            <div
+              key={slide.id}
+              dir={isRTL ? 'rtl' : 'ltr'}
+              aria-hidden={!active}
+              className={`absolute inset-0 transition-opacity duration-700 ease-out ${active ? 'z-10 opacity-100' : 'pointer-events-none opacity-0'}`}
+            >
+              <img
+                src={slide.image}
+                alt=""
+                loading={i === 0 ? 'eager' : 'lazy'}
+                className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] ease-out motion-reduce:transition-none ${active ? 'scale-105' : 'scale-100'}`}
               />
-            ))}
-          </div>
-          </>)}
-        </div>
+              {slide.showText !== false && (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#071A35]/95 via-[#071A35]/70 via-40% to-transparent to-75% rtl:bg-gradient-to-l" />
+                  <div className="relative z-10 flex h-full max-w-[560px] flex-col justify-center px-6 sm:px-10 lg:px-14">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#D8B25E] rtl:tracking-normal">
+                      {slide.eyebrow[language] || `${String(i + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')}`}
+                    </span>
+                    <h2 className="mt-2 text-[26px] font-extrabold leading-[1.1] tracking-[-0.02em] text-white sm:text-[34px] lg:text-[40px] rtl:tracking-normal">
+                      {slide.title[language]}
+                    </h2>
+                    {slide.subtitle[language] && <p className="mt-2 line-clamp-2 text-[13px] text-white/80 sm:text-[15px]">{slide.subtitle[language]}</p>}
+                    {slide.cta[language] && (
+                      <a
+                        href={slide.href}
+                        tabIndex={active ? 0 : -1}
+                        className="mt-5 inline-flex h-10 w-fit items-center gap-2 rounded-full bg-white px-5 text-[13px] font-bold text-[#0B2345] shadow-md transition-colors hover:bg-[#D8B25E] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D8B25E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B2345]"
+                      >
+                        {slide.cta[language]} <Arrow className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+
+        {count > 1 && (
+          <>
+            <button type="button" onClick={() => go(-1)} aria-label={language === 'ar' ? 'السابق' : 'Previous'} className="absolute start-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30 backdrop-blur-md transition hover:bg-white hover:text-[#0B2345] sm:flex sm:opacity-0 sm:group-hover/promo:opacity-100">
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => go(1)} aria-label={language === 'ar' ? 'التالي' : 'Next'} className="absolute end-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30 backdrop-blur-md transition hover:bg-white hover:text-[#0B2345] sm:flex sm:opacity-0 sm:group-hover/promo:opacity-100">
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <div className="absolute bottom-4 start-6 z-20 flex items-center gap-2 sm:start-10 lg:start-14">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setIdx(i)}
+                  aria-label={`${language === 'ar' ? 'شريحة' : 'Slide'} ${i + 1}`}
+                  aria-current={i === idx}
+                  className={`h-[3px] rounded-full transition-all duration-500 ${i === idx ? 'w-10 bg-[#D8B25E]' : 'w-5 bg-white/40 hover:bg-white/70'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

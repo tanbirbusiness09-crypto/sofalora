@@ -133,7 +133,7 @@ export const ShopPage: React.FC = () => {
         result.sort((a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0) || b.reviews - a.reviews);
         break;
       case 'newest':
-        result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+        result.sort((a, b) => (Date.parse(b.createdAt ?? '') || 0) - (Date.parse(a.createdAt ?? '') || 0) || (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
         break;
       case 'price-asc':
       case 'price-low':

@@ -1,3 +1,4 @@
+import { NewProductsRow } from '../components/Sections/NewProductsRow';
 import { PromoGrid } from '../components/Sections/PromoGrid';
 import { PriceBands } from '../components/Sections/PriceBands';
 import { DealsRow } from '../components/Sections/DealsRow';
@@ -23,6 +24,7 @@ import { FeatureStrip } from '../components/Sections/FeatureStrip';
 import { CategoryRows } from '../components/Sections/CategoryRows';
 import { CategoryGrid } from '../components/Sections/CategoryGrid';
 import { NewArrivalsCarousel } from '../components/Sections/NewArrivalsCarousel';
+import { CategoryProductRow } from '../components/Sections/CategoryProductRow';
 import { ScrollReveal } from '../components/UI/ScrollReveal';
 import {
   WINDOW_DECOR_SECTION,
@@ -54,9 +56,14 @@ const SECTION_RENDERERS: Record<string, () => React.ReactNode> = {
   category_rows: () => <CategoryRows />,
   promo_grid: () => <PromoGrid />,
   price_bands: () => <PriceBands />,
+  new_products_row: () => <NewProductsRow />,
   deals_row: () => <DealsRow />,
   category_grid: () => <CategoryGrid />,
   new_arrivals: () => <NewArrivalsCarousel />,
+  row_curtains: () => reveal(<CategoryProductRow sectionKey="row_curtains" />),
+  row_blinds: () => reveal(<CategoryProductRow sectionKey="row_blinds" />),
+  row_sofas: () => reveal(<CategoryProductRow sectionKey="row_sofas" />),
+  row_accessories: () => reveal(<CategoryProductRow sectionKey="row_accessories" />),
   promo_slider: () => <PromoSlider />,
   editorial_sofas: () => <div id="editorial-sofas">{reveal(<EditorialCategorySection section={WINDOW_DECOR_SECTION} />)}</div>,
   editorial_curtains: () => reveal(<EditorialCategorySection section={LIVING_ROOM_SECTION} />),
@@ -82,7 +89,32 @@ const SECTION_RENDERERS: Record<string, () => React.ReactNode> = {
 };
 
 export const HomePage: React.FC = () => {
-  const { content } = useWebsite();
+  const { content, status } = useWebsite();
+  // Admin data decides the layout; built-in defaults are used only when the admin is unreachable.
+  // While the first CMS response is pending, render nothing instead of flashing the default layout.
+  if (status === 'loading')
+    return (
+      <div className="sf-home pb-6 min-h-[60vh] px-3 pt-3" aria-busy="true" aria-label="Loading">
+        <div className="flex gap-3 overflow-hidden">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div key={i} className="w-[104px] shrink-0 lg:w-[121px]">
+              <div className="aspect-square rounded-[14px] bg-[#EFE8DC] motion-safe:animate-pulse" />
+              <div className="mx-auto mt-2 h-3 w-3/4 rounded bg-[#EFE8DC] motion-safe:animate-pulse" />
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 grid h-[340px] grid-cols-1 gap-3 lg:grid-cols-[1fr_1fr_1fr_1.55fr]">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className={`rounded-[16px] bg-[#EFE8DC] motion-safe:animate-pulse ${i ? 'hidden lg:block' : ''}`} />
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="aspect-[20/21] rounded-[12px] bg-[#EFE8DC] motion-safe:animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
   const resolved = resolveHomeLayout(content.homeSections);
   // The single-line category row replaces the older quick category bar when both are on.
   const layout = resolved.includes('category_rows') ? resolved.filter((k) => k !== 'quick_category_bar') : resolved;

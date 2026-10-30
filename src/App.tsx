@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import { LanguageProvider } from './context/LanguageContext';
 import { RouterProvider, useRouter } from './context/RouterContext';
-import { CatalogProvider } from './context/CatalogContext';
-import { WebsiteProvider } from './context/WebsiteContext';
+import { CatalogProvider, useCatalog } from './context/CatalogContext';
+import { WebsiteProvider, useWebsite } from './context/WebsiteContext';
 import { AuthProvider } from './context/AuthContext';
 import { MainHeader } from './components/Header/MainHeader';
 import { SidebarNav, SidebarDrawer } from './components/Layout/SidebarNav';
+import { HeaderMenuDrawer, useNavStyle } from './components/Header/HeaderCategoryNav';
 import { Footer } from './components/Footer/Footer';
 
 // Pages
@@ -39,6 +40,16 @@ import { BottomTabBar } from './components/UI/BottomTabBar';
 const MainLayout: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { route } = useRouter();
+  const navStyle = useNavStyle();
+  const { status: siteStatus } = useWebsite();
+  const { isLoading: catalogLoading } = useCatalog();
+  // Fade out the inline index.html preloader once the CMS (and the catalogue) are ready.
+  useEffect(() => {
+    if (siteStatus === 'loading' || catalogLoading) return;
+    const w = window as unknown as { __sfPreloaderDone?: () => void };
+    const r = requestAnimationFrame(() => w.__sfPreloaderDone?.());
+    return () => cancelAnimationFrame(r);
+  }, [siteStatus, catalogLoading]);
 
   // Scroll to top smoothly whenever route path changes
   useEffect(() => {
@@ -72,7 +83,7 @@ const MainLayout: React.FC = () => {
   const renderCurrentPage = () => {
     const path = route.path.toLowerCase();
 
-    if (path === '/' || path === '') {
+    if (path === '/' || path === '' || path === '/builder-preview') {
       return <HomePage />;
     }
     if (path === '/shop' || path === '/products') {
@@ -144,24 +155,38 @@ const MainLayout: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#0B2345] selection:bg-[#B59460]/25 selection:text-[#101828] antialiased">
       {/* 1. Header Area (Main Header, Mega Menu, Mobile Drawer) */}
       <header className="sticky top-0 z-40 bg-gradient-to-r from-[#0B2345] via-[#0C264B] to-[#0E2A52] border-b border-[#B59460]/55">
-        <MainHeader onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <MainHeader navMode={navStyle} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       </header>
 
-      {/* Mobile/tablet: the sidebar becomes a slide-out drawer */}
-      <SidebarDrawer
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-      />
+      {navStyle === 'sidebar' ? (
+        <>
+          {/* Mobile/tablet: the sidebar becomes a slide-out drawer */}
+          <SidebarDrawer
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+          />
 
-      {/* Desktop: dark-navy sidebar + routed page */}
-      <div className="flex flex-1 items-start">
-        <SidebarNav />
-        <main className="flex-1 min-w-0 overflow-x-clip lg:ps-4">
-          <div key={route.path} className="sf-fade">
-            {renderCurrentPage()}
+          {/* Desktop: dark-navy sidebar + routed page */}
+          <div className="flex flex-1 items-start">
+            <SidebarNav />
+            <main className="flex-1 min-w-0 overflow-x-clip lg:ps-4">
+              <div key={route.path} className="sf-fade">
+                {renderCurrentPage()}
+              </div>
+            </main>
           </div>
-        </main>
-      </div>
+        </>
+      ) : (
+        <>
+          <HeaderMenuDrawer isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+          {/* Header navigation mode: full-width page, no sidebar */}
+          <main className="w-full flex-1 min-w-0 overflow-x-clip lg:px-2 xl:px-3">
+            <div key={route.path} className="sf-fade">
+              {renderCurrentPage()}
+            </div>
+          </main>
+        </>
+      )}
 
       {/* Footer */}
       <Footer />

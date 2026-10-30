@@ -5,9 +5,12 @@ import { useRouter, Link } from '../../context/RouterContext';
 import { useCatalog } from '../../context/CatalogContext';
 import { ChevronDown, Search, Heart, ShoppingBag, User, X, Menu, ArrowRight, ArrowLeft, History, Sparkles, TrendingUp } from 'lucide-react';
 import { BrandLogo } from '../UI/BrandLogo';
+import { HeaderCategoryNav } from './HeaderCategoryNav';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface MainHeaderProps {
   onOpenMobileMenu: () => void;
+  navMode?: 'header' | 'sidebar';
 }
 
 const STORAGE_KEY_RECENT_SEARCHES = 'sofalora_recent_searches';
@@ -20,7 +23,7 @@ const POPULAR_SEARCHES = [
   { en: 'Belgian Linen Drapes', ar: 'ستائر كتان بلجيكي' }
 ];
 
-export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
+export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu, navMode = 'sidebar' }) => {
   const {
     language,
     direction,
@@ -191,8 +194,10 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
             </Link>
           </div>
 
+          {navMode === 'header' && <HeaderCategoryNav />}
+
           {/* Center: Search Bar with Keyboard & Autocomplete */}
-          <div ref={searchContainerRef} className="hidden md:block flex-1 max-w-[560px] relative lg:ms-16 xl:ms-24">
+          <div ref={searchContainerRef} className={`hidden md:block flex-1 relative ${navMode === 'header' ? 'max-w-[560px] lg:max-w-[300px] xl:max-w-[380px] lg:ms-auto' : 'max-w-[560px] lg:ms-16 xl:ms-24'}`}>
             <form onSubmit={handleSearchSubmit} className="relative flex items-center">
               <input
                 ref={searchInputRef}
@@ -375,41 +380,8 @@ export const MainHeader: React.FC<MainHeaderProps> = ({ onOpenMobileMenu }) => {
           {/* Right/End: Language, Account, Wishlist & Cart */}
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
 
-            {/* Language Switcher */}
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="sm:hidden flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#B59460]/50 bg-white/5 text-[11px] font-bold text-[#EDE3D1] transition-colors hover:border-[#B59460] hover:text-[#D9C29A]"
-              aria-label={language === 'en' ? 'التبديل إلى العربية' : 'Switch to English'}
-              title={language === 'en' ? 'العربية' : 'English'}
-            >
-              {language === 'en' ? 'AR' : 'EN'}
-            </button>
-            <div
-              className="hidden sm:flex items-center gap-3 text-[12px] font-semibold text-[#EDE3D1]"
-              role="group"
-              aria-label={language === 'ar' ? 'اختيار اللغة' : 'Select language'}
-            >
-              <button
-                type="button"
-                onClick={() => setLanguage('en')}
-                aria-pressed={language === 'en'}
-                className={`inline-flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors ${language === 'en' ? 'text-white' : 'text-[#EDE3D1]/60 hover:text-[#D9C29A]'}`}
-                title="English"
-              >
-                <span className={`rounded border px-1.5 py-0.5 text-[10.5px] ${language === 'en' ? 'border-[#B59460]/60' : 'border-transparent'}`}>EN</span>
-                <ChevronDown className="h-3 w-3 opacity-70" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage('ar')}
-                aria-pressed={language === 'ar'}
-                className={`rounded-md px-1.5 py-1 text-[12.5px] transition-colors ${language === 'ar' ? 'text-white font-bold' : 'text-[#EDE3D1]/60 hover:text-[#D9C29A]'}`}
-                title="العربية"
-              >
-                عربي
-              </button>
-            </div>
+            {/* Language Switcher (icon-only flags) */}
+            <LanguageSwitcher />
 
             {/* Account menu (sign in / register, or the customer's account dropdown) */}
             <AccountMenu />

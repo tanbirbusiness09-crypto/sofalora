@@ -18,9 +18,15 @@ export const HOME_SECTION_DEFAULTS: ReadonlyArray<{ key: string; active: boolean
   { key: 'feature_strip', active: false, order: 2.1 },
   // noon-style rows after the feature strip.
   { key: 'price_bands', active: true, order: 2.15 },
+  { key: 'new_products_row', active: true, order: 2.16 },
   { key: 'deals_row', active: true, order: 2.17 },
   { key: 'category_grid', active: true, order: 2.2 },
   { key: 'new_arrivals', active: true, order: 2.3 },
+  // Category product rows (same style as New Arrivals), right after it.
+  { key: 'row_curtains', active: true, order: 2.31 },
+  { key: 'row_blinds', active: true, order: 2.32 },
+  { key: 'row_sofas', active: true, order: 2.33 },
+  { key: 'row_accessories', active: true, order: 2.34 },
   { key: 'promo_slider', active: true },
   { key: 'editorial_sofas', active: false },
   { key: 'editorial_curtains', active: false },

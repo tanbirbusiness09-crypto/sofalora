@@ -49,6 +49,8 @@ export interface Product {
   inStock: boolean;
   stock?: number;
   isNew?: boolean;
+  /** ISO creation time from the admin API (used for newest-first sorting). */
+  createdAt?: string;
   isBestSeller?: boolean;
   isSale?: boolean;
   collection?: string;

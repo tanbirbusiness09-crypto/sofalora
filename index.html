@@ -19,8 +19,85 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Figtree:wght@400..800&family=Manrope:wght@300..800&display=swap" rel="stylesheet" />
+    <style>
+      #sf-preloader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:auto}
+      .sf-pl-panel{position:absolute;top:0;bottom:0;width:50.5%;background:#0B2345;transition:transform .95s cubic-bezier(.77,0,.18,1);will-change:transform}
+      .sf-pl-l{left:0;background:linear-gradient(90deg,#071A35 0%,#0B2345 70%,#0F2B55 100%);box-shadow:inset -18px 0 30px -24px rgba(0,0,0,.6)}
+      .sf-pl-r{right:0;background:linear-gradient(270deg,#071A35 0%,#0B2345 70%,#0F2B55 100%);box-shadow:inset 18px 0 30px -24px rgba(0,0,0,.6)}
+      .sf-pl-panel::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 2px,transparent 2px 46px)}
+      .sf-pl-content{position:relative;display:flex;flex-direction:column;align-items:center;transition:opacity .3s ease,transform .3s ease}
+      .sf-pl-sofa{width:clamp(64px,9vw,88px);height:auto;margin-bottom:14px;overflow:visible}
+      .sf-pl-sofa path{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:240;stroke-dashoffset:240;animation:sf-pl-draw 1.1s cubic-bezier(.65,0,.35,1) .05s forwards}
+      .sf-pl-mark{display:flex;align-items:baseline;font-family:'Cormorant Garamond','Fraunces',Georgia,serif;font-weight:700;font-size:clamp(40px,8vw,72px);letter-spacing:.04em;color:#fff;line-height:1}
+      .sf-pl-mark span{display:inline-block;opacity:0;transform:translateY(14px);animation:sf-pl-in .7s cubic-bezier(.16,1,.3,1) forwards}
+      .sf-pl-mark .sf-pl-acc{font-style:italic;font-weight:500;letter-spacing:.11em;color:#E0344D}
+      .sf-pl-welcome{margin-top:14px;font-family:'Cormorant Garamond','Fraunces',Georgia,serif;font-style:italic;font-size:clamp(16px,2vw,21px);color:rgba(255,255,255,.78);letter-spacing:.04em;opacity:0;transform:translateY(6px);animation:sf-pl-in .8s ease .75s forwards}
+      .sf-pl-bar{position:relative;margin-top:22px;width:min(150px,44vw);height:2px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
+      .sf-pl-bar::after{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:sf-pl-slide 1.3s ease-in-out infinite}
+      #sf-preloader.sf-pl-open .sf-pl-content{opacity:0;transform:scale(.97)}
+      #sf-preloader.sf-pl-open .sf-pl-l{transform:translateX(-101%)}
+      #sf-preloader.sf-pl-open .sf-pl-r{transform:translateX(101%)}
+      #sf-preloader.sf-pl-open{pointer-events:none}
+      html[dir=rtl] .sf-pl-mark{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;letter-spacing:0}
+      html[dir=rtl] .sf-pl-mark .sf-pl-acc{letter-spacing:0;font-style:normal}
+      html[dir=rtl] .sf-pl-welcome{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;font-style:normal;letter-spacing:0}
+      html[dir=rtl] .sf-pl-bar::after{animation-direction:reverse}
+      html[dir=rtl] .sf-pl-sofa{transform:scaleX(-1)}
+      @keyframes sf-pl-in{to{opacity:1;transform:none}}
+      @keyframes sf-pl-draw{to{stroke-dashoffset:0}}
+      @keyframes sf-pl-slide{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
+      @media (prefers-reduced-motion:reduce){
+        .sf-pl-mark span,.sf-pl-welcome{animation:none;opacity:1;transform:none}
+        .sf-pl-sofa path{animation:none;stroke-dashoffset:0}
+        .sf-pl-bar::after{animation:none;width:100%;opacity:.4}
+        .sf-pl-panel,.sf-pl-content{transition:none}
+        #sf-preloader{transition:opacity .4s ease}
+        #sf-preloader.sf-pl-open{opacity:0}
+        #sf-preloader.sf-pl-open .sf-pl-l,#sf-preloader.sf-pl-open .sf-pl-r{transform:none}
+      }
+    </style>
   </head>
   <body class="bg-[#FAF9F6] text-[#101828] antialiased selection:bg-[#B59460]/15 selection:text-[#101828]">
+    <div id="sf-preloader" role="status" aria-live="polite" aria-label="Loading Sofalora">
+      <div class="sf-pl-panel sf-pl-l" aria-hidden="true"></div>
+      <div class="sf-pl-panel sf-pl-r" aria-hidden="true"></div>
+      <div class="sf-pl-content">
+        <svg class="sf-pl-sofa" viewBox="0 0 88 48" aria-hidden="true">
+          <path d="M14 26V15a5 5 0 0 1 5-5h50a5 5 0 0 1 5 5v11" />
+          <path d="M8 38V27a5 5 0 0 1 10 0v4h52v-4a5 5 0 0 1 10 0v11H8z" />
+          <path d="M44 31V20M13 38v5M75 38v5" />
+        </svg>
+        <div class="sf-pl-mark" id="sf-pl-mark"><span style="animation-delay:.05s">S</span><span style="animation-delay:.12s">O</span><span style="animation-delay:.19s">F</span><span style="animation-delay:.26s">A</span><span class="sf-pl-acc" style="animation-delay:.42s">L</span><span class="sf-pl-acc" style="animation-delay:.49s">O</span><span class="sf-pl-acc" style="animation-delay:.56s">R</span><span class="sf-pl-acc" style="animation-delay:.63s">A</span></div>
+        <div class="sf-pl-welcome" id="sf-pl-welcome">Welcome home</div>
+        <div class="sf-pl-bar" aria-hidden="true"></div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var el = document.getElementById('sf-preloader');
+        var t0 = Date.now();
+        try {
+          if (localStorage.getItem('sofalora_lang') === 'ar') {
+            document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl';
+            document.getElementById('sf-pl-mark').innerHTML = '<span style="animation-delay:.05s">سوفا</span><span class="sf-pl-acc" style="animation-delay:.35s">لورا</span>';
+            document.getElementById('sf-pl-welcome').textContent = 'أهلاً بك';
+            el.setAttribute('aria-label', 'جارٍ تحميل سوفالورا');
+          }
+        } catch (e) {}
+        var done = false;
+        var open = function () {
+          el.classList.add('sf-pl-open');
+          setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1050);
+        };
+        // Called by the app when content is ready; waits for the intro (~1.1s) so the sofa and wordmark finish.
+        window.__sfPreloaderDone = function () {
+          if (done) return; done = true;
+          var wait = Math.max(0, 1100 - (Date.now() - t0));
+          setTimeout(open, wait);
+        };
+        setTimeout(window.__sfPreloaderDone, 8000); // never stick
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

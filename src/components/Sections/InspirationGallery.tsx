@@ -1,126 +1,93 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
-import { useSectionCms } from '../../context/WebsiteContext';
-import { INSPIRATION_ITEMS } from '../../data/homeContent';
-import { InspirationItem } from '../../types';
-import { Eye, X, Sparkles, MapPin } from 'lucide-react';
+import { Link } from '../../context/RouterContext';
+import { useSectionCms, pickText, cmsImage } from '../../context/WebsiteContext';
+import { PremiumHeader } from './PremiumHeader';
+
+type Item = { image?: string; title_en?: string; title_ar?: string; subtitle_en?: string; subtitle_ar?: string; url?: string };
+
+const DEFAULTS: Item[] = [
+  { title_en: 'Navy velvet modular', title_ar: 'كنب مودولار مخملي كحلي', subtitle_en: 'With an ivory zebra blind', subtitle_ar: 'مع بلايند زيبرا عاجي', url: '/shop?category=sofas' },
+  { title_en: 'Velvet & leather', title_ar: 'مخمل وجلد', subtitle_en: 'Emerald drapes, rope tiebacks', subtitle_ar: 'ستائر زمردية وربطات حبل', url: '/shop?category=curtains' },
+  { title_en: 'A sunny reading nook', title_ar: 'ركن قراءة مشمس', subtitle_en: 'Linen roman blind', subtitle_ar: 'بلايند روماني كتان', url: '/shop?category=blinds' },
+  { title_en: 'Layered windows', title_ar: 'نوافذ بطبقتين', subtitle_en: 'Sheer and linen drapes', subtitle_ar: 'ستائر شفافة وكتان', url: '/shop?category=curtains' },
+  { title_en: 'Warm minimal living', title_ar: 'معيشة دافئة وبسيطة', subtitle_en: 'Linen three-seater', subtitle_ar: 'كنبة ثلاثية كتان', url: '/shop?category=sofas' },
+];
 
 export const InspirationGallery: React.FC = () => {
-  const { language, t } = useShop();
+  const { language, direction, t } = useShop();
   const cms = useSectionCms();
-  const [selectedItem, setSelectedItem] = useState<InspirationItem | null>(null);
+  const isAr = language === 'ar';
+  const [open, setOpen] = useState<number | null>(null);
+  const saved = Array.isArray(cms.section?.items) ? (cms.section!.items as Item[]).filter((i) => i && (i.image || i.title_en)) : [];
+  const items = (saved.length ? saved : DEFAULTS).slice(0, 5);
+  const sel = open !== null ? items[open] : null;
+
+  useEffect(() => {
+    if (open === null) return;
+    const k = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null);
+    window.addEventListener('keydown', k);
+    return () => window.removeEventListener('keydown', k);
+  }, [open]);
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FAF9F6]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-[#071A35] uppercase tracking-widest block mb-2">
-            {language === 'ar' ? 'معرض المشاريع الواقعية بالرياض' : 'Riyadh Interior Lookbook'}
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2345] font-serif-luxury tracking-tight">
-            {cms.title(t('inspirationTitle'))}
-          </h2>
-          <p className="text-sm sm:text-base text-[#667085] mt-2">
-            {cms.subtitle(t('inspirationSubtitle'))}
-          </p>
-        </div>
-
-        {/* 6 Photo Bento / Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {INSPIRATION_ITEMS.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="group relative rounded-3xl overflow-hidden aspect-4/3 sm:aspect-square bg-[#E5E1D8] cursor-pointer shadow-2xs hover:shadow-xl transition-all duration-500"
-            >
-              {/* Image */}
-              <img
-                src={item.image}
-                alt={item.title[language]}
-                loading="lazy"
-                className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
-              />
-
-              {/* Hover Dark Vignette Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-5 sm:p-6 text-white" />
-
-              {/* Tag (Always visible top) */}
-              <div className="absolute top-3.5 start-3.5">
-                <span className="bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold px-3 py-1 rounded-full">
-                  {item.room[language]}
-                </span>
-              </div>
-
-              {/* Hover Details (Appears on hover) */}
-              <div className="absolute bottom-0 inset-x-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <h4 className="text-base sm:text-lg font-bold font-serif-luxury leading-tight">
-                  {item.title[language]}
-                </h4>
-                <p className="text-xs text-[#E8D9B6] mt-1 font-medium">
-                  {item.curtainModel[language]}
-                </p>
-
-                <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-white">
-                  <Eye className="w-3.5 h-3.5 text-[#B59460]" />
-                  <span>{t('viewInspiration')}</span>
+    <section dir={direction} aria-label={cms.title(t('inspirationTitle'))}>
+      <PremiumHeader
+        eyebrow={isAr ? 'أفكار للتنسيق' : 'Style ideas'}
+        title={cms.title(t('inspirationTitle'))}
+        subtitle={cms.subtitle(isAr ? 'إطلالات مستوحاة من تشكيلتنا من الكنب والستائر والبلايندز' : 'Looks inspired by our sofas, curtains and blinds')}
+        href="/shop"
+        viewAll={isAr ? 'تسوق التشكيلة' : 'Shop the collection'}
+      />
+      <ul className="no-scrollbar -mx-1 flex snap-x snap-mandatory gap-5 overflow-x-auto px-1 pb-3 pt-1 md:mx-0 md:grid md:h-[520px] md:grid-cols-4 md:grid-rows-2 md:overflow-visible md:px-0">
+        {items.map((it, i) => {
+          const title = pickText(language, it.title_en, it.title_ar, '');
+          const sub = pickText(language, it.subtitle_en, it.subtitle_ar, '');
+          const big = i === 0;
+          return (
+            <li key={i} className={`w-[78%] shrink-0 snap-start md:w-auto ${big ? 'md:col-span-2 md:row-span-2' : ''}`}>
+              <button
+                type="button"
+                onClick={() => setOpen(i)}
+                aria-label={title}
+                className="sf-prem-card group relative block aspect-square h-full w-full overflow-hidden rounded-[18px] bg-[#E9E2D6] text-start md:aspect-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B08D4F] focus-visible:ring-offset-2"
+              >
+                <img src={cmsImage(it.image, '')} alt="" loading="lazy" decoding="async" className="sf-prem-img absolute inset-0 h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071A35]/85 via-[#071A35]/10 via-50% to-transparent" />
+                <div className={`absolute inset-x-0 bottom-0 ${big ? 'p-6' : 'p-4'}`}>
+                  {sub && <span className="block text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#E2C68C] rtl:tracking-normal">{sub}</span>}
+                  <h3 className={`mt-1 font-extrabold leading-tight tracking-[-0.01em] text-white ${big ? 'text-[26px]' : 'text-[16px]'}`}>{title}</h3>
+                  {big && <span className="mt-3 inline-flex h-9 items-center rounded-full bg-white px-4 text-[12.5px] font-semibold text-[#0B2345] transition-colors group-hover:bg-[#D8B25E] group-hover:text-white">{isAr ? 'شاهد الإطلالة' : 'View the look'}</span>}
                 </div>
-              </div>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
 
-            </div>
-          ))}
-        </div>
-
-      </div>
-
-      {/* Lightbox / Inspiration Modal */}
-      {selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="relative max-w-3xl w-full bg-[#0B2345] text-white rounded-3xl overflow-hidden shadow-2xl border border-[#344054]">
-            
-            <button
-              onClick={() => setSelectedItem(null)}
-              className="absolute top-4 end-4 z-20 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-colors"
-              aria-label="Close Preview"
-            >
-              <X className="w-5 h-5" />
+      {sel && createPortal(
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={pickText(language, sel.title_en, sel.title_ar, '')} dir={direction}>
+          <div className="sf-fade absolute inset-0 bg-[#071A35]/70 backdrop-blur-sm" onClick={() => setOpen(null)} />
+          <div className="sf-pop relative w-full max-w-3xl overflow-hidden rounded-[20px] bg-white shadow-2xl">
+            <button type="button" onClick={() => setOpen(null)} aria-label={isAr ? 'إغلاق' : 'Close'} className="absolute end-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#0B2345] shadow">
+              <X className="h-4 w-4" />
             </button>
-
-            <div className="aspect-16/10 w-full overflow-hidden bg-black">
-              <img
-                src={selectedItem.image}
-                alt={selectedItem.title[language]}
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-2 text-xs text-[#B59460] font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{selectedItem.room[language]} • {selectedItem.style[language]}</span>
+            <img src={cmsImage(sel.image, '')} alt="" className="aspect-[16/10] w-full object-cover" />
+            <div className="flex flex-wrap items-center justify-between gap-4 p-6">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B08D4F] rtl:tracking-normal">{pickText(language, sel.subtitle_en, sel.subtitle_ar, '')}</span>
+                <h3 className="mt-1 text-[22px] font-extrabold tracking-[-0.01em] text-[#0B2345]">{pickText(language, sel.title_en, sel.title_ar, '')}</h3>
               </div>
-
-              <h3 className="text-xl sm:text-2xl font-bold font-serif-luxury text-white">
-                {selectedItem.title[language]}
-              </h3>
-
-              <div className="pt-2 border-t border-[#344054] flex flex-wrap items-center justify-between gap-4 text-xs text-[#B8B2A8]">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#B59460]" />
-                  <span>{language === 'ar' ? 'مشروع سكني منجز في مدينة الرياض' : 'Completed Residential Project in Riyadh'}</span>
-                </div>
-
-                <div className="bg-[#1F2937] border border-[#4B5563] px-3.5 py-1.5 rounded-xl font-bold text-[#E8D9B6]">
-                  {selectedItem.curtainModel[language]}
-                </div>
-              </div>
+              <Link href={(sel.url ?? '').trim() || '/shop'} onClick={() => setOpen(null)} className="inline-flex h-10 items-center rounded-full bg-[#0B2345] px-5 text-[13px] font-semibold text-white hover:bg-[#12305C]">
+                {isAr ? 'تسوق هذه الإطلالة' : 'Shop this look'}
+              </Link>
             </div>
-
           </div>
-        </div>
+        </div>,
+        document.body
       )}
-
     </section>
   );
 };

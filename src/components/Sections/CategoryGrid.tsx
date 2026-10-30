@@ -1,153 +1,88 @@
-import React from 'react';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import React, { useMemo, useRef } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 import { useCatalog } from '../../context/CatalogContext';
-import { useSectionCms, useWebsite, pickText, cmsImage } from '../../context/WebsiteContext';
+import { useSectionCms, pickText, cmsImage } from '../../context/WebsiteContext';
 
-interface Tile {
-  slug: string;
-  href: string;
-  eyebrow: { en: string; ar: string };
-  title: { en: string; ar: string };
-  cta?: { en: string; ar: string };
-  body?: { en: string; ar: string };
-  image: string;
-  /** pageBanners key that can override this tile (admin cards). */
-  cardKey?: string;
-}
+type Item = { image?: string; title_en?: string; title_ar?: string; subtitle_en?: string; subtitle_ar?: string; badge_en?: string; badge_ar?: string; url?: string };
 
-const TILES: Tile[] = [
-  {
-    slug: 'sofas',
-    href: '/category/sofas',
-    eyebrow: { en: 'Sofas', ar: 'الكنب' },
-    title: { en: 'Where Comfort Meets Character', ar: 'حيث تلتقي الراحة بالشخصية' },
-    image: '/images/home/cat-sofas.webp',
-  },
-  {
-    slug: 'curtains',
-    href: '/category/curtains',
-    eyebrow: { en: 'Curtains', ar: 'الستائر' },
-    title: { en: 'Beautiful Light, Better Living', ar: 'ضوء جميل، حياة أفضل' },
-    cta: { en: 'Shop Curtains', ar: 'تسوق الستائر' },
-    image: '/images/home/cat-curtains.webp',
-    cardKey: 'hero_card_curtains',
-  },
-  {
-    slug: 'custom-curtains',
-    href: '/category/custom-curtains',
-    eyebrow: { en: 'Custom Atelier', ar: 'الأتيليه' },
-    title: { en: 'Made for Your Home', ar: 'مصمم لمنزلك' },
-    body: { en: 'Bespoke sofas, curtains and complete interior solutions.', ar: 'كنب وستائر مفصلة وحلول داخلية متكاملة.' },
-    cta: { en: 'Start Your Custom Design', ar: 'ابدأ تصميمك الخاص' },
-    image: '/images/home/cat-atelier.webp',
-  },
-  {
-    slug: 'armchairs',
-    href: '/category/armchairs',
-    eyebrow: { en: 'Armchairs', ar: 'الكراسي' },
-    title: { en: 'Statement Pieces', ar: 'قطع مميزة' },
-    image: '/images/home/cat-armchairs.webp',
-  },
-  {
-    slug: 'sectional-sofas',
-    href: '/category/sectional-sofas',
-    eyebrow: { en: 'Sectionals', ar: 'الكنب المقسم' },
-    title: { en: 'For Every Gathering', ar: 'لكل تجمع' },
-    image: '/images/home/cat-sectionals.webp',
-    cardKey: 'hero_card_majlis',
-  },
+const U = 'http://localhost:8000/storage/uploads/';
+/** Defaults (admin items override completely once saved). Empty badge = real "From ⃁ X" for the linked category. */
+export const COLLECTION_DEFAULTS: Item[] = [
+  { title_en: 'Sofas', title_ar: 'الكنب', subtitle_en: 'Three-seaters, loveseats & more', subtitle_ar: 'كنب ثلاثي ومزدوج والمزيد', image: U + '28128b26-19aa-4613-9925-83485bde04c3.webp', url: '/shop?category=sofas' },
+  { title_en: 'Curtains', title_ar: 'الستائر', subtitle_en: 'Blackout, sheer & velvet', subtitle_ar: 'معتمة وشفافة ومخملية', image: U + '3cd55731-f31f-404c-8e24-e206017ec9e6.webp', url: '/shop?category=curtains' },
+  { title_en: 'Blinds', title_ar: 'البلايندز', subtitle_en: 'Roller, zebra & roman', subtitle_ar: 'رول وزيبرا وروماني', image: U + 'bc306a82-dba0-44ae-9190-9751d8a02fa9.webp', url: '/shop?category=blinds' },
+  { title_en: 'Accessories', title_ar: 'الإكسسوارات', subtitle_en: 'Cushions, rods & tiebacks', subtitle_ar: 'وسائد وأعمدة وربطات', image: U + '81bc2ce3-bc8b-4b7d-92db-944a123bd0e9.webp', url: '/shop?category=accessories' },
+  { title_en: 'Sectionals & Majlis', title_ar: 'الكنب الزاوية والمجالس', subtitle_en: 'Room for every gathering', subtitle_ar: 'مساحة لكل تجمع', badge_en: 'NEW', badge_ar: 'جديد', image: U + '768b427c-e48a-4f47-8c7a-190d20d444d8.webp', url: '/shop?category=sofas' },
+  { title_en: 'New Arrivals', title_ar: 'وصل حديثاً', subtitle_en: 'The latest designs', subtitle_ar: 'أحدث التصاميم', badge_en: 'NEW', badge_ar: 'جديد', image: U + 'b820504c-d4c9-4f72-a37c-c65d687b3ebe.webp', url: '/shop?sort=newest' },
 ];
 
-/**
- * Asymmetric editorial category grid (home section key `category_grid`).
- * Admin section items 0-4 override tile title/subtitle/image/url in order.
- */
+/** noon "Maximize your savings"-style collection row (home section key `category_grid`). */
 export const CategoryGrid: React.FC = () => {
   const { language, direction } = useShop();
   const cms = useSectionCms('category_grid');
-  const { card } = useWebsite();
-  const { categoryTree } = useCatalog();
+  const { products } = useCatalog();
+  const track = useRef<HTMLUListElement>(null);
   const isAr = language === 'ar';
-  const Arrow = direction === 'rtl' ? ArrowLeft : ArrowRight;
+  const saved = Array.isArray(cms.section?.items) && cms.section!.items!.length ? (cms.section!.items as Item[]) : null;
+  const items = saved ?? COLLECTION_DEFAULTS;
 
-  const tiles = TILES.map((tile, i) => {
-    const it = cms.item(i);
-    const c = tile.cardKey ? card(tile.cardKey) ?? {} : {};
-    const apiCat = categoryTree.find((x) => x.slug === tile.slug);
-    return {
-      ...tile,
-      eyebrowText: pickText(language, it.subtitle_en, it.subtitle_ar, apiCat ? (isAr ? apiCat.name_ar || apiCat.name : apiCat.name) : tile.eyebrow[language]),
-      titleText: pickText(language, it.title_en, it.title_ar, tile.title[language]),
-      href: (it.url ?? '').trim() || tile.href,
-      img: cmsImage(it.image, cmsImage((c as { image?: string }).image, cmsImage(apiCat?.image ?? '', tile.image))),
-    };
-  });
+  const minByCat = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const p of products) {
+      if (p.inStock === false) continue;
+      const slug = p.categorySlug;
+      if (slug && p.price > 0) m[slug] = Math.min(m[slug] ?? Infinity, p.price);
+    }
+    return m;
+  }, [products]);
 
-  const [sofas, curtains, atelier, armchairs, sectionals] = tiles;
-
-  const ImageTile: React.FC<{ t: typeof tiles[number]; big?: boolean; className?: string }> = ({ t, big, className = '' }) => (
-    <Link
-      href={t.href}
-      className={`group relative block min-h-0 overflow-hidden rounded-[8px] bg-[#EFE8DC] ${className}`}
-      aria-label={`${t.eyebrowText} — ${t.titleText}`}
-    >
-      <div className="absolute inset-0 rtl:-scale-x-100">
-        <img
-          src={t.img}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover object-right transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
-        />
-      </div>
-      <div className={`absolute inset-0 ${big ? 'bg-gradient-to-r rtl:bg-gradient-to-l from-black/30 via-transparent to-transparent' : 'bg-gradient-to-r rtl:bg-gradient-to-l from-[#F6F1E8]/85 via-[#F6F1E8]/35 via-40% to-transparent to-65%'}`} />
-      <div className={`relative flex h-full flex-col ${big ? 'p-6 lg:p-[6%] text-white' : 'p-4 lg:px-[6%] lg:py-[5%] text-[#0B2345]'}`}>
-        <span className={`sf-eyebrow ${big ? 'text-white/90 !text-[11px] !tracking-[0.3em]' : 'text-[#6E5A3C] !text-[9.5px]'}`}>{t.eyebrowText}</span>
-        <h3 className={`font-serif-luxury !font-bold mt-1.5 leading-[1.05] ${big ? 'text-[30px] lg:text-[clamp(26px,2.4vw,42px)] max-w-[310px]' : 'text-[20px] lg:text-[clamp(17px,1.45vw,26px)] max-w-[140px]'}`}>
-          {t.titleText}
-        </h3>
-        {t.cta && !big && (
-          <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold underline underline-offset-4 decoration-[#0B2345]/30 group-hover:decoration-[#0B2345]">
-            {t.cta[language]} <Arrow className="h-3 w-3" />
-          </span>
-        )}
-        <span
-          className={`mt-auto shrink-0 self-start sf-round-btn ${big ? 'h-10 w-10 bg-white text-[#0B2345]' : 'h-7 w-7 bg-white text-[#0B2345] shadow-sm'} group-hover:bg-[#0B2345] group-hover:text-white`}
-          aria-hidden
-        >
-          <Arrow className="h-4 w-4" />
-        </span>
-      </div>
-    </Link>
-  );
+  const title = cms.title(isAr ? 'تسوق حسب المجموعة' : 'Shop by Collection');
+  const scroll = (dir: 1 | -1) => {
+    const el = track.current;
+    if (el) el.scrollBy({ left: el.clientWidth * 0.75 * dir * (direction === 'rtl' ? -1 : 1), behavior: 'smooth' });
+  };
+  const arrow = 'absolute top-[38%] z-10 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#0B2345] shadow-[0_4px_14px_rgba(11,35,69,0.18)] transition-transform hover:scale-105 active:scale-95 md:flex';
 
   return (
-    <section id="categories" aria-label={isAr ? 'تسوق حسب الفئة' : 'Shop by category'} className="px-3 mt-3">
-      <div className="grid grid-cols-1 lg:grid-cols-[45%_1fr] lg:grid-rows-[minmax(0,1fr)] gap-3 lg:h-[clamp(230px,17.8vw,400px)]">
-        <ImageTile t={sofas} big className="h-[300px] sm:h-[360px] lg:h-auto" />
-        <div className="grid grid-cols-2 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] gap-3 h-[400px] sm:h-[420px] lg:h-auto min-h-0">
-          <ImageTile t={curtains} />
-          <Link href={atelier.href} className="group relative block overflow-hidden rounded-[8px] bg-[#0B2345] text-white">
-            <div className="absolute inset-0 rtl:-scale-x-100">
-              <img src={atelier.img} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover object-right transition-transform duration-[1200ms] group-hover:scale-[1.05]" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r rtl:bg-gradient-to-l from-[#0B2345] from-25% via-[#0B2345]/80 via-50% to-transparent" />
-            <div className="relative flex h-full flex-col p-4 lg:px-[6%] lg:py-[5%]">
-              <span className="sf-eyebrow !text-[9.5px] text-[#D9C29A]">{atelier.eyebrowText}</span>
-              <h3 className="font-serif-luxury !font-bold mt-1.5 text-[20px] lg:text-[clamp(17px,1.45vw,26px)] leading-[1.05] max-w-[160px]">{atelier.titleText}</h3>
-              {atelier.body && <p className="mt-1.5 hidden sm:block text-[10.5px] leading-snug text-white/75 max-w-[180px]">{atelier.body[language]}</p>}
-              {atelier.cta && (
-                <span className="mt-auto inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/90 group-hover:text-[#D9C29A] transition-colors">
-                  {atelier.cta[language]} <Arrow className="h-3 w-3" />
-                </span>
-              )}
-            </div>
-          </Link>
-          <ImageTile t={armchairs} />
-          <ImageTile t={sectionals} />
-        </div>
+    <section id="categories" aria-label={title} dir={direction} className="mt-3">
+      <h2 className="mb-3 text-[22px] font-extrabold leading-tight text-[#0B2345] sm:text-[24px]">{title}</h2>
+      <div className="relative">
+        {items.length > 4 && (
+          <>
+            <button type="button" onClick={() => scroll(-1)} aria-label={isAr ? 'السابق' : 'Previous'} className={`${arrow} -start-3`}><ChevronLeft className="h-5 w-5 rtl:rotate-180" /></button>
+            <button type="button" onClick={() => scroll(1)} aria-label={isAr ? 'التالي' : 'Next'} className={`${arrow} -end-3`}><ChevronRight className="h-5 w-5 rtl:rotate-180" /></button>
+          </>
+        )}
+        <ul ref={track} className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pt-1">
+          {items.map((it, i) => {
+            const url = (it.url ?? '').trim() || '/shop';
+            const cat = /[?&]category=([^&]+)/.exec(url)?.[1];
+            const from = cat && minByCat[cat] !== undefined && Number.isFinite(minByCat[cat]) ? minByCat[cat] : undefined;
+            const badge = pickText(language, it.badge_en, it.badge_ar, from !== undefined ? `${isAr ? 'ابتداءً من' : 'From'} ⃁ ${Math.round(from).toLocaleString('en-US')}` : '');
+            const name = pickText(language, it.title_en, it.title_ar, '');
+            const sub = pickText(language, it.subtitle_en, it.subtitle_ar, '');
+            return (
+              <li key={i} className="w-[62%] shrink-0 snap-start sm:w-[40%] md:w-[calc((100%-48px)/4)]">
+                <Link href={url} className="group block rounded-[22px] transition-transform duration-300 ease-[cubic-bezier(.2,.7,.2,1)] hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none" aria-label={name}>
+                  <div className="relative">
+                    <div className="aspect-[4/3] overflow-hidden rounded-[20px] bg-[#F2F3F5] transition-shadow duration-300 group-hover:shadow-[0_14px_28px_-16px_rgba(11,35,69,0.4)]">
+                      <img src={cmsImage(it.image, '')} alt="" loading="lazy" decoding="async" className="h-full w-full object-contain p-[7%] mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.05] motion-reduce:transform-none" />
+                    </div>
+                    {badge && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 whitespace-nowrap rounded-full bg-[#0B2345] px-4 py-1.5 text-[12.5px] font-bold text-[#D8B25E] shadow-[0_4px_10px_rgba(11,35,69,0.25)]">{badge}</span>
+                    )}
+                  </div>
+                  <div className="px-2 pt-6 text-center">
+                    <p className="truncate text-[15px] font-extrabold text-[#0B2345]">{name}</p>
+                    {sub && <p className="mt-0.5 truncate text-[12.5px] text-[#6B7280]">{sub}</p>}
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

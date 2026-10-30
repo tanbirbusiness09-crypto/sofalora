@@ -31,6 +31,7 @@ export interface ApiCategoryRef {
 export interface ApiCategory extends ApiCategoryRef {
   icon: string | null;
   image: string | null;
+  menu_image?: string | null;
   description: string | null;
   status: 'active' | 'inactive';
   order_index: number;
@@ -232,6 +233,7 @@ export function mapApiProduct(p: ApiProduct, categoryParents?: Map<string, ApiCa
     inStock: p.in_stock,
     stock: p.stock_quantity,
     isNew,
+    createdAt: p.created_at ?? undefined,
     isBestSeller: Boolean(p.featured) || /best/i.test(badgeText),
     isSale: onSale,
   };
@@ -317,6 +319,8 @@ export interface CmsCard {
 }
 
 export interface CmsBrandConfig {
+  /** Site navigation layout: 'header' (default, categories in the top bar) or 'sidebar'. */
+  navigationStyle?: 'header' | 'sidebar';
   nameEn?: string;
   nameAr?: string;
   taglineEn?: string;

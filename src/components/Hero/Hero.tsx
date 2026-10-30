@@ -123,8 +123,9 @@ export const Hero: React.FC = () => {
   const heroTitle = cms.title('');
   const heroSubtitle = cms.subtitle('');
 
-  const cmsItems = [0, 1, 2, 3, 4]
-    .map((i) => cms.item(i))
+  // Every saved slide the admin has (added/removed in the Website Builder), not a fixed count.
+  const cmsItems = (cms.section?.items ?? [])
+    .filter((it): it is NonNullable<typeof it> => !!it)
     .filter((it) => (it.image ?? '').trim() !== '');
 
   const bannerSlides = (): HeroSlide[] =>

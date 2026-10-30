@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useShop } from '../../context/LanguageContext';
 import { Link } from '../../context/RouterContext';
 import { useCatalog } from '../../context/CatalogContext';
@@ -112,43 +112,12 @@ export const CategoryRows: React.FC = () => {
     return () => cancelAnimationFrame(raf);
   }, [loop, paused, direction, tiles.length]);
 
-  const scroll = (dir: 1 | -1) => {
-    const el = track.current;
-    if (!el) return;
-    const half = el.scrollWidth / 2;
-    let pos = Math.abs(el.scrollLeft) + dir * 133 * 3;
-    if (loop) pos = ((pos % half) + half) % half;
-    el.scrollTo({ left: (direction === 'rtl' ? -1 : 1) * pos, behavior: 'smooth' });
-  };
-  const Prev = direction === 'rtl' ? ChevronRight : ChevronLeft;
-  const Next = direction === 'rtl' ? ChevronLeft : ChevronRight;
   const shown = loop ? [...tiles, ...tiles] : tiles;
 
   return (
     <section aria-label={title} className="pt-3 pb-3 pe-3 max-lg:ps-3" dir={direction}>
-      <div className="mb-2 flex items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-3">
-          <h2 className="truncate text-[18px] sm:text-[20px] font-bold leading-tight text-[#0B2345]">{title}</h2>
-          <Link
-            href={viewAll}
-            className="group inline-flex shrink-0 items-center gap-1 rounded-full border border-[#0B2345]/80 px-3 py-[5px] text-[12px] font-semibold leading-none text-[#0B2345] transition-colors duration-200 hover:bg-[#0B2345] hover:text-white"
-          >
-            {isAr ? 'عرض الكل' : 'View all'}
-            <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-          </Link>
-        </div>
-        {loop && (
-          <div className="flex shrink-0 items-center gap-2">
-            <button type="button" onClick={() => scroll(-1)} aria-label={isAr ? 'السابق' : 'Previous'} className="sf-round-btn h-8 w-8 border border-[#DCD5C8] bg-white text-[#0B2345] hover:border-[#0B2345]">
-              <Prev className="h-4 w-4" />
-            </button>
-            <button type="button" onClick={() => scroll(1)} aria-label={isAr ? 'التالي' : 'Next'} className="sf-round-btn h-8 w-8 bg-[#0B2345] text-white hover:bg-[#12305C]">
-              <Next className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-      </div>
-      <div className="sf-row-mask overflow-hidden">
+      <div className="relative">
+      <div className="sf-row-mask overflow-hidden me-12 sm:me-14">
       <ul
         ref={track}
         onMouseEnter={() => setPaused(true)}
@@ -171,13 +140,22 @@ export const CategoryRows: React.FC = () => {
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                 />
               </div>
-              <p className="mt-1.5 truncate text-center text-[13px] font-semibold leading-tight text-[#0B2345] transition-colors group-hover:text-[#8A7350]">
+              <p className="mt-1.5 truncate text-center text-[14.5px] font-extrabold leading-tight text-[#0B2345] transition-colors group-hover:text-[#8A7350]">
                 {t.label[language]}
               </p>
             </Link>
           </li>
         ))}
       </ul>
+      </div>
+      <Link
+        href={viewAll}
+        aria-label={isAr ? 'عرض كل الفئات' : 'View all categories'}
+        title={isAr ? 'عرض الكل' : 'View all'}
+        className="group absolute end-0 top-[calc(50%-14px)] z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#0B2345] text-white shadow-[0_10px_22px_-10px_rgba(11,35,69,0.7)] ring-4 ring-[#FAF9F6] transition-all duration-200 hover:scale-105 hover:bg-[#12305C] focus-visible:outline-none focus-visible:ring-[#D8B25E]"
+      >
+        <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+      </Link>
       </div>
     </section>
   );

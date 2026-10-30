@@ -9,6 +9,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
   absoluteMediaUrl,
+  COMMERCE_API_URL,
   fetchWebsiteContent,
   isCommerceApiConfigured,
   type CmsBanner,
@@ -54,6 +55,28 @@ export const WebsiteProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setStatus('error');
       });
     return () => ctrl.abort();
+  }, []);
+
+  // Website Builder live preview (/builder-preview inside the admin iframe): accept draft content
+  // from the admin origin only, then announce readiness so the builder posts the draft.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.location.pathname.startsWith('/builder-preview') || window.parent === window) return;
+    let adminOrigin = '';
+    try { adminOrigin = new URL(COMMERCE_API_URL).origin; } catch { /* not configured */ }
+    const onMessage = (e: MessageEvent) => {
+      if (!adminOrigin || e.origin !== adminOrigin || e.data?.type !== 'NAMA_HOMEPAGE_PREVIEW') return;
+      const w = (e.data.website ?? {}) as Partial<WebsiteContent>;
+      setContent((prev) => ({
+        ...prev,
+        banners: Array.isArray(w.banners) ? w.banners : prev.banners,
+        pageBanners: w.pageBanners && typeof w.pageBanners === 'object' ? w.pageBanners : prev.pageBanners,
+        homeSections: Array.isArray(w.homeSections) ? w.homeSections.filter((s) => s && typeof s.key === 'string') : prev.homeSections,
+      }));
+      setStatus('ready');
+    };
+    window.addEventListener('message', onMessage);
+    if (adminOrigin) window.parent.postMessage({ type: 'NAMA_PREVIEW_READY' }, adminOrigin);
+    return () => window.removeEventListener('message', onMessage);
   }, []);
 
   const value = useMemo<WebsiteContextValue>(() => {
